@@ -14,6 +14,27 @@ h1{margin:0;color:#ffdc4d;font-size:clamp(28px,5vw,42px);text-shadow:0 0 14px #f
 @keyframes reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .message{min-height:28px;margin:14px 0 4px;color:#ffdc4d;font-weight:bold}.buttons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}.btn.alt{background:linear-gradient(90deg,#32d6ff,#6df5d3);color:#10213d}.note{font-size:12px;color:#a9d6f2;margin-top:17px;line-height:1.45}
 @media(max-width:520px){.app{padding:15px}.panel{padding:14px}.hints{grid-template-columns:1fr}.entry{flex-direction:column}}
+
+/* Live TV-inspired scoreboard */
+.app:has(#game501[style*="block"]){width:min(1120px,100%)}
+.dScores{gap:12px}.dPlayer{position:relative;padding:12px 8px;background:linear-gradient(160deg,#101d3e,#0a1427);border:3px solid #344d70;transition:border-color .2s,background .2s}
+.dPlayer.active{border-color:#ffdf51;background:linear-gradient(160deg,#293f67,#152e42);box-shadow:0 0 0 2px #ffdf5130,0 0 20px #ffdf5130}
+.dPlayer.active:before{content:"● AAN DE BEURT";display:block;font-size:11px;font-weight:900;letter-spacing:.5px;color:#ffe25e;margin-bottom:7px}
+.dPlayer:not(.active):before{content:"WACHT";display:block;font-size:11px;color:#a4b7cf;margin-bottom:7px}
+.dPlayer label{font-size:clamp(12px,1.5vw,17px);min-height:36px;display:flex;align-items:center;justify-content:center}
+.dPlayer strong{font-size:clamp(44px,6vw,70px);line-height:1.08;color:#fff;text-shadow:0 3px 15px #0008}
+.dPlayer.active strong{color:#ffe25e}
+.dPlayer small{display:block;margin-top:7px}
+.dPortrait{width:92px;height:105px;margin:2px auto 9px;border-radius:12px;background:linear-gradient(145deg,#41638a,#162a48);border:2px solid #698bad;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:33px;font-weight:900;color:#f9d96c}
+.dPortrait img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.dPlayer.active .dPortrait{border-color:#ffe25e}
+.dTurnBanner{background:linear-gradient(90deg,#174f66,#244b86);border:2px solid #7ee3ff;border-radius:14px;text-align:center;font-size:clamp(17px,2.5vw,24px);font-weight:900;padding:13px;margin:0 0 13px;color:#fff}
+.dTurnBanner.yourTurn{background:linear-gradient(90deg,#66500f,#765d1e);border-color:#ffdf51;color:#fff3ad}
+.dLiveInfo{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:8px 0 12px}
+.dLiveInfo>div{background:#081a31;border:1px solid #365a7a;border-radius:9px;text-align:center;padding:9px 5px;font-size:12px;color:#b9d6e9}
+.dLiveInfo strong{display:block;color:white;font-size:19px;margin-top:5px}
+.dLegs{font-size:18px;font-weight:700}
+@media(max-width:480px){.dPortrait{width:68px;height:78px}.dPlayer{padding:8px 4px}.dLiveInfo strong{font-size:16px}}
 </style></head>
 
 <style>
@@ -30,6 +51,27 @@ h1{margin:0;color:#ffdc4d;font-size:clamp(28px,5vw,42px);text-shadow:0 0 14px #f
 .dPanel h2{font-size:18px;color:#ffdc4d;margin:17px 0 10px}.dMeter{height:28px;border-radius:9px;position:relative;overflow:hidden;border:1px solid #45617e;margin-top:10px;background:#0b1a32}.dMeterGradient{position:absolute;inset:0;background:linear-gradient(90deg,#ef4444,#f59e0b 30%,#22c55e 47%,#22c55e 53%,#f59e0b 70%,#ef4444);}.dMeter #dNeedle{position:absolute;top:-4px;height:36px;width:4px;background:white;box-shadow:0 0 8px white;border-radius:3px;left:0}
 .dMeterLabels{display:flex;justify-content:space-between;color:#a9d6f2;font-size:11px}.dMeterLabels b{color:#6df5d3}.dHelp{font-size:13px;color:#c9e9ff;line-height:1.5}.dHistory{max-height:170px;overflow:auto;color:#c9e9ff;font-size:13px;line-height:1.6}.dHistory div{border-bottom:1px solid #34516c;padding:3px 0}
 @media(max-width:700px){#homeMode .modeCards{grid-template-columns:1fr}.dartsLayout{grid-template-columns:1fr}}
+
+/* Live TV-inspired scoreboard */
+.app:has(#game501[style*="block"]){width:min(1120px,100%)}
+.dScores{gap:12px}.dPlayer{position:relative;padding:12px 8px;background:linear-gradient(160deg,#101d3e,#0a1427);border:3px solid #344d70;transition:border-color .2s,background .2s}
+.dPlayer.active{border-color:#ffdf51;background:linear-gradient(160deg,#293f67,#152e42);box-shadow:0 0 0 2px #ffdf5130,0 0 20px #ffdf5130}
+.dPlayer.active:before{content:"● AAN DE BEURT";display:block;font-size:11px;font-weight:900;letter-spacing:.5px;color:#ffe25e;margin-bottom:7px}
+.dPlayer:not(.active):before{content:"WACHT";display:block;font-size:11px;color:#a4b7cf;margin-bottom:7px}
+.dPlayer label{font-size:clamp(12px,1.5vw,17px);min-height:36px;display:flex;align-items:center;justify-content:center}
+.dPlayer strong{font-size:clamp(44px,6vw,70px);line-height:1.08;color:#fff;text-shadow:0 3px 15px #0008}
+.dPlayer.active strong{color:#ffe25e}
+.dPlayer small{display:block;margin-top:7px}
+.dPortrait{width:92px;height:105px;margin:2px auto 9px;border-radius:12px;background:linear-gradient(145deg,#41638a,#162a48);border:2px solid #698bad;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:33px;font-weight:900;color:#f9d96c}
+.dPortrait img{width:100%;height:100%;object-fit:cover;object-position:center 20%;display:block}
+.dPlayer.active .dPortrait{border-color:#ffe25e}
+.dTurnBanner{background:linear-gradient(90deg,#174f66,#244b86);border:2px solid #7ee3ff;border-radius:14px;text-align:center;font-size:clamp(17px,2.5vw,24px);font-weight:900;padding:13px;margin:0 0 13px;color:#fff}
+.dTurnBanner.yourTurn{background:linear-gradient(90deg,#66500f,#765d1e);border-color:#ffdf51;color:#fff3ad}
+.dLiveInfo{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:8px 0 12px}
+.dLiveInfo>div{background:#081a31;border:1px solid #365a7a;border-radius:9px;text-align:center;padding:9px 5px;font-size:12px;color:#b9d6e9}
+.dLiveInfo strong{display:block;color:white;font-size:19px;margin-top:5px}
+.dLegs{font-size:18px;font-weight:700}
+@media(max-width:480px){.dPortrait{width:68px;height:78px}.dPlayer{padding:8px 4px}.dLiveInfo strong{font-size:16px}}
 </style>
 <body><main class="app">
 <section id="homeMode">
@@ -60,12 +102,14 @@ h1{margin:0;color:#ffdc4d;font-size:clamp(28px,5vw,42px);text-shadow:0 0 14px #f
 <section id="game501" style="display:none;text-align:left">
  <div class="navBack"><button class="btn alt" id="back501">← Terug naar gamemodes</button></div>
  <h1 style="text-align:center">🎯 DARTS 501</h1><p class="sub" style="text-align:center">Timing worpen • Jij tegen de computer • Best of 5 legs</p>
+ <div id="dTurnBanner" class="dTurnBanner">Kies je spelers en start de wedstrijd</div>
  <div class="dartsLayout">
   <div class="dPanel">
    <div class="dScores">
-    <div class="dPlayer active" id="dPlayer0"><label>Jij</label><strong id="dScore0">501</strong><small id="dMeta0">0 darts</small></div>
-    <div class="dPlayer" id="dPlayer1"><label>Computer</label><strong id="dScore1">501</strong><small id="dMeta1">0 darts</small></div>
+    <div class="dPlayer active" id="dPlayer0"><div class="dPortrait" id="dPortrait0">🎯</div><label>Jij</label><strong id="dScore0">501</strong><small id="dMeta0">0 darts</small></div>
+    <div class="dPlayer" id="dPlayer1"><div class="dPortrait" id="dPortrait1">🎯</div><label>Computer</label><strong id="dScore1">501</strong><small id="dMeta1">0 darts</small></div>
    </div>
+   <div class="dLiveInfo"><div>BEURT <strong id="dRound">–</strong></div><div>PIJL <strong id="dDartNumber">–</strong></div><div>LAATSTE WORP <strong id="dLastHit">–</strong></div></div>
    <div class="dLegs">Legs: <b id="dLegs0">0</b> – <b id="dLegs1">0</b></div>
    <div class="dBoard" id="dBoard"></div>
    <div class="dMessage" id="dMessage">Kies de darters en start de wedstrijd.</div>
@@ -206,7 +250,18 @@ function drawDartBoard(){let s='<svg viewBox="0 0 400 400" role="img" aria-label
 $('dBoard').innerHTML=drawDartBoard();
 let dScores=[501,501],dDarts=[0,0],dLegs=[0,0],dTurn=0,dLegOver=false,dMatch=false,dInterval=null,dPos=0,dDir=1,dActive=false,dHistory=[],dAim=null,dTurnStart=501,dTurnDarts=0,dStartingPlayer=0,dMarks=[],dToken=0;
 function dSay(t){$('dMessage').textContent=t}
-function dUpdate(){for(let i=0;i<2;i++){$('dScore'+i).textContent=dScores[i];$('dMeta'+i).textContent=`${dDarts[i]} pijlen totaal`;$('dPlayer'+i).classList.toggle('active',dTurn===i&&!dLegOver&&dMatch)}$('dLegs0').textContent=dLegs[0];$('dLegs1').textContent=dLegs[1];$('dPlayer0').querySelector('label').textContent=$('dPlayerSelect').value;$('dPlayer1').querySelector('label').textContent=$('dOpponentSelect').value}
+function dInitials(name){return name.split(/\s+/).filter(w=>!['van','de','der','den'].includes(w.toLowerCase())).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
+const dPhotoCache=new Map();
+async function dSetPortrait(i){let name=$(i===0?'dPlayerSelect':'dOpponentSelect').value,box=$('dPortrait'+i);box.textContent=dInitials(name);box.title=name;
+ if(dPhotoCache.has(name)){let url=dPhotoCache.get(name);if(url)dShowPhoto(box,url,name);return}
+ try{let res=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(name.replace(/ /g,'_')));if(!res.ok)throw Error('Geen foto');let data=await res.json();let url=data.thumbnail?.source||null;dPhotoCache.set(name,url);if(url&&$(i===0?'dPlayerSelect':'dOpponentSelect').value===name)dShowPhoto(box,url,name)}catch(e){dPhotoCache.set(name,null)}
+}
+function dShowPhoto(box,url,name){let img=document.createElement('img');img.alt='Foto van '+name;img.loading='lazy';img.referrerPolicy='no-referrer';img.onerror=()=>{box.textContent=dInitials(name)};img.src=url;box.replaceChildren(img)}
+function dUpdateLive(){let banner=$('dTurnBanner');banner.classList.toggle('yourTurn',dMatch&&!dLegOver&&dTurn===0);let name=dTurn===0?$('dPlayerSelect').value:$('dOpponentSelect').value;
+ banner.textContent=!dMatch?'🎯 Kies je spelers en start de wedstrijd':dLegOver?'🏆 LEG AFGELOPEN':dTurn===0?'🎯 JOUW BEURT — '+name.toUpperCase():'⏳ COMPUTER AAN DE BEURT — '+name.toUpperCase();
+ $('dRound').textContent=dMatch?Math.floor((dDarts[0]+dDarts[1])/6)+1:'–';$('dDartNumber').textContent=dMatch&&!dLegOver?(dTurnDarts+1)+' / 3':'–';
+}
+function dUpdate(){for(let i=0;i<2;i++){$('dScore'+i).textContent=dScores[i];$('dMeta'+i).textContent=`${dDarts[i]} pijlen totaal`;$('dPlayer'+i).classList.toggle('active',dTurn===i&&!dLegOver&&dMatch)}$('dLegs0').textContent=dLegs[0];$('dLegs1').textContent=dLegs[1];$('dPlayer0').querySelector('label').textContent=$('dPlayerSelect').value;$('dPlayer1').querySelector('label').textContent=$('dOpponentSelect').value;dUpdateLive()}
 function dStopMeter(){if(dInterval!==null)clearInterval(dInterval);dInterval=null;dActive=false}
 function dHideMeter(){dStopMeter();$('dMeterWrap').style.display='none';$('dThrow').disabled=true;$('dRestartMeter').disabled=true}
 function dStartMeter(){dStopMeter();dActive=true;dPos=0;dDir=1;$('dMeterWrap').style.display='block';$('dThrow').disabled=false;$('dRestartMeter').disabled=false;let last=performance.now();dInterval=setInterval(()=>{let now=performance.now(),dt=Math.min(45,now-last);last=now;dPos+=dDir*dt*.13;if(dPos>=100){dPos=200-dPos;dDir=-1}if(dPos<=0){dPos=-dPos;dDir=1}$('dNeedle').style.left=`calc(${dPos}% - 2px)`},16)}
@@ -217,16 +272,17 @@ function dDrawMarks(){let out=dMarks.map(m=>`<circle class="aimMark" cx="${m.x}"
 function dLog(text){dHistory.unshift(text);$('dHistory').textContent='';for(let line of dHistory.slice(0,32)){let div=document.createElement('div');div.textContent=line;$('dHistory').appendChild(div)}}
 function dSetTurn(who){dTurn=who;dTurnDarts=0;dTurnStart=dScores[who];dAim=null;dMarks=[];dDrawMarks();dHideMeter();dUpdate();if(who===0){dSay('Jouw beurt: klik op het dartbord om pijl 1 te richten.');$('dAimText').textContent='Klik op het bord waar je wilt gooien.'}else{dSay(`${$('dOpponentSelect').value} gooit drie pijlen...`);let token=dToken;setTimeout(()=>{if(token===dToken)dComputerTurn()},650)}}
 function dFinishLeg(who){dLegs[who]++;dLegOver=true;dAim=null;dHideMeter();dDrawMarks();dUpdate();let name=who===0?$('dPlayerSelect').value:$('dOpponentSelect').value;if(dLegs[who]>=3){dSay(`${name} wint de wedstrijd met ${dLegs[who]}-${dLegs[1-who]}! 🏆`);$('dStart').disabled=false;$('dStart').textContent='Nieuwe wedstrijd';$('dNext').disabled=true;dMatch=false;$('dPlayerSelect').disabled=false;$('dOpponentSelect').disabled=false}else{dSay(`${name} wint deze leg!`);$('dNext').disabled=false}}
-function dApplyDart(who,hit,x,y){dDarts[who]++;dTurnDarts++;dMarks.push({x,y,who});dDrawMarks();let next=dScores[who]-hit.score,name=who===0?$('dPlayerSelect').value:$('dOpponentSelect').value;
+function dApplyDart(who,hit,x,y){dDarts[who]++;dTurnDarts++;$('dLastHit').textContent=hit.label;dMarks.push({x,y,who});dDrawMarks();let next=dScores[who]-hit.score,name=who===0?$('dPlayerSelect').value:$('dOpponentSelect').value;
  if(next<0||next===1||(next===0&&!hit.double)){dScores[who]=dTurnStart;dLog(`${name}: ${hit.label} — BUST! Terug naar ${dTurnStart}.`);$('dResult').textContent=`BUST! De score wordt ${dTurnStart}.`;dUpdate();return 'bust'}
  dScores[who]=next;dLog(`${name}: ${hit.label} — nog ${next}.`);$('dResult').textContent=`${hit.label} geraakt. Nog ${next} punten.`;dUpdate();if(next===0){dFinishLeg(who);return 'win'}return dTurnDarts>=3?'end':'continue'}
-function dStart(){dToken++;dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dLegOver=false;dMatch=true;dHistory=[];$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=true;$('dNext').disabled=true;$('dPlayerSelect').disabled=true;$('dOpponentSelect').disabled=true;dStartingPlayer=0;dSetTurn(0)}
+function dStart(){dToken++;dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dLegOver=false;dMatch=true;dHistory=[];$('dLastHit').textContent='–';$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=true;$('dNext').disabled=true;$('dPlayerSelect').disabled=true;$('dOpponentSelect').disabled=true;dStartingPlayer=0;dSetTurn(0)}
 function dUserThrow(){if(!dMatch||dLegOver||dTurn!==0||!dActive||!dAim)return;let q=1-Math.abs(dPos-50)/50;dStopMeter();let spread=(1-q)*37+1.4;let angle=Math.random()*Math.PI*2,r=Math.sqrt(-2*Math.log(Math.max(.00001,Math.random())))*spread;let x=dAim.x+Math.cos(angle)*r,y=dAim.y+Math.sin(angle)*r;dAim=null;dHideMeter();let outcome=dApplyDart(0,dHit(x,y),x,y);if(outcome==='win')return;if(outcome==='bust'||outcome==='end'){dSetTurn(1)}else{dSay(`Pijl ${dTurnDarts+1} van 3: klik opnieuw op het bord.`);$('dAimText').textContent='Kies je volgende doel op het dartbord.'}}
 function dChooseComputerAim(rem,skill){let aim;if(rem<=50&&rem%2===0){aim=rem===50?{r:0,n:25}:{r:169,n:rem/2}}else if(rem<=40&&rem%2===1){aim={r:55,n:1}}else if(rem>60){aim={r:96,n:20}}else if(rem>40){aim={r:96,n:Math.min(20,Math.floor(rem/3))}}else{aim={r:55,n:20}};let i=dSectors.indexOf(aim.n);if(i<0)i=0;let [x,y]=dPoint(aim.r,i*18);let spread=(1-skill)*52+3,theta=Math.random()*Math.PI*2,dist=Math.sqrt(-2*Math.log(Math.max(.0001,Math.random())))*spread;return {x:x+Math.cos(theta)*dist,y:y+Math.sin(theta)*dist}}
 function dComputerTurn(){if(!dMatch||dLegOver||dTurn!==1)return;let skill=dSkill[$('dOpponentSelect').value]||.78;for(let i=0;i<3;i++){let pt=dChooseComputerAim(dScores[1],skill),outcome=dApplyDart(1,dHit(pt.x,pt.y),pt.x,pt.y);if(outcome==='win')return;if(outcome==='bust')break}dSetTurn(0)}
 $('dStart').onclick=dStart;
 $('dThrow').onclick=dUserThrow;
 $('dRestartMeter').onclick=()=>{if(dTurn===0&&dMatch&&!dLegOver){dAim=null;dHideMeter();dDrawMarks();$('dAimText').textContent='Klik opnieuw op het dartbord om te mikken.'}};
-$('dNext').onclick=()=>{if(!dLegOver||!dMatch)return;dToken++;dScores=[501,501];dDarts=[0,0];dLegOver=false;dHistory=[];$('dHistory').textContent='Nog geen worpen.';$('dNext').disabled=true;dStartingPlayer=1-dStartingPlayer;dSetTurn(dStartingPlayer)};
-$('dReset').onclick=()=>{dToken++;dHideMeter();dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dTurn=0;dLegOver=false;dMatch=false;dHistory=[];dAim=null;dMarks=[];dDrawMarks();dUpdate();$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=false;$('dStart').textContent='Start wedstrijd';$('dNext').disabled=true;$('dPlayerSelect').disabled=false;$('dOpponentSelect').disabled=false;$('dAimText').textContent='Start de wedstrijd en klik op het bord om te mikken.';dSay('Kies de darters en start de wedstrijd.')};
+$('dNext').onclick=()=>{if(!dLegOver||!dMatch)return;dToken++;dScores=[501,501];dDarts=[0,0];dLegOver=false;dHistory=[];$('dLastHit').textContent='–';$('dHistory').textContent='Nog geen worpen.';$('dNext').disabled=true;dStartingPlayer=1-dStartingPlayer;dSetTurn(dStartingPlayer)};
+$('dPlayerSelect').addEventListener('change',()=>{dUpdate();dSetPortrait(0)});$('dOpponentSelect').addEventListener('change',()=>{dUpdate();dSetPortrait(1)});dUpdate();dSetPortrait(0);dSetPortrait(1);
+$('dReset').onclick=()=>{dToken++;dHideMeter();dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dTurn=0;dLegOver=false;dMatch=false;dHistory=[];dAim=null;dMarks=[];$('dLastHit').textContent='–';dDrawMarks();dUpdate();$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=false;$('dStart').textContent='Start wedstrijd';$('dNext').disabled=true;$('dPlayerSelect').disabled=false;$('dOpponentSelect').disabled=false;$('dAimText').textContent='Start de wedstrijd en klik op het bord om te mikken.';dSay('Kies de darters en start de wedstrijd.')};
 </script></body></html>
