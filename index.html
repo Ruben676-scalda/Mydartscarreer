@@ -35,6 +35,65 @@ h1{margin:0;color:#ffdc4d;font-size:clamp(28px,5vw,42px);text-shadow:0 0 14px #f
 .dLiveInfo strong{display:block;color:white;font-size:19px;margin-top:5px}
 .dLegs{font-size:18px;font-weight:700}
 @media(max-width:480px){.dPortrait{width:68px;height:78px}.dPlayer{padding:8px 4px}.dLiveInfo strong{font-size:16px}}
+
+/* Moeilijke modus: smalle perfecte zone en vliegende pijl */
+.arenaBox .dMeterGradient{background:linear-gradient(90deg,#b91c1c 0%,#f97316 35%,#eab308 46%,#16a34a 48%,#22c55e 52%,#eab308 54%,#f97316 65%,#b91c1c 100%)}
+#dBoard svg{overflow:visible}
+#dFlight{pointer-events:none}
+#dFlight .flightDart{filter:drop-shadow(2px 3px 2px #000b)}
+.dDifficulty{display:inline-flex;align-items:center;gap:8px;color:#ffdf51;font-weight:900;font-size:12px;margin-top:8px}
+.dDifficulty:before{content:"●";color:#ef4444}
+#dCelebration{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;pointer-events:none;background:#040a1e99}
+#dCelebration.show{display:flex;animation:celebrateIn 2.6s ease-out both}
+#dCelebration span{font-weight:1000;font-style:italic;font-size:clamp(36px,9vw,105px);color:#ffdf38;text-align:center;text-shadow:0 5px 0 #b91c1c,0 12px 25px #000;animation:celebrateText 2.6s ease-out both}
+@keyframes celebrateIn{0%{opacity:0}15%{opacity:1}75%{opacity:1}100%{opacity:0}}
+@keyframes celebrateText{0%{transform:scale(.4) rotate(-7deg)}30%{transform:scale(1.12) rotate(2deg)}60%{transform:scale(1)}100%{transform:scale(1.05)}}
+
+/* Filmische 3D-camera voor elke dartworp */
+#d3dOverlay{position:fixed;inset:0;z-index:95;background:radial-gradient(ellipse at 50% 40%,#17324c,#020712 80%);display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden}
+#d3dOverlay.active{display:flex}
+#d3dOverlay canvas{width:100%;height:100%;display:block}
+#d3dHud{position:absolute;top:6%;left:50%;transform:translateX(-50%);color:#fff;font:900 clamp(16px,2.7vw,30px) system-ui;text-shadow:0 3px 14px #000;white-space:nowrap;letter-spacing:.08em;z-index:3}
+#d3dResult{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);padding:12px 30px;border:2px solid #f4d35e;border-radius:12px;background:#071324ed;color:#f9d950;font:900 clamp(24px,5vw,58px) system-ui;text-shadow:0 2px 12px #000;opacity:0;transition:opacity .25s;z-index:3;white-space:nowrap}
+#d3dResult.visible{opacity:1}
+#d3dFallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;color:white;font-weight:800}
+@media(prefers-reduced-motion:reduce){#d3dOverlay{transition:none}}
+
+/* Matchstatistieken in de stijl van een dartsscore-app */
+.dcStats{max-width:1550px;margin:22px auto;padding:0 2.5% 20px}
+.dcStatsPanel{background:linear-gradient(145deg,#0e1d36,#071226);border:2px solid #395174;border-radius:18px;padding:18px;box-shadow:0 12px 30px #0005}
+.dcStatsHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.dcStatsHeader h2{margin:0;color:#fff;font-size:23px}
+.dcStatsHeader small{color:#b2c8e5}
+.dcStatsTable{width:100%;border-collapse:separate;border-spacing:0 5px;text-align:center;font-variant-numeric:tabular-nums}
+.dcStatsTable th{padding:10px;color:#fce67d;font-size:14px;background:#132642}
+.dcStatsTable td{padding:10px 8px;background:#142641;color:#f3f8ff;font-size:16px;font-weight:700}
+.dcStatsTable td:first-child{color:#c0d2ec;font-size:13px;font-weight:600}
+.dcStatsTable th:first-child,.dcStatsTable td:first-child{text-align:left;width:34%}
+.dcStatsTable tr.dcHighlight td{background:#1d3756}
+.dcStatsTable td.dcPrimary{color:#ffe45e;font-size:22px;font-weight:900}
+.dcStatsFoot{color:#aebfda;font-size:12px;margin-top:10px}
+@media(max-width:650px){.dcStatsPanel{padding:10px}.dcStatsTable td{padding:8px 4px;font-size:13px}.dcStatsTable th{font-size:12px}.dcStatsTable td.dcPrimary{font-size:17px}}
+
+.callerControl{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:11px 13px;border-radius:12px;background:#142c49;border:1px solid #436282;color:#fff}
+.callerControl button{background:#e4bb3d;color:#111c2b;border:0;border-radius:9px;padding:9px 16px;font-weight:800;cursor:pointer}
+.callerControl small{display:block;color:#a9c4df;font-size:11px;margin-top:3px}
+
+.dLegFormat{width:100%;padding:11px;border:1px solid #4a6788;border-radius:9px;background:#101f39;color:white;font-size:15px;margin:7px 0 3px}
+.dLegFormat:disabled{opacity:.65}
+
+.tourneyPanel{max-width:1500px;margin:20px auto;padding:20px;border:1px solid #395879;border-radius:18px;background:linear-gradient(140deg,#10243c,#071323);color:#eef6ff}
+.tourneyPanel h2{margin:0 0 10px}.tourneyControls{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.tourneyControls label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:#bbd0e9}
+.tourneyControls select,.tourneyControls button{border-radius:8px;padding:10px;background:#203b58;color:white;border:1px solid #5c7895}
+.tourneyControls button{background:#1c8069;font-weight:bold;cursor:pointer}
+.tourneyControls button:disabled{opacity:.4;cursor:default}
+.tourneyBracket{display:flex;gap:14px;overflow-x:auto;padding:12px 0}
+.tourneyRound{min-width:195px;flex:1}.tourneyRound h3{font-size:14px;color:#f8dc73}
+.tourneyMatch{padding:10px;margin:8px 0;background:#172e49;border:1px solid #46617f;border-radius:9px;font-size:12px}
+.tourneyMatch strong{display:block;font-size:13px;color:#fff;margin:3px 0}
+.tourneyMatch .winner{color:#76f2bd}.tourneyMatch.active{border-color:#ffe27c;box-shadow:0 0 0 1px #ffe27c}
+.tourneyInfo{margin:10px 0;color:#c5d8ec}
 </style></head>
 
 <style>
@@ -72,6 +131,67 @@ h1{margin:0;color:#ffdc4d;font-size:clamp(28px,5vw,42px);text-shadow:0 0 14px #f
 .dLiveInfo strong{display:block;color:white;font-size:19px;margin-top:5px}
 .dLegs{font-size:18px;font-weight:700}
 @media(max-width:480px){.dPortrait{width:68px;height:78px}.dPlayer{padding:8px 4px}.dLiveInfo strong{font-size:16px}}
+
+.dAiStage{display:none;position:relative;overflow:hidden;min-height:100px;background:radial-gradient(circle at 85% 55%,#3b6b80,#07172d 70%);border:2px solid #6dbbd0;border-radius:13px;margin:10px 0;padding:10px 14px;color:#f3faff;text-align:center;font-weight:800}
+.dAiStage.visible{display:block}.dAiThrower{position:relative;font-size:35px;margin:4px 0}.dAiArm{display:inline-block;color:#ffdc4d;transform-origin:left center;transform:rotate(-35deg);margin-left:12px}.dAiStage.throwing .dAiArm{animation:dAiArmThrow .65s ease-in-out 1}.dAiStage.throwing .dAiThrower:after{content:'➤';position:absolute;top:0;left:48%;color:#ffed8c;font-size:23px;animation:dAiFly .65s ease-in forwards}
+@keyframes dAiArmThrow{0%{transform:rotate(-70deg)}40%{transform:rotate(35deg)}100%{transform:rotate(-10deg)}}
+@keyframes dAiFly{from{transform:translateX(0) scale(1);opacity:1}to{transform:translateX(155px) scale(.35);opacity:0}}
+#dAiStageResult{display:block;font-size:14px;color:#ffdf51}
+
+/* Broadcast-style 501 arena */
+body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gradient(ellipse at 50% 55%,#182d5b 0%,#09132c 55%,#040814 100%);}
+.app:has(#game501[style*="block"]){max-width:none;width:100%;min-height:100vh;border:0;border-radius:0;box-shadow:none;background:transparent;padding:0;text-align:left}
+#game501{color:#f6f8ff;font-family:Arial,Helvetica,sans-serif}
+.arenaNav{display:flex;align-items:center;justify-content:center;gap:14px;background:#071124e8;border-bottom:1px solid #304565;padding:13px 3%;flex-wrap:wrap}
+.arenaBrand{font-size:clamp(20px,2.6vw,35px);font-weight:1000;margin-right:auto;letter-spacing:-1px}.arenaBrand span{color:#e52236}.arenaTab{background:linear-gradient(110deg,#16468d,#0758b2);padding:13px 21px;border-radius:12px;font-weight:900}.arenaNav .btn{background:#0b1930;border:1px solid #314765;color:white;padding:12px 18px}
+.arenaHeading{text-align:center;margin:16px 0 20px}.arenaHeading h1{font-size:clamp(36px,5vw,65px);font-style:italic;letter-spacing:3px;color:white;text-shadow:0 4px 12px #000;margin:0}.arenaHeading p{font-size:clamp(12px,1.4vw,19px);color:#b7c7e2;margin:2px 0}
+.arenaTop{display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,.45fr) minmax(0,1fr);gap:15px;margin:0 auto 18px;padding:0 2.5%;max-width:1600px;align-items:stretch}
+.arenaTop .dPlayer{display:flex;align-items:center;min-height:190px;text-align:left;padding:10px 15px;background:linear-gradient(115deg,#091329,#152c4e);border:3px solid #3a557b;border-radius:18px;overflow:hidden;gap:16px}
+.arenaTop .dPlayer.active{border-color:#ffe02d;box-shadow:0 0 0 2px #ffe02d55,0 0 23px #ffe02d66;background:linear-gradient(115deg,#101e35,#17354e)}
+.arenaTop .dPlayer:before{display:none}.arenaTop .dPortrait{flex:0 0 38%;height:165px;width:38%;max-width:200px;margin:0;border:0;background:linear-gradient(135deg,#223955,#08162b);border-radius:8px;font-size:60px}
+.arenaTop .dPortrait img{width:100%;height:100%;object-fit:cover;object-position:top center}.arenaTop .playerText{min-width:0;flex:1}.arenaTop .dPlayer label{display:block;text-align:left;min-height:0;font-size:clamp(14px,1.6vw,22px);color:white;font-weight:900;overflow-wrap:anywhere}
+.arenaTop .dPlayer strong{font-size:clamp(47px,6.3vw,93px);color:#fff;text-shadow:0 4px 10px #0008;line-height:1.1}.arenaTop .dPlayer.active strong{color:white}.arenaTop .dPlayer small{font-size:12px;color:#a9bdd8}
+.arenaMiddle{display:flex;flex-direction:column;gap:7px}.middleBox{background:#0b1830;border:2px solid #344866;border-radius:13px;text-align:center;padding:7px;flex:1;display:flex;flex-direction:column;justify-content:center}.middleBox span{font-weight:800;color:#b9c9e3;font-size:14px}.middleBox b{font-size:32px}.middleBox strong{font-size:20px;color:white}
+.middleBox .dTurnBanner{border:0;padding:5px;margin:3px 0 0;background:#1b3d65;font-size:clamp(10px,1vw,14px);line-height:1.25;overflow-wrap:anywhere}.middleBox .dTurnBanner.yourTurn{background:#ffdf35;color:#131721}
+.arenaGame{display:grid;grid-template-columns:minmax(210px,1fr) minmax(320px,1.45fr) minmax(240px,1fr);gap:18px;max-width:1600px;margin:auto;padding:0 2.5%;align-items:center}
+.arenaSide{display:flex;flex-direction:column;gap:16px}.arenaBox{background:linear-gradient(145deg,#0d1b34,#071126);border:2px solid #364b6d;border-radius:19px;padding:17px;box-shadow:0 8px 25px #0005}.arenaBox h2{font-size:clamp(18px,1.8vw,25px);margin:0 0 15px;color:#fff}.arenaBox .dMessage{background:#14213a;border:1px solid #354966;color:#e4efff;font-size:13px}
+.arenaBoard{position:relative;min-width:0}.arenaBoard .dBoard{width:100%;max-width:590px;margin:0 auto}.arenaBoard .dBoard svg{filter:drop-shadow(0 7px 10px #000d)}.arenaBoard .dAiStage{position:absolute;z-index:4;top:10px;left:10%;right:10%;box-shadow:0 10px 35px #000b}
+.arenaBox .dHistory{max-height:250px;min-height:100px}.arenaBox .dHistory div{background:#13233e;border-radius:7px;margin:6px 0;padding:7px}.lastHitBox,.statLine{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#14233c;border-radius:8px;color:#b8cbe4;font-size:13px;margin-top:10px}.lastHitBox strong{color:#ffe16b;font-size:19px}
+.arenaBox .dLabel{color:#d6e4f5;font-size:13px}.arenaBox select{width:100%;background:#122541;border:1px solid #536e90;color:white;padding:12px;border-radius:10px;font-size:14px}
+.arenaBox .dMeter{height:34px;border-radius:24px;border:2px solid #748caf}.arenaBox .dMeterGradient{background:linear-gradient(90deg,#c51834,#f38b20,#e8e930,#29c840 48%,#29c840 52%,#e8e930,#f38b20,#c51834)}
+.throwButtons{display:flex;flex-direction:column;gap:12px;margin-top:16px}.throwButtons button{width:100%;min-height:52px;font-size:19px;font-weight:900;border-radius:13px}.throwButtons #dThrow{background:linear-gradient(#4fdb2c,#078b16);border:2px solid #78ec60;color:#fff;box-shadow:inset 0 1px 4px #ffffff70}.throwButtons #dRestartMeter{background:#202b3d;border:2px solid #657086;color:white;font-size:15px}.throwButtons button:disabled{opacity:.45}
+.arenaFooter{text-align:center;color:#a7bdd9;padding:14px;font-size:12px}
+@media(max-width:1050px){.arenaGame{grid-template-columns:1fr 1.3fr}.rightSide{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}.arenaTop .dPortrait{height:125px}.arenaTop .dPlayer{min-height:145px}}
+@media(max-width:700px){.arenaNav{justify-content:center}.arenaBrand{width:100%;text-align:center}.arenaTop{grid-template-columns:1fr 1fr;gap:8px}.arenaMiddle{grid-column:1/-1;grid-row:2;flex-direction:row}.arenaMiddle .middleBox{min-height:70px}.arenaTop .dPlayer{padding:7px;gap:7px;min-height:100px}.arenaTop .dPortrait{width:37%;height:95px;flex-basis:37%;font-size:25px}.arenaTop .dPlayer strong{font-size:42px}.arenaTop .dPlayer label{font-size:12px}.arenaGame{grid-template-columns:1fr}.arenaBoard{grid-row:1}.rightSide{grid-column:auto;display:flex}.leftSide{grid-row:3}.arenaHeading h1{font-size:35px}.arenaHeading p{font-size:12px}}
+
+/* Moeilijke modus: smalle perfecte zone en vliegende pijl */
+.arenaBox .dMeterGradient{background:linear-gradient(90deg,#b91c1c 0%,#f97316 35%,#eab308 46%,#16a34a 48%,#22c55e 52%,#eab308 54%,#f97316 65%,#b91c1c 100%)}
+#dBoard svg{overflow:visible}
+#dFlight{pointer-events:none}
+#dFlight .flightDart{filter:drop-shadow(2px 3px 2px #000b)}
+.dDifficulty{display:inline-flex;align-items:center;gap:8px;color:#ffdf51;font-weight:900;font-size:12px;margin-top:8px}
+.dDifficulty:before{content:"●";color:#ef4444}
+#dCelebration{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;pointer-events:none;background:#040a1e99}
+#dCelebration.show{display:flex;animation:celebrateIn 2.6s ease-out both}
+#dCelebration span{font-weight:1000;font-style:italic;font-size:clamp(36px,9vw,105px);color:#ffdf38;text-align:center;text-shadow:0 5px 0 #b91c1c,0 12px 25px #000;animation:celebrateText 2.6s ease-out both}
+@keyframes celebrateIn{0%{opacity:0}15%{opacity:1}75%{opacity:1}100%{opacity:0}}
+@keyframes celebrateText{0%{transform:scale(.4) rotate(-7deg)}30%{transform:scale(1.12) rotate(2deg)}60%{transform:scale(1)}100%{transform:scale(1.05)}}
+
+/* Matchstatistieken in de stijl van een dartsscore-app */
+.dcStats{max-width:1550px;margin:22px auto;padding:0 2.5% 20px}
+.dcStatsPanel{background:linear-gradient(145deg,#0e1d36,#071226);border:2px solid #395174;border-radius:18px;padding:18px;box-shadow:0 12px 30px #0005}
+.dcStatsHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.dcStatsHeader h2{margin:0;color:#fff;font-size:23px}
+.dcStatsHeader small{color:#b2c8e5}
+.dcStatsTable{width:100%;border-collapse:separate;border-spacing:0 5px;text-align:center;font-variant-numeric:tabular-nums}
+.dcStatsTable th{padding:10px;color:#fce67d;font-size:14px;background:#132642}
+.dcStatsTable td{padding:10px 8px;background:#142641;color:#f3f8ff;font-size:16px;font-weight:700}
+.dcStatsTable td:first-child{color:#c0d2ec;font-size:13px;font-weight:600}
+.dcStatsTable th:first-child,.dcStatsTable td:first-child{text-align:left;width:34%}
+.dcStatsTable tr.dcHighlight td{background:#1d3756}
+.dcStatsTable td.dcPrimary{color:#ffe45e;font-size:22px;font-weight:900}
+.dcStatsFoot{color:#aebfda;font-size:12px;margin-top:10px}
+@media(max-width:650px){.dcStatsPanel{padding:10px}.dcStatsTable td{padding:8px 4px;font-size:13px}.dcStatsTable th{font-size:12px}.dcStatsTable td.dcPrimary{font-size:17px}}
 </style>
 <body><main class="app">
 <section id="homeMode">
@@ -100,33 +220,51 @@ h1{margin:0;color:#ffdc4d;font-size:clamp(28px,5vw,42px);text-shadow:0 0 14px #f
 
 </div>
 <section id="game501" style="display:none;text-align:left">
- <div class="navBack"><button class="btn alt" id="back501">← Terug naar gamemodes</button></div>
- <h1 style="text-align:center">🎯 DARTS 501</h1><p class="sub" style="text-align:center">Timing worpen • Jij tegen de computer • Best of 5 legs</p>
- <div id="dTurnBanner" class="dTurnBanner">Kies je spelers en start de wedstrijd</div>
- <div class="dartsLayout">
-  <div class="dPanel">
-   <div class="dScores">
-    <div class="dPlayer active" id="dPlayer0"><div class="dPortrait" id="dPortrait0">🎯</div><label>Jij</label><strong id="dScore0">501</strong><small id="dMeta0">0 darts</small></div>
-    <div class="dPlayer" id="dPlayer1"><div class="dPortrait" id="dPortrait1">🎯</div><label>Computer</label><strong id="dScore1">501</strong><small id="dMeta1">0 darts</small></div>
-   </div>
-   <div class="dLiveInfo"><div>BEURT <strong id="dRound">–</strong></div><div>PIJL <strong id="dDartNumber">–</strong></div><div>LAATSTE WORP <strong id="dLastHit">–</strong></div></div>
-   <div class="dLegs">Legs: <b id="dLegs0">0</b> – <b id="dLegs1">0</b></div>
-   <div class="dBoard" id="dBoard"></div>
-   <div class="dMessage" id="dMessage">Kies de darters en start de wedstrijd.</div>
-   <div class="dButtons"><button class="btn" id="dStart">Start wedstrijd</button><button class="btn alt" id="dNext" disabled>Volgende leg</button><button class="btn alt" id="dReset">Reset</button></div>
-  </div>
-  <div class="dPanel">
-   <label class="dLabel" for="dPlayerSelect">Kies jouw darter (alle 60)</label><select id="dPlayerSelect"></select>
-   <label class="dLabel" for="dOpponentSelect">Kies tegenstander (alle 60)</label><select id="dOpponentSelect"></select>
-   <h2>Richt en gooi</h2>
-   <p class="dHelp" id="dAimText">Start de wedstrijd en klik op het bord om te mikken.</p>
-   <div id="dMeterWrap" style="display:none"><div class="dMeter"><div class="dMeterGradient"></div><div id="dNeedle"></div></div><div class="dMeterLabels"><span>Te vroeg</span><b>PERFECT</b><span>Te laat</span></div></div>
-   <p class="dHelp">Klik eerst op het gewenste vak op het bord. Stop daarna de timingmeter zo dicht mogelijk bij het groene midden. Je hebt drie pijlen per beurt. Uitgooien moet met een dubbel (ook bullseye telt).</p>
-   <div class="dButtons"><button class="btn" id="dThrow" disabled>🎯 GOOI PIJL</button><button class="btn alt" id="dRestartMeter" disabled>Opnieuw mikken</button></div>
-   <div class="dMessage" id="dResult">Je worp verschijnt hier.</div>
-   <h2>Worpen deze leg</h2><div class="dHistory" id="dHistory">Nog geen worpen.</div>
-  </div>
+ <header class="arenaNav"><div class="arenaBrand">🎯 DARTS<span>ARENA</span></div><button class="btn alt" id="back501">⌂ Home</button><span class="arenaTab">◎ Darts 501</span><button class="btn alt" id="goQuiz501">🎮 Wie is de Darter?</button></header>
+ <div class="arenaHeading"><h1>DARTS 501</h1><p>Timing worpen &nbsp; • &nbsp; Jij tegen de computer &nbsp; • &nbsp; <span id="dFormatHeading">Best of 5 legs</span></p></div>
+ <div class="arenaTop">
+  <div class="dPlayer active" id="dPlayer0"><div class="dPortrait" id="dPortrait0">🎯</div><div class="playerText"><label>Jij</label><strong id="dScore0">501</strong><small id="dMeta0">0 pijlen totaal</small></div></div>
+  <div class="arenaMiddle"><div class="middleBox"><span>LEGS</span><div><b id="dLegs0">0</b> - <b id="dLegs1">0</b></div></div><div class="middleBox"><span>BEURT</span><strong id="dTurnBanner" class="dTurnBanner">Start wedstrijd</strong></div><div class="middleBox"><span>PIJL</span><strong id="dDartNumber">–</strong></div></div>
+  <div class="dPlayer" id="dPlayer1"><div class="dPortrait" id="dPortrait1">🎯</div><div class="playerText"><label>Computer</label><strong id="dScore1">501</strong><small id="dMeta1">0 pijlen totaal</small></div></div>
  </div>
+ <div class="arenaGame">
+  <aside class="arenaSide leftSide"><div class="arenaBox"><h2>Laatste worpen</h2><div class="dHistory" id="dHistory">Nog geen worpen.</div><div class="lastHitBox">LAATSTE PIJL <strong id="dLastHit">–</strong></div></div><div class="arenaBox"><h2>Wedstrijd</h2><label class="dLabel" for="dLegFormat">Aantal legs (best of)</label><select id="dLegFormat" class="dLegFormat"><option value="1">1 leg</option><option value="3">Best of 3 legs</option><option value="5" selected>Best of 5 legs</option><option value="7">Best of 7 legs</option><option value="9">Best of 9 legs</option><option value="11">Best of 11 legs</option><option value="15">Best of 15 legs</option><option value="21">Best of 21 legs</option></select><p class="dHelp" id="dLegExplanation">Wie als eerste 3 legs wint, wint de wedstrijd.</p><div class="statLine">Ronde <b id="dRound">–</b></div><div class="dMessage" id="dMessage">Kies je spelers en start de wedstrijd.</div><div class="dButtons"><button class="btn" id="dStart">Start wedstrijd</button><button class="btn alt" id="dNext" disabled>Volgende leg</button><button class="btn alt" id="dReset">Reset</button></div></div></aside>
+  <div class="arenaBoard"><div class="dAiStage" id="dAiStage" aria-live="polite"><span id="dAiStageName">AI wacht op zijn beurt</span><div class="dAiThrower">🎯<span class="dAiArm">➤</span></div><span id="dAiStageResult">De tegenstander gooit straks zichtbaar.</span></div><div class="dBoard" id="dBoard"></div></div>
+  <aside class="arenaSide rightSide"><div class="arenaBox chooseBox"><h2>Kies je spelers</h2><label class="dLabel" for="dPlayerSelect">Jij (60 darters)</label><select id="dPlayerSelect"></select><label class="dLabel" for="dOpponentSelect">Tegenstander (60 darters)</label><select id="dOpponentSelect"></select></div><div class="arenaBox"><h2>🎙️ Mastercaller</h2><div class="callerControl"><div><strong id="callerStatus">Caller staat aan</strong><small>English · echte geluidsopnames</small></div><button type="button" id="callerToggle" aria-pressed="true">AAN</button></div><p class="dHelp">Roept scores, 180's, checkouts en gewonnen legs of wedstrijden om. Gebruik MP3-opnames in de map caller/. Geen computerstem.</p></div><div class="arenaBox"><h2>Timingmeter</h2><p class="dHelp" id="dAimText">Start de wedstrijd en klik op het dartbord.</p><div class="dDifficulty">MOEILIJK · perfecte zone is extra smal</div><div id="dMeterWrap" style="display:none"><div class="dMeter"><div class="dMeterGradient"></div><div id="dNeedle"></div></div><div class="dMeterLabels"><span>Te vroeg</span><b>PERFECT!</b><span>Te laat</span></div></div><div class="dButtons throwButtons"><button class="btn" id="dThrow" disabled>🎯 GOOI PIJL</button><button class="btn alt" id="dRestartMeter" disabled>⟳ Opnieuw mikken</button></div><div class="dMessage" id="dResult">Je worp verschijnt hier.</div></div></aside>
+ </div>
+
+ 
+<section class="tourneyPanel" id="tourneyPanel">
+ <h2>🏆 Toernooimodus</h2>
+ <p class="tourneyInfo">Speel een knock-outtoernooi met jouw darter tegen andere darters. De computer speelt de overige wedstrijden automatisch.</p>
+ <div class="tourneyControls">
+ <label>Jouw darter<select id="tourneyPlayer"></select></label>
+ <label>Deelnemers<select id="tourneySize"><option value="4">4 spelers</option><option value="8" selected>8 spelers</option><option value="16">16 spelers</option><option value="32">32 spelers</option></select></label>
+ <label>Legs per wedstrijd<select id="tourneyLegs"><option value="1">1 leg</option><option value="3">Best of 3</option><option value="5" selected>Best of 5</option><option value="7">Best of 7</option><option value="9">Best of 9</option></select></label>
+ <button type="button" id="tourneyCreate">Maak toernooi</button>
+ <button type="button" id="tourneyNext" disabled>Speel volgende wedstrijd</button>
+ <button type="button" id="tourneyCancel">Stop toernooi</button>
+ </div>
+ <p class="tourneyInfo" id="tourneyStatus">Maak een toernooi om het speelschema te bekijken.</p>
+ <div class="tourneyBracket" id="tourneyBracket"></div>
+</section>
+<section class="dcStats"><div class="dcStatsPanel">
+ <div class="dcStatsHeader"><h2>📊 Wedstrijdstatistieken</h2><small>LIVE · volledige wedstrijd · beide spelers</small></div>
+ <table class="dcStatsTable"><thead><tr><th>Statistiek</th><th id="dcName0">Speler 1</th><th id="dcName1">Speler 2</th></tr></thead><tbody>
+ <tr class="dcHighlight"><td>3-dart gemiddelde</td><td class="dcPrimary" id="dcAvg0">–</td><td class="dcPrimary" id="dcAvg1">–</td></tr>
+ <tr><td>First 9 gemiddelde</td><td id="dcFirst0">–</td><td id="dcFirst1">–</td></tr>
+ <tr><td>Checkout %</td><td id="dcCo0">–</td><td id="dcCo1">–</td></tr>
+ <tr><td>Hoogste beurt</td><td id="dcHigh0">0</td><td id="dcHigh1">0</td></tr>
+ <tr><td>Hoogste finish</td><td id="dcFinish0">–</td><td id="dcFinish1">–</td></tr>
+ <tr><td>Beste leg</td><td id="dcBest0">–</td><td id="dcBest1">–</td></tr>
+ <tr><td>100–139</td><td id="dc1000">0</td><td id="dc1001">0</td></tr>
+ <tr><td>140–179</td><td id="dc1400">0</td><td id="dc1401">0</td></tr>
+ <tr><td>180's</td><td id="dc1800">0</td><td id="dc1801">0</td></tr>
+ <tr><td>Gegooide pijlen</td><td id="dcDarts0">0</td><td id="dcDarts1">0</td></tr>
+ </tbody></table>
+ <div class="dcStatsFoot">Gemiddelden worden live berekend uit de worpen. Het gemiddelde = 3 × gescoorde punten ÷ daadwerkelijk gegooide pijlen. Bij een bust telt de hele beurt als 0 punten. First 9 geldt voor de eerste 9 pijlen per leg.</div>
+ </div></section>
+ <p class="arenaFooter">501 • 3 pijlen per beurt • Double-out • Bust = score terug naar begin van de beurt</p>
 </section>
 </main><script>
 // Order of Merit names/ranks reflect the published live table around Nov 5, 2026.
@@ -235,54 +373,438 @@ $('new').onclick=pickTarget;$('giveup').onclick=()=>{if(!target||finished)return
 document.addEventListener('click',e=>{if(!e.target.closest('.entry')&&!e.target.closest('.suggestions'))$('suggestions').classList.remove('show')});pickTarget();
 
 // --- Darts 501 mode: selector is sourced from the same complete 60-player roster ---
-const dSkill={"Luke Humphries":.88,"Luke Littler":.93,"Michael van Gerwen":.87,"Gian van Veen":.84,"Gerwyn Price":.83,"Peter Wright":.78,"Rob Cross":.82,"Stephen Bunting":.81,"Jonny Clayton":.82,"Wessel Nijman":.80};
+// Speelsterkte volgt de PDC-ranking: #1 is sterker dan #60.
+// De ranking is een benadering van kwaliteit, geen gegarandeerde uitslag.
+function dRank(name){return roster.find(p=>p.name===name)?.rank||60}
+function dSkillFor(name){const t=(dRank(name)-1)/59;return .96-.48*Math.pow(t,.85)}
+function dUserSpreadFactor(name){const t=(dRank(name)-1)/59;return .68+1.35*Math.pow(t,.9)}
+
 roster.forEach(p=>{const o1=document.createElement('option');o1.value=p.name;o1.textContent=`#${p.rank} · ${p.name} (${p.country})`; $('dPlayerSelect').appendChild(o1);const o2=o1.cloneNode(true);$('dOpponentSelect').appendChild(o2);});
 $('dPlayerSelect').value="Wessel Nijman";$('dOpponentSelect').value="Luke Humphries";
 function showMode(which){$('homeMode').style.display=which==='home'?'block':'none';$('quizMode').style.display=which==='quiz'?'block':'none';$('game501').style.display=which==='501'?'block':'none';}
-$('openQuiz').onclick=()=>showMode('quiz');$('open501').onclick=()=>showMode('501');$('backQuiz').onclick=()=>showMode('home');$('back501').onclick=()=>{dStopMeter();showMode('home')};
+$('goQuiz501').onclick=()=>{dStopMeter();showMode('quiz')};$('openQuiz').onclick=()=>showMode('quiz');$('open501').onclick=()=>showMode('501');$('backQuiz').onclick=()=>showMode('home');$('back501').onclick=()=>{dStopMeter();showMode('home')};
 const dSectors=[20,1,18,4,13,6,10,15,2,17,3,19,7,16,8,11,14,9,12,5];
 function dPoint(r,deg){const a=(deg-90)*Math.PI/180;return [200+r*Math.cos(a),200+r*Math.sin(a)]}
 function drawDartBoard(){let s='<svg viewBox="0 0 400 400" role="img" aria-label="Klik op het dartbord om te mikken" tabindex="0"><circle cx="200" cy="200" r="198" fill="#171717" stroke="#aaa" stroke-width="3"/>';
  const band=(inside,outside,colors)=>{for(let i=0;i<20;i++){let a=i*18-9,b=i*18+9,p1=dPoint(inside,a),p2=dPoint(outside,a),p3=dPoint(outside,b),p4=dPoint(inside,b);s+=`<path d="M${p1[0]} ${p1[1]} L${p2[0]} ${p2[1]} A${outside} ${outside} 0 0 1 ${p3[0]} ${p3[1]} L${p4[0]} ${p4[1]} A${inside} ${inside} 0 0 0 ${p1[0]} ${p1[1]} Z" fill="${colors[i%2]}" stroke="#292929" stroke-width=".7"/>`}};
- band(162,176,['#dc3939','#259b68']);band(100,162,['#eee9df','#202020']);band(92,100,['#dc3939','#259b68']);band(16,92,['#eee9df','#202020']);
+ band(162,176,['#dc3939','#259b68']);band(100,162,['#202020','#eee9df']);band(92,100,['#dc3939','#259b68']);band(16,92,['#202020','#eee9df']);
  s+='<circle cx="200" cy="200" r="16" fill="#299b68" stroke="#111" stroke-width="1"/><circle cx="200" cy="200" r="8" fill="#df3535"/>';
- dSectors.forEach((n,i)=>{let [x,y]=dPoint(186,i*18);s+=`<text x="${x}" y="${y+5}" text-anchor="middle" font-size="15" font-weight="bold" fill="white" pointer-events="none">${n}</text>`});return s+'<g id="dMarks"></g></svg>'}
+ dSectors.forEach((n,i)=>{let [x,y]=dPoint(186,i*18);s+=`<text x="${x}" y="${y+5}" text-anchor="middle" font-size="15" font-weight="bold" fill="white" pointer-events="none">${n}</text>`});return s+'<g id="dMarks"></g><g id="dFlight"></g></svg>'}
 $('dBoard').innerHTML=drawDartBoard();
-let dScores=[501,501],dDarts=[0,0],dLegs=[0,0],dTurn=0,dLegOver=false,dMatch=false,dInterval=null,dPos=0,dDir=1,dActive=false,dHistory=[],dAim=null,dTurnStart=501,dTurnDarts=0,dStartingPlayer=0,dMarks=[],dToken=0;
+let dLegTarget=3;
+let dScores=[501,501],dDarts=[0,0],dLegs=[0,0],dTurn=0,dLegOver=false,dMatch=false,dInterval=null,dPos=0,dDir=1,dActive=false,dHistory=[],dAim=null,dTurnStart=501,dTurnDarts=0,dStartingPlayer=0,dMarks=[],dToken=0,dAnimating=false,dVisitPoints=0;
 function dSay(t){$('dMessage').textContent=t}
 function dInitials(name){return name.split(/\s+/).filter(w=>!['van','de','der','den'].includes(w.toLowerCase())).slice(0,2).map(w=>w[0]).join('').toUpperCase()}
 const dPhotoCache=new Map();
-async function dSetPortrait(i){let name=$(i===0?'dPlayerSelect':'dOpponentSelect').value,box=$('dPortrait'+i);box.textContent=dInitials(name);box.title=name;
- if(dPhotoCache.has(name)){let url=dPhotoCache.get(name);if(url)dShowPhoto(box,url,name);return}
- try{let res=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(name.replace(/ /g,'_')));if(!res.ok)throw Error('Geen foto');let data=await res.json();let url=data.thumbnail?.source||null;dPhotoCache.set(name,url);if(url&&$(i===0?'dPlayerSelect':'dOpponentSelect').value===name)dShowPhoto(box,url,name)}catch(e){dPhotoCache.set(name,null)}
+// Directe, op Wikimedia Commons bestaande foto's. De browser haalt deze als normale afbeelding op.
+const dVerifiedPhotos={
+ 'Michael van Gerwen':'https://commons.wikimedia.org/wiki/Special:FilePath/Michael%20van%20Gerwen%202025.png?width=450',
+ 'Luke Humphries':'https://commons.wikimedia.org/wiki/Special:FilePath/Luke%20Humphries%20Darts%20Actueel%202023.jpg?width=450'
+};
+// Zoek voor andere spelers eerst een geschikte Commons-foto, daarna Wikipedia.
+async function dFetchWikiPortrait(name){
+ const c=new URLSearchParams({action:'query',format:'json',origin:'*',generator:'search',gsrsearch:'filetype:bitmap "'+name+'" darts',gsrnamespace:'6',gsrlimit:'8',prop:'imageinfo',iiprop:'url',iiurlwidth:'450'});
+ try{
+  const r=await fetch('https://commons.wikimedia.org/w/api.php?'+c);
+  if(r.ok){const j=await r.json();const pages=Object.values(j.query?.pages||{});
+   const match=pages.find(p=>p.title?.toLowerCase().includes(name.toLowerCase())&&p.imageinfo?.[0]);
+   if(match)return match.imageinfo[0].thumburl||match.imageinfo[0].url;
+  }
+ }catch(e){}
+ const params=new URLSearchParams({action:'query',format:'json',origin:'*',redirects:'1',prop:'pageimages',pithumbsize:'450',titles:name});
+ const r=await fetch('https://en.wikipedia.org/w/api.php?'+params);
+ if(!r.ok)return null;
+ const data=await r.json();const pages=Object.values(data.query?.pages||{});
+ return pages.find(p=>p.thumbnail?.source)?.thumbnail?.source||null;
 }
-function dShowPhoto(box,url,name){let img=document.createElement('img');img.alt='Foto van '+name;img.loading='lazy';img.referrerPolicy='no-referrer';img.onerror=()=>{box.textContent=dInitials(name)};img.src=url;box.replaceChildren(img)}
+async function dSetPortrait(i){
+ const name=$(i===0?'dPlayerSelect':'dOpponentSelect').value,box=$('dPortrait'+i);
+ box.textContent=dInitials(name);box.title=name;
+ const url=dVerifiedPhotos[name]||dPhotoCache.get(name);
+ if(url){dShowPhoto(box,url,name);return}
+ try{const found=await dFetchWikiPortrait(name);dPhotoCache.set(name,found);
+  if(found&&$(i===0?'dPlayerSelect':'dOpponentSelect').value===name)dShowPhoto(box,found,name);
+ }catch(e){dPhotoCache.set(name,null)}
+}
+function dShowPhoto(box,url,name){
+ const img=document.createElement('img');img.alt='Foto van '+name;img.loading='eager';img.referrerPolicy='no-referrer';
+ img.onerror=()=>{box.textContent=dInitials(name);box.title='Foto niet beschikbaar voor '+name};
+ img.src=url;box.replaceChildren(img);
+}
+function dcNewStats(){return {points:0,darts:0,firstPoints:0,firstDarts:0,legDarts:0,high:0,highFinish:0,bestLeg:null,checkoutAttempts:0,checkouts:0,c100:0,c140:0,c180:0}}
+let dcStats=[dcNewStats(),dcNewStats()];
+let dcVisitPoints=0,dcFirstVisitPoints=0,dcVisitFirstDarts=0;
+function dcUpdate(){
+ for(let i=0;i<2;i++){
+  const st=dcStats[i];
+  const put=(key,val)=>{const el=$('dc'+key+i);if(el)el.textContent=val};
+  const fmt=n=>n.toFixed(2).replace('.',',');
+  put('Name',$(i===0?'dPlayerSelect':'dOpponentSelect').value);
+  put('Avg',st.darts?fmt(3*(st.points+(dMatch&&!dLegOver&&i===dTurn?dcVisitPoints:0))/st.darts):'–');
+  put('First',st.firstDarts?fmt(3*(st.firstPoints+(dMatch&&!dLegOver&&i===dTurn?dcFirstVisitPoints:0))/st.firstDarts):'–');
+  put('Co',st.checkoutAttempts?fmt(100*st.checkouts/st.checkoutAttempts)+'% ('+st.checkouts+'/'+st.checkoutAttempts+')':'–');
+  put('High',st.high);put('Finish',st.highFinish||'–');put('Best',st.bestLeg===null?'–':st.bestLeg+' darts');
+  put('100',st.c100);put('140',st.c140);put('180',st.c180);put('Darts',st.darts);
+ }
+}
+function dcFinishVisit(who,bust=false){
+ const st=dcStats[who],points=bust?0:dcVisitPoints;
+ st.points+=points;st.high=Math.max(st.high,points);
+ if(points===180)st.c180++;else if(points>=140)st.c140++;else if(points>=100)st.c100++;
+ st.firstPoints+=bust?0:dcFirstVisitPoints;
+ // Alleen daadwerkelijk gegooide pijlen tellen mee; bij een bust telt de beurt als 0 punten.
+ dcVisitPoints=0;dcFirstVisitPoints=0;dcVisitFirstDarts=0;
+ dcUpdate();
+}
 function dUpdateLive(){let banner=$('dTurnBanner');banner.classList.toggle('yourTurn',dMatch&&!dLegOver&&dTurn===0);let name=dTurn===0?$('dPlayerSelect').value:$('dOpponentSelect').value;
  banner.textContent=!dMatch?'🎯 Kies je spelers en start de wedstrijd':dLegOver?'🏆 LEG AFGELOPEN':dTurn===0?'🎯 JOUW BEURT — '+name.toUpperCase():'⏳ COMPUTER AAN DE BEURT — '+name.toUpperCase();
  $('dRound').textContent=dMatch?Math.floor((dDarts[0]+dDarts[1])/6)+1:'–';$('dDartNumber').textContent=dMatch&&!dLegOver?(dTurnDarts+1)+' / 3':'–';
 }
-function dUpdate(){for(let i=0;i<2;i++){$('dScore'+i).textContent=dScores[i];$('dMeta'+i).textContent=`${dDarts[i]} pijlen totaal`;$('dPlayer'+i).classList.toggle('active',dTurn===i&&!dLegOver&&dMatch)}$('dLegs0').textContent=dLegs[0];$('dLegs1').textContent=dLegs[1];$('dPlayer0').querySelector('label').textContent=$('dPlayerSelect').value;$('dPlayer1').querySelector('label').textContent=$('dOpponentSelect').value;dUpdateLive()}
+function dUpdate(){for(let i=0;i<2;i++){$('dScore'+i).textContent=dScores[i];$('dMeta'+i).textContent=`${dDarts[i]} pijlen totaal`;$('dPlayer'+i).classList.toggle('active',dTurn===i&&!dLegOver&&dMatch)}$('dLegs0').textContent=dLegs[0];$('dLegs1').textContent=dLegs[1];$('dPlayer0').querySelector('label').textContent=$('dPlayerSelect').value;$('dPlayer1').querySelector('label').textContent=$('dOpponentSelect').value;dUpdateLive();dcUpdate()}
 function dStopMeter(){if(dInterval!==null)clearInterval(dInterval);dInterval=null;dActive=false}
 function dHideMeter(){dStopMeter();$('dMeterWrap').style.display='none';$('dThrow').disabled=true;$('dRestartMeter').disabled=true}
-function dStartMeter(){dStopMeter();dActive=true;dPos=0;dDir=1;$('dMeterWrap').style.display='block';$('dThrow').disabled=false;$('dRestartMeter').disabled=false;let last=performance.now();dInterval=setInterval(()=>{let now=performance.now(),dt=Math.min(45,now-last);last=now;dPos+=dDir*dt*.13;if(dPos>=100){dPos=200-dPos;dDir=-1}if(dPos<=0){dPos=-dPos;dDir=1}$('dNeedle').style.left=`calc(${dPos}% - 2px)`},16)}
-function dAimAt(x,y){if(!dMatch||dLegOver||dTurn!==0)return;let r=Math.hypot(x-200,y-200);if(r>176){$('dAimText').textContent='Klik binnen de scoringsvakken van het bord.';return}dAim={x,y};dDrawMarks();dStartMeter();let hit=dHit(x,y);$('dAimText').textContent=`Je mikt op ${hit.label}. Stop de meter op PERFECT om nauwkeurig te gooien.`;dSay(`Pijl ${dTurnDarts+1} van 3: je mikt op ${hit.label}.`)}
+function dStartMeter(){dStopMeter();dActive=true;dPos=0;dDir=1;$('dMeterWrap').style.display='block';$('dThrow').disabled=false;$('dRestartMeter').disabled=false;let last=performance.now();dInterval=setInterval(()=>{let now=performance.now(),dt=Math.min(45,now-last);last=now;dPos+=dDir*dt*.085;if(dPos>=100){dPos=200-dPos;dDir=-1}if(dPos<=0){dPos=-dPos;dDir=1}$('dNeedle').style.left=`calc(${dPos}% - 2px)`},16)}
+function dAimAt(x,y){if(!dMatch||dLegOver||dTurn!==0||dAnimating)return;let r=Math.hypot(x-200,y-200);if(r>176){$('dAimText').textContent='Klik binnen de scoringsvakken van het bord.';return}dAim={x,y};dDrawMarks();dStartMeter();let hit=dHit(x,y);$('dAimText').textContent=`Je mikt op ${hit.label}. Stop de meter op PERFECT om nauwkeurig te gooien.`;dSay(`Pijl ${dTurnDarts+1} van 3: je mikt op ${hit.label}.`)}
 $('dBoard').querySelector('svg').addEventListener('click',e=>{let svg=e.currentTarget,pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;let m=svg.getScreenCTM();if(!m)return;let loc=pt.matrixTransform(m.inverse());dAimAt(loc.x,loc.y)});
 function dHit(x,y){let dx=x-200,dy=y-200,r=Math.hypot(dx,dy);if(r>176)return {score:0,double:false,label:'MIS'};if(r<=8)return {score:50,double:true,label:'BULL (50)'};if(r<=16)return {score:25,double:false,label:'OUTER BULL (25)'};let deg=(Math.atan2(dy,dx)*180/Math.PI+90+360)%360,i=Math.floor((deg+9)/18)%20,n=dSectors[i];if(r>=162)return {score:n*2,double:true,label:`D${n} (${n*2})`};if(r>=92&&r<=100)return {score:n*3,double:false,label:`T${n} (${n*3})`};return {score:n,double:false,label:`S${n} (${n})`}}
 function dDrawMarks(){let out=dMarks.map(m=>`<circle class="aimMark" cx="${m.x}" cy="${m.y}" r="5" fill="${m.who===0?'#ffdf51':'#70d8ff'}" stroke="#111" stroke-width="2"/>`).join('');if(dAim)out+=`<circle class="aimMark" cx="${dAim.x}" cy="${dAim.y}" r="9" fill="none" stroke="#ffdf51" stroke-width="2.5" stroke-dasharray="3 3"/><path class="aimMark" d="M${dAim.x-14} ${dAim.y}h28 M${dAim.x} ${dAim.y-14}v28" stroke="#ffdf51" stroke-width="1.5"/>`;$('dMarks').innerHTML=out}
 function dLog(text){dHistory.unshift(text);$('dHistory').textContent='';for(let line of dHistory.slice(0,32)){let div=document.createElement('div');div.textContent=line;$('dHistory').appendChild(div)}}
-function dSetTurn(who){dTurn=who;dTurnDarts=0;dTurnStart=dScores[who];dAim=null;dMarks=[];dDrawMarks();dHideMeter();dUpdate();if(who===0){dSay('Jouw beurt: klik op het dartbord om pijl 1 te richten.');$('dAimText').textContent='Klik op het bord waar je wilt gooien.'}else{dSay(`${$('dOpponentSelect').value} gooit drie pijlen...`);let token=dToken;setTimeout(()=>{if(token===dToken)dComputerTurn()},650)}}
-function dFinishLeg(who){dLegs[who]++;dLegOver=true;dAim=null;dHideMeter();dDrawMarks();dUpdate();let name=who===0?$('dPlayerSelect').value:$('dOpponentSelect').value;if(dLegs[who]>=3){dSay(`${name} wint de wedstrijd met ${dLegs[who]}-${dLegs[1-who]}! 🏆`);$('dStart').disabled=false;$('dStart').textContent='Nieuwe wedstrijd';$('dNext').disabled=true;dMatch=false;$('dPlayerSelect').disabled=false;$('dOpponentSelect').disabled=false}else{dSay(`${name} wint deze leg!`);$('dNext').disabled=false}}
-function dApplyDart(who,hit,x,y){dDarts[who]++;dTurnDarts++;$('dLastHit').textContent=hit.label;dMarks.push({x,y,who});dDrawMarks();let next=dScores[who]-hit.score,name=who===0?$('dPlayerSelect').value:$('dOpponentSelect').value;
- if(next<0||next===1||(next===0&&!hit.double)){dScores[who]=dTurnStart;dLog(`${name}: ${hit.label} — BUST! Terug naar ${dTurnStart}.`);$('dResult').textContent=`BUST! De score wordt ${dTurnStart}.`;dUpdate();return 'bust'}
- dScores[who]=next;dLog(`${name}: ${hit.label} — nog ${next}.`);$('dResult').textContent=`${hit.label} geraakt. Nog ${next} punten.`;dUpdate();if(next===0){dFinishLeg(who);return 'win'}return dTurnDarts>=3?'end':'continue'}
-function dStart(){dToken++;dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dLegOver=false;dMatch=true;dHistory=[];$('dLastHit').textContent='–';$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=true;$('dNext').disabled=true;$('dPlayerSelect').disabled=true;$('dOpponentSelect').disabled=true;dStartingPlayer=0;dSetTurn(0)}
-function dUserThrow(){if(!dMatch||dLegOver||dTurn!==0||!dActive||!dAim)return;let q=1-Math.abs(dPos-50)/50;dStopMeter();let spread=(1-q)*37+1.4;let angle=Math.random()*Math.PI*2,r=Math.sqrt(-2*Math.log(Math.max(.00001,Math.random())))*spread;let x=dAim.x+Math.cos(angle)*r,y=dAim.y+Math.sin(angle)*r;dAim=null;dHideMeter();let outcome=dApplyDart(0,dHit(x,y),x,y);if(outcome==='win')return;if(outcome==='bust'||outcome==='end'){dSetTurn(1)}else{dSay(`Pijl ${dTurnDarts+1} van 3: klik opnieuw op het bord.`);$('dAimText').textContent='Kies je volgende doel op het dartbord.'}}
+function dSetTurn(who){$('dAiStage').classList.toggle('visible',who===1);$('dAiStage').classList.remove('throwing');dTurn=who;dTurnDarts=0;dTurnStart=dScores[who];dVisitPoints=0;dcVisitPoints=0;dcFirstVisitPoints=0;dcVisitFirstDarts=0;dAim=null;dMarks=[];dDrawMarks();dHideMeter();dUpdate();if(who===0){dSay('Jouw beurt: klik op het dartbord om pijl 1 te richten.');$('dAimText').textContent='Klik op het bord waar je wilt gooien.'}else{dSay(`${$('dOpponentSelect').value} gooit drie pijlen...`);let token=dToken;setTimeout(()=>{if(token===dToken)dComputerTurn()},1400)}}
+// Echte stemopnames: plaats MP3-bestanden in de map caller/.
+// Geen synthetische stem. Ontbrekende opnames worden stil overgeslagen.
+let callerEnabled=true,callerSerial=0,callerAudio=null;
+const callerCache=new Map();
+function callerStop(){
+ callerSerial++;
+ if(callerAudio){callerAudio.pause();callerAudio.currentTime=0;callerAudio=null;}
+}
+function callerFile(key){return 'caller/'+encodeURIComponent(key)+'.mp3'}
+function callerPlay(key,delay=0){
+ if(!callerEnabled)return;
+ callerStop();
+ const serial=callerSerial;
+ setTimeout(()=>{
+  if(!callerEnabled||serial!==callerSerial)return;
+  if(callerAudio){callerAudio.pause();callerAudio=null;}
+  const audio=new Audio(callerFile(key));
+  audio.preload='auto';audio.volume=1;
+  callerAudio=audio;
+  audio.addEventListener('error',()=>{if(callerAudio===audio)callerAudio=null;},{once:true});
+  audio.play().catch(()=>{if(callerAudio===audio)callerAudio=null;});
+ },delay);
+}
+function callerSpeak(text,delay=0){
+ const t=String(text).toLowerCase();
+ if(t.includes('game shot and the match'))callerPlay('match',delay);
+ else if(t.includes('game shot and the leg'))callerPlay('leg',delay);
+ else if(t.includes('game on'))callerPlay('game-on',delay);
+}
+function callerScore(score){callerPlay(score===180?'180':score===0?'0':`score-${score}`,300)}
+const callerToggle=$('callerToggle');
+if(callerToggle){
+ callerToggle.addEventListener('click',()=>{
+  callerEnabled=!callerEnabled;
+  callerToggle.textContent=callerEnabled?'AAN':'UIT';
+  callerToggle.setAttribute('aria-pressed',String(callerEnabled));
+  $('callerStatus').textContent=callerEnabled?'Echte opnames ingeschakeld':'Caller staat uit';
+  if(!callerEnabled)callerStop();else callerPlay('game-on');
+ });
+}
+function dFinishLeg(who){dLegs[who]++;dLegOver=true;dAim=null;dHideMeter();dDrawMarks();dUpdate();let name=who===0?$('dPlayerSelect').value:$('dOpponentSelect').value;if(dLegs[who]>=dLegTarget){callerSpeak('Game shot and the match, '+name+'!',450,true);dSay(`${name} wint de wedstrijd met ${dLegs[who]}-${dLegs[1-who]}! 🏆`);$('dStart').disabled=!!tState;$('dStart').textContent='Nieuwe wedstrijd';$('dNext').disabled=true;dMatch=false;$('dPlayerSelect').disabled=false;$('dOpponentSelect').disabled=false;$('dLegFormat').disabled=false;tMatchFinished(name,`${dLegs[who]}-${dLegs[1-who]}`)}else{callerSpeak('Game shot and the leg, '+name+'!',450,true);dSay(`${name} wint deze leg!`);$('dNext').disabled=false}}
+function dApplyDart(who,hit,x,y){dDarts[who]++;dTurnDarts++;dVisitPoints+=hit.score;const st=dcStats[who];st.darts++;st.legDarts++;const inFirst=st.legDarts<=9;if(inFirst)st.firstDarts++;const prior=dScores[who];if(prior===50||(prior<=40&&prior>=2&&prior%2===0))st.checkoutAttempts++;dcVisitPoints+=hit.score;if(inFirst)dcFirstVisitPoints+=hit.score;$('dLastHit').textContent=hit.label;dMarks.push({x,y,who});dDrawMarks();let next=dScores[who]-hit.score,name=who===0?$('dPlayerSelect').value:$('dOpponentSelect').value;
+ if(next<0||next===1||(next===0&&!hit.double)){dScores[who]=dTurnStart;dcFinishVisit(who,true);dLog(`${name}: ${hit.label} — BUST! Terug naar ${dTurnStart}.`);$('dResult').textContent=`BUST! De score wordt ${dTurnStart}.`;dUpdate();callerScore(0);return 'bust'}
+ dScores[who]=next;dLog(`${name}: ${hit.label} — nog ${next}.`);$('dResult').textContent=`${hit.label} geraakt. Nog ${next} punten.`;dUpdate();if(next===0){st.checkouts++;st.highFinish=Math.max(st.highFinish,dTurnStart);st.bestLeg=st.bestLeg===null?st.legDarts:Math.min(st.bestLeg,st.legDarts);dcFinishVisit(who);dCelebrate('CHECKOUT!');dFinishLeg(who);return 'win'}if(dTurnDarts===3){dcFinishVisit(who);callerScore(dVisitPoints);if(dVisitPoints===180)dCelebrate('ONE HUNDRED AND EIGHTY!')}dcUpdate();return dTurnDarts>=3?'end':'continue'}
+function dStart(){dLegTarget=(Number($('dLegFormat').value)+1)/2;$('dLegFormat').disabled=true;callerStop();dToken++;dAnimating=false;dcStats=[dcNewStats(),dcNewStats()];dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dLegOver=false;dMatch=true;dHistory=[];$('dLastHit').textContent='–';$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=true;$('dNext').disabled=true;$('dPlayerSelect').disabled=true;$('dOpponentSelect').disabled=true;dStartingPlayer=0;dSetTurn(0);callerSpeak('Game on!',250,true)}
+function dCelebrate(text){const el=$('dCelebration');$('dCelebrationText').textContent=text;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
+let dThreePromise=null;
+function dThreeLoad(){
+ if(!dThreePromise)dThreePromise=import('https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js').catch(()=>null);
+ return dThreePromise;
+}
+function d3dSectorMesh(T,inner,outer,index,color){
+ const shape=new T.Shape(),a0=Math.PI/2-(index*18-9)*Math.PI/180,a1=Math.PI/2-(index*18+9)*Math.PI/180;
+ const pts=14;
+ for(let j=0;j<=pts;j++){const a=a0+(a1-a0)*j/pts,r=outer;const x=Math.cos(a)*r,y=Math.sin(a)*r;j?shape.lineTo(x,y):shape.moveTo(x,y)}
+ for(let j=pts;j>=0;j--){const a=a0+(a1-a0)*j/pts,r=inner;shape.lineTo(Math.cos(a)*r,Math.sin(a)*r)}
+ shape.closePath();return new T.Mesh(new T.ShapeGeometry(shape),new T.MeshStandardMaterial({color,roughness:.87,side:T.DoubleSide}));
+}
+function d3dMakeBoard(T,scene){
+ const board=new T.Group();scene.add(board);
+ const back=new T.Mesh(new T.CylinderGeometry(2.12,2.12,.16,96),new T.MeshStandardMaterial({color:0x111317,roughness:.8}));back.rotation.x=Math.PI/2;back.position.z=-.12;board.add(back);
+ const face=new T.Mesh(new T.CircleGeometry(1.93,96),new T.MeshStandardMaterial({color:0x171717,roughness:.9}));face.position.z=.006;board.add(face);
+ for(let i=0;i<20;i++){
+  const light=i%2!==0;
+  for(const [inner,outer,c1,c2] of [[.16,.92,0xe9e5da,0x202020],[.92,1,0xd63d3d,0x229b65],[1,1.62,0xe9e5da,0x202020],[1.62,1.76,0xd63d3d,0x229b65]]){
+   const m=d3dSectorMesh(T,inner,outer,i,light?c1:c2);m.position.z=.013;board.add(m);
+  }
+ }
+ const makeDisk=(r,color,z)=>{const m=new T.Mesh(new T.CircleGeometry(r,64),new T.MeshStandardMaterial({color,roughness:.88}));m.position.z=z;board.add(m)};
+ makeDisk(.16,0x1d9c65,.026);makeDisk(.08,0xd73535,.031);
+ for(let i=0;i<20;i++){
+  const a=Math.PI/2-i*Math.PI/10;
+  const cv=document.createElement('canvas');cv.width=96;cv.height=96;const c=cv.getContext('2d');c.fillStyle='white';c.font='bold 54px Arial';c.textAlign='center';c.textBaseline='middle';c.fillText(String(dSectors[i]),48,48);
+  const tex=new T.CanvasTexture(cv),mat=new T.SpriteMaterial({map:tex,transparent:true,depthWrite:false});const spr=new T.Sprite(mat);spr.position.set(Math.cos(a)*1.89,Math.sin(a)*1.89,.035);spr.scale.set(.30,.30,1);board.add(spr);
+ }
+ return board;
+}
+function d3dDartStyle(name){
+ const styles={
+  'Wessel Nijman':{metal:0xcbd2d8,accent:0xc62828,accent2:0xf4f4f4,stem:0x23282d,flight:0xf8f8f8,flight2:0xc62828,pattern:'nijman'},
+  'Michael van Gerwen':{metal:0xb5c2c2,accent:0x19aa48,accent2:0x111111,stem:0x161c1b,flight:0x21ba4e,flight2:0x111111,pattern:'rings'},
+  'Luke Humphries':{metal:0xaeb6c2,accent:0x2675e8,accent2:0x121a33,stem:0x17284a,flight:0x2879ed,flight2:0xffffff,pattern:'rings'},
+  'Luke Littler':{metal:0x30343d,accent:0xc329a3,accent2:0xe9cf3b,stem:0x22202b,flight:0x8d25c6,flight2:0xf7da35,pattern:'rings'},
+  'Gerwyn Price':{metal:0xc4cbd4,accent:0x2678e2,accent2:0xffffff,stem:0x1d2c4c,flight:0x2268cd,flight2:0xffffff,pattern:'rings'},
+  'Gian van Veen':{metal:0xc4c8ce,accent:0x24272d,accent2:0xe7e7e7,stem:0x202124,flight:0x22262a,flight2:0xf2f2f2,pattern:'rings'},
+  'Peter Wright':{metal:0x9c7dd3,accent:0xf349a6,accent2:0x18c5bd,stem:0x6135aa,flight:0xc737c7,flight2:0x27d4c4,pattern:'rings'},
+  'Stephen Bunting':{metal:0x25272d,accent:0xc52d31,accent2:0x888888,stem:0x1a1a1a,flight:0xce292e,flight2:0x111111,pattern:'rings'},
+  'Rob Cross':{metal:0xaeb6bc,accent:0x2ca6db,accent2:0xffffff,stem:0x2c3744,flight:0x45a6e6,flight2:0xffffff,pattern:'rings'},
+  'Danny Noppert':{metal:0xbfc7cd,accent:0x5f9be5,accent2:0x252525,stem:0x303030,flight:0x1b4c93,flight2:0xf2f2f2,pattern:'rings'}
+ };
+ if(styles[name])return styles[name];
+ const colors=[0x298bd1,0xd43e3e,0x22a88c,0xe8a43d,0x8d5bd5];
+ let hash=0;for(const ch of name)hash=(hash*31+ch.charCodeAt(0))>>>0;
+ const color=colors[hash%colors.length];
+ return {metal:0xbac4cc,accent:color,accent2:0x252c35,stem:0x20252e,flight:color,flight2:0xffffff,pattern:'rings'};
+}
+function d3dMakeDart(T,name){
+ const st=d3dDartStyle(name||'Wessel Nijman'),g=new T.Group();
+ const mat=(color,metalness=.12,roughness=.42)=>new T.MeshStandardMaterial({color,metalness,roughness,side:T.DoubleSide});
+ const silver=mat(st.metal,.94,.23),dark=mat(st.stem,.2,.34),accent=mat(st.accent,.42,.28),accent2=mat(st.accent2,.25,.3);
+ const addCylinder=(top,bottom,length,z,m,segments=24)=>{const o=new T.Mesh(new T.CylinderGeometry(top,bottom,length,segments),m);o.rotation.x=Math.PI/2;o.position.z=z;g.add(o);return o};
+ // De smalle metalen punt blijft goed zichtbaar zonder de hele pijl te vergroten.
+ const point=new T.Mesh(new T.ConeGeometry(.018,.50,18),mat(0xd9e6ee,.96,.16));point.rotation.x=-Math.PI/2;point.position.z=-.34;g.add(point);
+ const tip=new T.Mesh(new T.SphereGeometry(.018,12,12),new T.MeshBasicMaterial({color:0xf5fbff}));tip.position.z=-.59;g.add(tip);
+ // Gebogen voorzijde en fijn geribbelde barrel, met gekleurde ringgroeven.
+ addCylinder(.055,.043,.14,-.03,silver);
+ addCylinder(.067,.060,.61,.34,silver);
+ addCylinder(.054,.067,.12,.71,silver);
+ for(let i=0;i<16;i++){
+  const z=.08+i*.038;
+  const ring=addCylinder(.069,.069,.012,z,i%5===0?accent:i%5===1?accent2:mat(0x68727a,.87,.28),32);
+ }
+ // Wessels kenmerkende zwart/wit/rode ringcombinatie.
+ if(st.pattern==='nijman'){
+  for(let i=0;i<6;i++)addCylinder(.071,.071,.018,.15+i*.092,[accent2,dark,accent][i%3]);
+ }
+ addCylinder(.044,.044,.10,.81,dark);
+ addCylinder(.026,.028,.63,1.15,mat(st.stem,.3,.34));
+ addCylinder(.039,.030,.09,1.50,dark);
+ // Vier gevormde flight-vinnen met tweekleurig patroon, geen platte gele vierkanten.
+ const flightMat=mat(st.flight,.03,.64),stripeMat=mat(st.flight2,.02,.62);
+ for(let j=0;j<4;j++){
+  const vane=new T.Group();vane.rotation.z=j*Math.PI/2;
+  const shape=new T.Shape();shape.moveTo(0,1.34);shape.lineTo(.10,1.37);shape.lineTo(.27,1.50);shape.lineTo(.24,1.76);shape.lineTo(.06,1.78);shape.lineTo(0,1.70);shape.closePath();
+  const geo=new T.ShapeGeometry(shape);const wing=new T.Mesh(geo,flightMat);wing.rotation.x=Math.PI/2;vane.add(wing);
+  const line=new T.Mesh(new T.PlaneGeometry(.055,.25),stripeMat);line.rotation.x=Math.PI/2;line.position.set(.115,0,1.60);vane.add(line);
+  g.add(vane);
+ }
+ return g;
+}
+async function dFlyDart3D(x,y,who=0){
+ const overlay=$('d3dOverlay'),label=$('d3dHud'),result=$('d3dResult');
+ overlay.classList.add('active');result.classList.remove('visible');result.textContent='';
+ label.textContent=(who===0?$('dPlayerSelect').value:$('dOpponentSelect').value).toUpperCase()+' · DART CAM';
+ let renderer,scene,cam,board,dart;
+ try{
+  const T=await dThreeLoad();if(!T)throw Error('3D bibliotheek niet bereikbaar');
+  scene=new T.Scene();scene.background=new T.Color(0x061222);scene.fog=new T.Fog(0x061222,7,19);
+  cam=new T.PerspectiveCamera(47,innerWidth/innerHeight,.1,60);
+  renderer=new T.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.8));renderer.setSize(innerWidth,innerHeight);
+  renderer.outputColorSpace=T.SRGBColorSpace;
+  overlay.appendChild(renderer.domElement);
+  scene.add(new T.AmbientLight(0xc4dbff,2.1));
+  const key=new T.DirectionalLight(0xffffff,3.5);key.position.set(-3,5,6);scene.add(key);
+  const rim=new T.PointLight(0x5ab8ff,60,15);rim.position.set(3,-2,4);scene.add(rim);
+  board=d3dMakeBoard(T,scene);
+  // Pijlen die eerder in deze beurt gegooid zijn blijven zichtbaar.
+  // De nieuwe pijl wordt pas na de animatie aan deze verzameling toegevoegd.
+  for(const mark of dMarks){
+   const old=d3dMakeDart(T,mark.who===0?$('dPlayerSelect').value:$('dOpponentSelect').value);
+   old.position.set((mark.x-200)/100,(200-mark.y)/100,.46);
+   old.rotation.set(.10,-.13,0);
+   old.scale.setScalar(1.22);
+   scene.add(old);
+  }
+  dart=d3dMakeDart(T,who===0?$('dPlayerSelect').value:$('dOpponentSelect').value);scene.add(dart);
+  // Een subtiele ring markeert na de impact exact waar de punt het bord raakt.
+  const impactRing=new T.Mesh(new T.RingGeometry(.065,.085,32),new T.MeshBasicMaterial({color:0xfff2a8,transparent:true,opacity:.9,side:T.DoubleSide,depthTest:false}));
+  impactRing.position.set((x-200)/100,(200-y)/100,.505);impactRing.visible=false;scene.add(impactRing);
+  const tx=(x-200)/100,ty=(200-y)/100;
+  const duration=2400,start=performance.now();
+  await new Promise(resolve=>{
+   function frame(now){
+    const t=Math.min(1,(now-start)/duration),flight=Math.min(1,t/.69),e=1-Math.pow(1-flight,3);
+    // Eerst over de schouder van de speler, dan inzoomen op het dartbord.
+    // Camera blijft voldoende ver van het bord zodat de pijl helemaal zichtbaar is.
+    // Na impact volgt een kleine zijwaartse beweging voor duidelijk 3D-perspectief.
+    const settle=Math.max(0,(t-.69)/.31);
+    cam.position.set(2.6*(1-t)+1.05*t,1.25*(1-t)+.55*t,7.8-2.4*t);
+    cam.lookAt(tx*.45,ty*.45,.42);
+    if(settle>0)cam.position.x+=.24*settle;
+    const sx=2.3,sy=-.85;
+    dart.position.set(sx+(tx-sx)*e,sy+(ty-sy)*e,6.1-5.64*e);
+    dart.rotation.set(.10,-.13,-.15*(1-e));
+    dart.scale.setScalar(1.22);
+    if(t>.71){impactRing.visible=true;impactRing.material.opacity=.85*Math.max(0,1-(t-.71)/.29);impactRing.scale.setScalar(1+Math.min(1,(t-.71)/.29)*1.2)}
+    if(t>.71&&!result.classList.contains('visible')){result.textContent=dHit(x,y).label;result.classList.add('visible')}
+    renderer.render(scene,cam);
+    if(t<1)requestAnimationFrame(frame);else resolve();
+   }requestAnimationFrame(frame);
+  });
+  await new Promise(resolve=>setTimeout(resolve,1500));
+ }catch(err){
+  // Als 3D niet geladen kan worden, blijft het spel speelbaar.
+  label.textContent='DARTS ARENA · WORP';result.textContent=dHit(x,y).label;result.classList.add('visible');
+  await new Promise(resolve=>setTimeout(resolve,850));
+ }finally{
+  if(renderer){renderer.dispose();renderer.domElement.remove()}
+  overlay.classList.remove('active');result.classList.remove('visible');
+ }
+}
+function dFlyDart(x,y){return dFlyDart3D(x,y,0)}
+async function dUserThrow(){
+ if(!dMatch||dLegOver||dTurn!==0||!dActive||!dAim||dAnimating)return;
+ // Moeilijk: slechts circa 4% van de balk is de perfecte zone.
+ const error=Math.abs(dPos-50),q=Math.max(0,1-error/50);
+ const baseSpread=error<=2?1.1:2.2+Math.pow(error/50,1.3)*58;
+ const spread=baseSpread*dUserSpreadFactor($('dPlayerSelect').value);
+ const angle=Math.random()*Math.PI*2,r=Math.sqrt(-2*Math.log(Math.max(.00001,Math.random())))*spread;
+ const x=dAim.x+Math.cos(angle)*r,y=dAim.y+Math.sin(angle)*r;
+ dAim=null;dAnimating=true;dHideMeter();$('dAimText').textContent='Pijl onderweg...';
+ await dFlyDart(x,y);dAnimating=false;
+ if(!dMatch||dLegOver||dTurn!==0)return;
+ const outcome=dApplyDart(0,dHit(x,y),x,y);
+ if(outcome==='win')return;
+ if(outcome==='bust'||outcome==='end'){dSetTurn(1)}
+ else{dSay(`Pijl ${dTurnDarts+1} van 3: klik opnieuw op het bord.`);$('dAimText').textContent='Kies je volgende doel op het dartbord.'}
+}
 function dChooseComputerAim(rem,skill){let aim;if(rem<=50&&rem%2===0){aim=rem===50?{r:0,n:25}:{r:169,n:rem/2}}else if(rem<=40&&rem%2===1){aim={r:55,n:1}}else if(rem>60){aim={r:96,n:20}}else if(rem>40){aim={r:96,n:Math.min(20,Math.floor(rem/3))}}else{aim={r:55,n:20}};let i=dSectors.indexOf(aim.n);if(i<0)i=0;let [x,y]=dPoint(aim.r,i*18);let spread=(1-skill)*52+3,theta=Math.random()*Math.PI*2,dist=Math.sqrt(-2*Math.log(Math.max(.0001,Math.random())))*spread;return {x:x+Math.cos(theta)*dist,y:y+Math.sin(theta)*dist}}
-function dComputerTurn(){if(!dMatch||dLegOver||dTurn!==1)return;let skill=dSkill[$('dOpponentSelect').value]||.78;for(let i=0;i<3;i++){let pt=dChooseComputerAim(dScores[1],skill),outcome=dApplyDart(1,dHit(pt.x,pt.y),pt.x,pt.y);if(outcome==='win')return;if(outcome==='bust')break}dSetTurn(0)}
-$('dStart').onclick=dStart;
+async function dComputerTurn(){
+ if(!dMatch||dLegOver||dTurn!==1)return;
+ const token=dToken,stage=$('dAiStage'),name=$('dOpponentSelect').value;
+ const skill=dSkillFor(name);
+ $('dAiStageName').textContent=name+' staat aan de oche';
+ for(let i=0;i<3;i++){
+  if(token!==dToken||!dMatch||dLegOver||dTurn!==1)return;
+  $('dAiStageResult').textContent='Pijl '+(i+1)+' van 3 — richt...';
+  stage.classList.remove('throwing');void stage.offsetWidth;
+  await new Promise(resolve=>setTimeout(resolve,1150));
+  if(token!==dToken||!dMatch||dLegOver||dTurn!==1)return;
+  stage.classList.add('throwing');
+  await new Promise(resolve=>setTimeout(resolve,1100));
+  if(token!==dToken||!dMatch||dLegOver||dTurn!==1)return;
+  const pt=dChooseComputerAim(dScores[1],skill),hit=dHit(pt.x,pt.y);
+  await dFlyDart3D(pt.x,pt.y,1);
+  if(token!==dToken||!dMatch||dLegOver||dTurn!==1)return;
+  const outcome=dApplyDart(1,hit,pt.x,pt.y);
+  $('dAiStageResult').textContent='Pijl '+(i+1)+': '+hit.label+' — nog '+dScores[1];
+  if(outcome==='win')return;
+  if(outcome==='bust')break;
+  await new Promise(resolve=>setTimeout(resolve,1050));
+ }
+ if(token===dToken&&dMatch&&!dLegOver)dSetTurn(0);
+}
+
+// Knock-outtoernooi: de speler speelt eigen partijen, overige wedstrijden worden gesimuleerd.
+let tState=null;
+roster.forEach(p=>{let o=document.createElement('option');o.value=p.name;o.textContent=p.name;$('tourneyPlayer').appendChild(o)});
+$('tourneyPlayer').value='Wessel Nijman';
+function tRoundName(index,total){return index===total-1?'Finale':index===total-2?'Halve finale':index===total-3?'Kwartfinale':`Ronde ${index+1}`}
+function tDraw(){
+ const box=$('tourneyBracket');box.innerHTML='';if(!tState)return;
+ tState.rounds.forEach((round,ri)=>{
+  const col=document.createElement('div');col.className='tourneyRound';
+  const title=document.createElement('h3');title.textContent=tRoundName(ri,tState.rounds.length);col.appendChild(title);
+  round.forEach((m,mi)=>{
+   const el=document.createElement('div');el.className='tourneyMatch'+(tState.pending&&tState.pending[0]===ri&&tState.pending[1]===mi?' active':'');
+   const a=document.createElement('strong'),b=document.createElement('strong'),score=document.createElement('small');
+   a.textContent=(m.a||'Nog niet bekend');b.textContent=(m.b||'Nog niet bekend');
+   if(m.winner){(m.winner===m.a?a:b).classList.add('winner');score.textContent=m.score||'✓';}
+   else score.textContent=m.a&&m.b?'Nog te spelen':'Wachten op vorige ronde';
+   el.append(a,b,score);col.appendChild(el);
+  });box.appendChild(col);
+ });
+ $('tourneyNext').disabled=!tState.pending||dMatch;
+}
+function tSetWinner(ri,mi,winner,score){
+ const m=tState.rounds[ri][mi];m.winner=winner;m.score=score;
+ if(ri+1<tState.rounds.length){
+  const next=tState.rounds[ri+1][Math.floor(mi/2)];
+  if(mi%2===0)next.a=winner;else next.b=winner;
+ }
+}
+function tSimulate(m){
+ const difference=dRank(m.b)-dRank(m.a);
+ // 20 rankingplaatsen verschil geeft ongeveer 75% winstkans aan de hoger geplaatste speler.
+ const chance=1/(1+Math.exp(-difference/18));
+ const winner=Math.random()<chance?m.a:m.b;
+ const target=(tState.legs+1)/2;
+ const loserLegs=Math.floor(Math.random()*target);
+ return {winner,score:`${target} - ${loserLegs}`};
+}
+function tAdvance(){
+ if(!tState)return;
+ tState.pending=null;
+ for(let ri=0;ri<tState.rounds.length;ri++){
+  for(let mi=0;mi<tState.rounds[ri].length;mi++){
+   const m=tState.rounds[ri][mi];
+   if(!m.a||!m.b||m.winner)continue;
+   if(m.a===tState.user||m.b===tState.user){
+    tState.pending=[ri,mi];$('tourneyStatus').textContent=`${tRoundName(ri,tState.rounds.length)}: ${m.a} tegen ${m.b}. Klik op 'Speel volgende wedstrijd'.`;tDraw();return;
+   }
+   const result=tSimulate(m);tSetWinner(ri,mi,result.winner,result.score);
+  }
+ }
+ const champion=tState.rounds.at(-1)[0].winner;
+ $('tourneyStatus').textContent=`🏆 Toernooi afgelopen! Winnaar: ${champion}.`;
+ tDraw();
+}
+function tClear(){
+ tState=null;$('tourneyStatus').textContent='Maak een toernooi om het speelschema te bekijken.';
+ $('tourneyBracket').innerHTML='';$('tourneyNext').disabled=true;
+ $('tourneyCreate').disabled=false;
+}
+$('tourneyCreate').onclick=()=>{
+ if(dMatch){$('tourneyStatus').textContent='Maak eerst je huidige wedstrijd af of klik op Reset.';return}
+ const size=Number($('tourneySize').value),user=$('tourneyPlayer').value;
+ const others=roster.filter(p=>p.name!==user).sort(()=>Math.random()-.5).slice(0,size-1).map(p=>p.name);
+ const entrants=[user,...others].sort(()=>Math.random()-.5);
+ const rounds=[];let count=size/2;
+ while(count>=1){rounds.push(Array.from({length:count},()=>({a:null,b:null,winner:null,score:''})));count/=2}
+ entrants.forEach((name,i)=>{const m=rounds[0][Math.floor(i/2)];if(i%2===0)m.a=name;else m.b=name});
+ tState={user,legs:Number($('tourneyLegs').value),rounds,pending:null,playing:null};
+ $('tourneyCreate').disabled=true;
+ tAdvance();
+};
+$('tourneyNext').onclick=()=>{
+ if(!tState||!tState.pending||dMatch)return;
+ const [ri,mi]=tState.pending,m=tState.rounds[ri][mi];
+ tState.playing=[ri,mi];tState.pending=null;
+ $('dPlayerSelect').value=tState.user;
+ $('dOpponentSelect').value=m.a===tState.user?m.b:m.a;
+ $('dLegFormat').value=String(tState.legs);
+ $('dLegFormat').dispatchEvent(new Event('change'));
+ dUpdate();dSetPortrait(0);dSetPortrait(1);dStart();
+ $('tourneyStatus').textContent=`🎯 Nu bezig: ${m.a} tegen ${m.b}`;
+ tDraw();document.getElementById('game501').scrollIntoView({behavior:'smooth',block:'start'});
+};
+$('tourneyCancel').onclick=()=>{
+ if(dMatch){$('tourneyStatus').textContent='Reset eerst de huidige wedstrijd om het toernooi te stoppen.';return}
+ tClear();
+};
+function tMatchFinished(winner,score){
+ if(!tState||!tState.playing)return;
+ const [ri,mi]=tState.playing;
+ tSetWinner(ri,mi,winner,score);tState.playing=null;
+ $('tourneyStatus').textContent=`${winner} wint met ${score}.`;
+ tAdvance();
+}
+
+$('dStart').onclick=()=>{if(tState){$('tourneyStatus').textContent='Gebruik Speel volgende wedstrijd om je toernooi te vervolgen.';return}dStart()};
 $('dThrow').onclick=dUserThrow;
 $('dRestartMeter').onclick=()=>{if(dTurn===0&&dMatch&&!dLegOver){dAim=null;dHideMeter();dDrawMarks();$('dAimText').textContent='Klik opnieuw op het dartbord om te mikken.'}};
-$('dNext').onclick=()=>{if(!dLegOver||!dMatch)return;dToken++;dScores=[501,501];dDarts=[0,0];dLegOver=false;dHistory=[];$('dLastHit').textContent='–';$('dHistory').textContent='Nog geen worpen.';$('dNext').disabled=true;dStartingPlayer=1-dStartingPlayer;dSetTurn(dStartingPlayer)};
+$('dNext').onclick=()=>{if(!dLegOver||!dMatch)return;callerStop();dToken++;dAnimating=false;dScores=[501,501];dDarts=[0,0];dcStats.forEach(st=>st.legDarts=0);dLegOver=false;dHistory=[];$('dLastHit').textContent='–';$('dHistory').textContent='Nog geen worpen.';$('dNext').disabled=true;dStartingPlayer=1-dStartingPlayer;dSetTurn(dStartingPlayer)};
+$('dLegFormat').addEventListener('change',()=>{const n=Number($('dLegFormat').value),target=(n+1)/2;$('dFormatHeading').textContent=n===1?'1 leg':`Best of ${n} legs`;$('dLegExplanation').textContent=`Wie als eerste ${target} ${target===1?'leg':'legs'} wint, wint de wedstrijd.`});
 $('dPlayerSelect').addEventListener('change',()=>{dUpdate();dSetPortrait(0)});$('dOpponentSelect').addEventListener('change',()=>{dUpdate();dSetPortrait(1)});dUpdate();dSetPortrait(0);dSetPortrait(1);
-$('dReset').onclick=()=>{dToken++;dHideMeter();dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dTurn=0;dLegOver=false;dMatch=false;dHistory=[];dAim=null;dMarks=[];$('dLastHit').textContent='–';dDrawMarks();dUpdate();$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=false;$('dStart').textContent='Start wedstrijd';$('dNext').disabled=true;$('dPlayerSelect').disabled=false;$('dOpponentSelect').disabled=false;$('dAimText').textContent='Start de wedstrijd en klik op het bord om te mikken.';dSay('Kies de darters en start de wedstrijd.')};
-</script></body></html>
+$('dReset').onclick=()=>{if(tState&&tState.playing){tState.pending=tState.playing;tState.playing=null;tDraw();$('tourneyStatus').textContent='Wedstrijd afgebroken. Je kunt deze partij opnieuw spelen.';}callerStop();dToken++;dAnimating=false;dHideMeter();dcStats=[dcNewStats(),dcNewStats()];dScores=[501,501];dDarts=[0,0];dLegs=[0,0];dTurn=0;dLegOver=false;dMatch=false;dHistory=[];dAim=null;dMarks=[];$('dLastHit').textContent='–';dDrawMarks();dUpdate();$('dHistory').textContent='Nog geen worpen.';$('dStart').disabled=false;$('dStart').textContent='Start wedstrijd';$('dNext').disabled=true;$('dPlayerSelect').disabled=false;$('dOpponentSelect').disabled=false;$('dLegFormat').disabled=false;$('dAimText').textContent='Start de wedstrijd en klik op het bord om te mikken.';dSay('Kies de darters en start de wedstrijd.');$('dAiStage').classList.remove('visible','throwing')};
+</script><div id="dCelebration" aria-live="polite"><span id="dCelebrationText">180!</span></div><div id="d3dOverlay" aria-live="polite"><div id="d3dHud">DARTS ARENA · 3D REPLAY</div><div id="d3dResult"></div><div id="d3dFallback"></div></div></body></html>
