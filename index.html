@@ -1047,14 +1047,36 @@ function careerSave(){if(career){try{localStorage.setItem(CAREER_KEY,JSON.string
 function careerRanked(){return [...career.players].sort((a,b)=>b.money-a.money||a.seed-b.seed).map((p,i)=>({...p,position:i+1}))}
 function careerPlayer(){return career.players.find(p=>p.id===career.playerId)}
 function careerLog(t){career.news.unshift('Season '+career.season+' · '+t);career.news=career.news.slice(0,80)}
+// Persistent, fictional career simulation traits. Ages are game-generated, not verified biographical ages.
+function aiHash(s){let h=2166136261;for(const ch of String(s)){h=Math.imul(h^ch.charCodeAt(0),16777619)}return h>>>0}
+function aiInit(p){
+ if(!p)return p;
+ const h=aiHash(p.id+'|'+p.name);
+ if(!p.aiProfile){const age=18+(h%36);p.aiProfile={age,peakAge:26+((h>>>7)%13),potential:Math.min(112,Math.max(28,(Number(p.skill)||56)+4+((h>>>12)%19))),consistency:.45+((h>>>17)%46)/100,finishing:.7+((h>>>21)%61)/100,development:.55+((h>>>11)%91)/100,history:[],careerMatches:0,trend:0};}
+ const a=p.aiProfile;if(!Array.isArray(a.history))a.history=[];if(!Number.isFinite(a.age))a.age=30;if(!Number.isFinite(a.trend))a.trend=0;
+ return a;
+}
+function aiRecent(p){const a=aiInit(p),h=a.history.slice(-8);if(!h.length)return 0;const weighted=h.reduce((sum,x,i)=>sum+(Number(x.performance)||0)*(i+1),0),weight=h.reduce((sum,_,i)=>sum+i+1,0);return Math.max(-7,Math.min(7,weighted/weight));}
+function aiRecord(p,won,performance){if(!p)return;const a=aiInit(p);a.careerMatches++;a.history.push({won:!!won,performance:Math.max(-14,Math.min(14,Number(performance)||0)),season:career.season});if(a.history.length>24)a.history.shift();a.trend=Math.max(-5,Math.min(5,a.trend*.82+(won?0.5:-0.5)));}
+function aiSeasonDevelopment(p){const a=aiInit(p);a.age+=1;const age=a.age,peak=a.peakAge,skill=Number(p.skill)||55;let change;
+ if(age<peak-7)change=(.5+Math.random()*1.9)*a.development;
+ else if(age<peak)change=(-.3+Math.random()*1.6)*a.development;
+ else if(age<=peak+7)change=(Math.random()-.53)*1.5;
+ else change=-(.15+Math.random()*.9)*Math.min(2.5,1+(age-peak-7)*.07);
+ // Exceptional late bloomers and unpredictable dips; no mandatory age-based decline.
+ if(Math.random()<.13)change+=(Math.random()-.42)*2.5;
+ p.skill=Math.max(20,Math.min(a.potential,skill+change));a.trend*=.65;
+}
 function careerSkill(id){const p=career.players.find(p=>p.id===id);return p?.skill||60}
 // Rankings set baseline ability; current form, match-day variance and upsets decide results.
 function careerPlayerForm(id){const p=career?.players?.find(x=>x.id===id);return p ? (Number.isFinite(p.form)?p.form:(id===career.playerId?(career.form||0):0)) : 0}
 function careerChance(a,b){
  const skillGap=careerSkill(a)-careerSkill(b);
  const formGap=careerPlayerForm(a)-careerPlayerForm(b);
- const dayVariance=(Math.random()+Math.random()+Math.random()-1.5)*15;
- const strength=skillGap*.60+formGap*2.5+dayVariance;
+ const pa=career.players.find(p=>p.id===a),pb=career.players.find(p=>p.id===b);
+ const recentGap=aiRecent(pa)-aiRecent(pb);
+ const dayVariance=(Math.random()+Math.random()+Math.random()-1.5)*14;
+ const strength=skillGap*.60+formGap*1.8+recentGap*.85+dayVariance;
  return Math.max(.16,Math.min(.84,1/(1+Math.exp(-strength/12))));
 }
 function careerUpdateForm(id,won){
@@ -1066,6 +1088,8 @@ function careerUpdateForm(id,won){
 function careerSimResult(a,b){
  const winner=Math.random()<careerChance(a,b)?a:b;
  careerUpdateForm(a,winner===a);careerUpdateForm(b,winner===b);
+ aiRecord(career.players.find(p=>p.id===a),winner===a,(winner===a?3:-3)+(Math.random()-.5)*9);
+ aiRecord(career.players.find(p=>p.id===b),winner===b,(winner===b?3:-3)+(Math.random()-.5)*9);
  return winner;
 }
 function careerChooseOpponents(event){const player=careerPlayer(),ranked=careerRanked(),type=careerEventType(event);const rank=ranked.findIndex(p=>p.id===player.id)+1;
@@ -1076,9 +1100,9 @@ function careerChooseOpponents(event){const player=careerPlayer(),ranked=careerR
  const pool=ranked.slice(0,Math.max(event[1],64)).filter(p=>p.id!==player.id);return pool[Math.floor(Math.random()*pool.length)]||null;
 }
 function careerAward(winnerId,event,round){let p=career.players.find(x=>x.id===winnerId);if(!p)return;let reward=Math.round(event[2]*Math.pow(.5,Math.max(0,Math.log2(event[1])-round-1)));p.money+=reward; if(p.id===career.playerId){career.earnings+=reward;careerLog('Earned '+careerMoneyFmt(reward)+' at '+event[0])}}
-function careerAdvance(){const event=careerEvents[career.eventIndex];careerSimOtherResults(event);career.eventIndex++;career.current=null;careerPending=null;if(career.eventIndex>=careerEvents.length){careerLog('Season '+career.season+' finished');career.season++;career.eventIndex=0;career.players.forEach(p=>{p.money=Math.round(p.money*.62);p.floorMoney=0;p.euroMoney=0;p.seasonMoney=0;p.form=0;p.skill=Math.max(35,Math.min(98,p.skill+(Math.random()-.5)*2))});career.form=0;careerLog('New season started.')}careerSave();careerRender();}
+function careerAdvance(){const event=careerEvents[career.eventIndex];careerSimOtherResults(event);career.eventIndex++;career.current=null;careerPending=null;if(career.eventIndex>=careerEvents.length){careerLog('Season '+career.season+' finished');career.season++;career.eventIndex=0;career.players.forEach(p=>{p.money=Math.round(p.money*.62);p.floorMoney=0;p.euroMoney=0;p.seasonMoney=0;p.form=0;aiSeasonDevelopment(p)});career.form=0;careerLog('New season started.')}careerSave();careerRender();}
 function careerStartEvent(){if(!career||careerPending)return;let event=careerEvents[career.eventIndex];let opp=careerChooseOpponents(event);if(!opp){careerLog('Not qualified for '+event[0]);careerAdvance();return}career.current={opponent:opp.id,round:0,wins:0,played:0,history:[]};careerLog('Entered '+event[0]+' vs '+opp.name);careerSave();careerRender()}
-function careerAfterMatch(won){const event=careerEvents[career.eventIndex],c=career.current;if(!c)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===c.opponent);c.played++;if(!Array.isArray(c.history))c.history=[];c.history.push({round:c.round,opponent:opp?.name||'Opponent',won:!!won});career.record[won?'wins':'losses']++;careerUpdateForm(career.playerId,!!won);careerUpdateForm(c.opponent,!won);
+function careerAfterMatch(won){const event=careerEvents[career.eventIndex],c=career.current;if(!c)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===c.opponent);c.played++;if(!Array.isArray(c.history))c.history=[];c.history.push({round:c.round,opponent:opp?.name||'Opponent',won:!!won});career.record[won?'wins':'losses']++;careerUpdateForm(career.playerId,!!won);careerUpdateForm(c.opponent,!won);aiRecord(player,won,(won?2:-2)+(Math.random()-.5)*6);aiRecord(opp,!won,(!won?2:-2)+(Math.random()-.5)*6);
  if(won){c.round++;c.wins++;careerLog('Beat '+opp.name+' at '+event[0]);if(c.round>=Math.ceil(Math.log2(event[1]))){career.titles++;careerLog('🏆 CHAMPION · '+event[0]);careerPayoutPrize(player.id,event,c.round);careerAdvance();return;}const next=careerChooseOpponents(event);c.opponent=next?.id||opp.id;careerSave();careerRender();}
  else{careerLog('Lost to '+opp.name+' at '+event[0]);careerPayoutPrize(player.id,event,c.round);careerAdvance();}
 }
@@ -1869,7 +1893,23 @@ function daTraining(){
 <script id="irlCareerLogic">
 (function(){
 const IRL_KEY='dartsArenaIRLCareerV1';
-const IRL_LEVELS=Array.from({length:20},(_,i)=>({level:i+1,average:Math.round(28+i*4.15)}));
+const IRL_LEVELS=[
+ {level:1,average:25,min:18,max:35},
+ {level:2,average:33,min:25,max:43},
+ {level:3,average:40,min:32,max:51},
+ {level:4,average:46,min:38,max:57},
+ {level:5,average:50,min:45,max:62},
+ {level:6,average:54,min:46,max:65},
+ {level:7,average:58,min:49,max:70},
+ {level:8,average:63,min:54,max:76},
+ {level:9,average:76,min:65,max:90},
+ {level:10,average:95,min:82,max:110}
+];
+const irlClampLevel=value=>Math.max(1,Math.min(10,Number(value)||5));
+// Keep old 20-level career saves close to their previous average.
+function irlSavedLevel(value){const n=Number(value)||5;if(n<=10)return irlClampLevel(n);const old=[22,27,32,37,41,45,47,49,51,53,55,57,59,61,63,70,78,87,97,107];const avg=old[Math.max(0,Math.min(19,n-1))];return IRL_LEVELS.reduce((best,item)=>Math.abs(item.average-avg)<Math.abs(best.average-avg)?item:best,IRL_LEVELS[0]).level;}
+const irlLevelLabel=({level,average,min,max})=>'Level '+level+' · average day '+average+' · usually '+min+'–'+max;
+
 let irlMode=false,normalCareer=null,irlCareer=null,irlMatch=null;
 const el=id=>document.getElementById(id);
 const originalSave=careerSave;
@@ -1892,18 +1932,18 @@ function openCareerVariant(irl){
 const btn=document.createElement('button');btn.id='openIRLCareer';btn.className='modeCard';btn.innerHTML='<span class="modeEmoji">🎯</span><b>IRL Career Mode</b><small>Throw real darts · enter scores · play PDC tournaments</small>';
 el('openCareer').after(btn);btn.onclick=()=>openCareerVariant(true);
 el('openCareer').onclick=()=>openCareerVariant(false);
-// IRL careers always use a self-created player. The 20 bot levels apply to
+// IRL careers always use a self-created player. The 10 bot levels apply to
 // every AI opponent while individual PDC player skill and form still matter.
-const irlLevelWrap=document.createElement('div');irlLevelWrap.id='irlLevelWrap';irlLevelWrap.innerHTML='<label>Bot difficulty (1–20)<select id="irlBotLevel"></select></label><p id="irlLevelDescription" class="careerMuted" style="margin:4px 0 12px"></p>';
+const irlLevelWrap=document.createElement('div');irlLevelWrap.id='irlLevelWrap';irlLevelWrap.innerHTML='<label>Bot difficulty (1–10)<select id="irlBotLevel"></select></label><p id="irlLevelDescription" class="careerMuted" style="margin:4px 0 12px"></p>';
 el('careerCustomFields').after(irlLevelWrap);
 const irlLevelSelect=el('irlBotLevel');
-IRL_LEVELS.forEach(({level,average})=>{const opt=document.createElement('option');opt.value=level;opt.textContent='Level '+level+' · approx. '+average+' average';irlLevelSelect.appendChild(opt)});
-irlLevelSelect.value='10';
+IRL_LEVELS.forEach(({level,average})=>{const opt=document.createElement('option');opt.value=level;opt.textContent=irlLevelLabel(IRL_LEVELS[level-1]);irlLevelSelect.appendChild(opt)});
+irlLevelSelect.value='5';
 const irlDashboardLevel=document.createElement('div');irlDashboardLevel.id='irlDashboardLevel';irlDashboardLevel.className='careerPanel';irlDashboardLevel.innerHTML='<h2>🎯 IRL Bot Difficulty</h2><label>Choose opponent level <select id="irlActiveBotLevel"></select></label><p id="irlActiveLevelDescription" class="careerMuted"></p>';
 el('careerDashboard').prepend(irlDashboardLevel);
 const activeLevelSelect=el('irlActiveBotLevel');
-IRL_LEVELS.forEach(({level,average})=>{const opt=document.createElement('option');opt.value=level;opt.textContent='Level '+level+' · approx. '+average+' average';activeLevelSelect.appendChild(opt)});
-function levelDescription(level){const avg=IRL_LEVELS[level-1].average;return 'Target: about '+avg+' three-dart average. Match form and opponent quality cause natural variation.'}
+IRL_LEVELS.forEach(({level,average})=>{const opt=document.createElement('option');opt.value=level;opt.textContent=irlLevelLabel(IRL_LEVELS[level-1]);activeLevelSelect.appendChild(opt)});
+function levelDescription(level){const d=IRL_LEVELS[irlClampLevel(level)-1];return 'Average day: '+d.average+' points per 3 darts. On a good or bad day: usually '+d.min+'–'+d.max+'. Individual players may sometimes fall outside this range. Change the level anytime.'}
 function updateIRLSetup(){
  const type=el('careerType');const proOption=type.querySelector('option[value="pro"]');
  if(proOption)proOption.disabled=irlMode;
@@ -1912,17 +1952,33 @@ function updateIRLSetup(){
  el('careerProFields').style.display=irlMode?'none':(type.value==='pro'?'block':'none');
  el('careerCustomFields').style.display=irlMode?'block':(type.value==='pro'?'none':'block');
  irlLevelWrap.style.display=irlMode?'block':'none';irlDashboardLevel.style.display=irlMode&&career?'block':'none';
- const level=Math.max(1,Math.min(20,Number(career?.botLevel)||10));
- if(irlMode&&career)activeLevelSelect.value=String(level);
+ const level=irlSavedLevel(career?.botLevel);
+ if(irlMode&&career){career.botLevel=level;activeLevelSelect.value=String(level);}
  el('irlLevelDescription').textContent=levelDescription(Number(irlLevelSelect.value));
  el('irlActiveLevelDescription').textContent=levelDescription(level);
  const intro=el('careerSetup').querySelector('p.careerMuted');
  if(intro)intro.textContent=irlMode?'Create your own player and play real darts against PDC opponents.':'Create a player or take control of one of the 128 PDC players.';
 }
 irlLevelSelect.addEventListener('change',()=>el('irlLevelDescription').textContent=levelDescription(Number(irlLevelSelect.value)));
-activeLevelSelect.addEventListener('change',()=>{if(!irlMode||!career)return;career.botLevel=Number(activeLevelSelect.value);careerSave();el('irlActiveLevelDescription').textContent=levelDescription(career.botLevel)});
+function setIRLLevel(value){
+ if(!irlMode||!career)return;
+ career.botLevel=irlClampLevel(value);
+ activeLevelSelect.value=String(career.botLevel);
+ if(el('irlMatchBotLevel'))el('irlMatchBotLevel').value=String(career.botLevel);
+ careerSave();
+ el('irlActiveLevelDescription').textContent=levelDescription(career.botLevel);
+ if(irlMatch){const ev=careerEvents[career.eventIndex];el('irlEventTitle').textContent=ev[0]+' · Round '+(career.current.round+1)+' · Bot Level '+career.botLevel;el('irlNotice').textContent='AI difficulty changed to Level '+career.botLevel+' ('+IRL_LEVELS[career.botLevel-1].average+' target avg).';}
+}
+activeLevelSelect.addEventListener('change',()=>setIRLLevel(activeLevelSelect.value));
+// Always-available difficulty setting on the IRL match screen.
+const matchLevelControl=document.createElement('label');
+matchLevelControl.id='irlMatchLevelControl';
+matchLevelControl.innerHTML='<span>AI LEVEL</span><select id="irlMatchBotLevel" aria-label="AI difficulty during match"></select>';
+IRL_LEVELS.forEach(({level,average})=>{const option=document.createElement('option');option.value=level;option.textContent=irlLevelLabel(IRL_LEVELS[level-1]);matchLevelControl.querySelector('select').appendChild(option)});
+el('irlMatch').querySelector('.irlTop').appendChild(matchLevelControl);
+el('irlMatchBotLevel').addEventListener('change',()=>setIRLLevel(el('irlMatchBotLevel').value));
 // Capture the chosen level after the original create handler builds the career.
-el('careerCreate').addEventListener('click',()=>{if(!irlMode||!career)return;career.botLevel=Number(irlLevelSelect.value);careerSave();updateIRLSetup()});
+el('careerCreate').addEventListener('click',()=>{if(!irlMode||!career)return;career.botLevel=irlClampLevel(irlLevelSelect.value);careerSave();updateIRLSetup()});
 
 el('careerContinue').onclick=()=>{try{let c=JSON.parse(localStorage.getItem(irlMode?IRL_KEY:CAREER_KEY));if(!c||!Array.isArray(c.players)||!c.playerId)throw Error('Invalid save');career=c;careerRender();updateIRLSetup()}catch(e){el('careerSetupMsg').textContent='Unable to load this save.'}};
 el('careerHome').onclick=()=>{careerSave();showMode('home')};
@@ -1938,17 +1994,22 @@ document.addEventListener('click',function(e){
 },true);
 
 el('careerNew').onclick=()=>{if(!confirm('Start a new career? Your current save will be replaced.'))return;career=null;careerPending=null;if(irlMode)irlCareer=null;else normalCareer=null;el('careerSetup').style.display='block';el('careerDashboard').style.display='none';el('careerContinue').style.display='inline-block';updateIRLSetup()};
-function targetAvg(p){const level=Math.max(1,Math.min(20,Number(career?.botLevel)||10));const base=IRL_LEVELS[level-1].average;const skill=Math.max(30,Math.min(98,Number(p.skill)||55));const form=Math.max(-5,Math.min(5,Number(p.form)||0));return Math.max(24,Math.min(116,base+(skill-70)*.22+form*1.1))}
+function targetAvg(p){
+ const level=irlSavedLevel(career?.botLevel),base=IRL_LEVELS[level-1].average;
+ const skill=Math.max(20,Math.min(112,Number(p.skill)||55)),form=Math.max(-5,Math.min(5,Number(p.form)||0));
+ const recent=aiRecent(p),day=irlMatch?.bot===p?irlMatch.botDay:0;
+ return Math.max(15,Math.min(120,base+(skill-70)*.16+form*.45+recent*.55+day));
+}
 function sample(){return (Math.random()+Math.random()+Math.random()+Math.random()-2)}
 function botVisit(){
- const b=irlMatch,remaining=b.remaining[1],avg=targetAvg(b.bot);
+ const b=irlMatch,remaining=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
  if(remaining<=170){
-  const checkout=Math.min(.64,Math.max(.035,(avg-37)/180))*(remaining>100?.42:remaining>60?.68:1);
+  const checkout=Math.min(.70,Math.max(.025,(avg-37)/180)*profile.finishing)*(remaining>100?.42:remaining>60?.68:1);
   if(remaining!==169&&remaining!==168&&remaining!==166&&remaining!==165&&remaining!==163&&remaining!==162&&remaining!==159&&Math.random()<checkout){return {score:remaining,finish:true}};
  }
- let score=Math.round(avg+sample()*(avg>90?27:34));
- if(Math.random()<.09)score=Math.round(score*.42); // occasional bad visit
- if(Math.random()<.055)score=Math.round(Math.max(score,avg+28)); // occasional great visit
+ let score=Math.round(avg+sample()*(avg>90?27:34)*(1.35-profile.consistency*.45));
+ if(Math.random()<(.15-profile.consistency*.075))score=Math.round(score*.42); // occasional bad visit
+ if(Math.random()<(.035+profile.consistency*.035))score=Math.round(Math.max(score,avg+28)); // occasional great visit
  score=Math.max(0,Math.min(180,score));
  if(score>=remaining-1)score=Math.max(0,remaining-(2+2*Math.floor(Math.random()*20)));
  return {score,finish:false};
@@ -1975,8 +2036,11 @@ function startIRLMatch(){
  const bot=career.players.find(p=>p.id===career.current.opponent),player=careerPlayer();
  if(!bot||!player)return;
  const ev=careerEvents[career.eventIndex];
- irlMatch={bot,player,best:Math.max(1,Number(ev[3])||5),remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
- el('irlEventTitle').textContent=ev[0]+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||10);
+ irlMatch={bot,player,best:Math.max(1,Number(ev[3])||5),remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
+ // One match-day form roll, influenced by consistency; remains stable for the match.
+ const profile=aiInit(bot);irlMatch.botDay=(Math.random()+Math.random()+Math.random()-1.5)*(15-profile.consistency*9);
+ el('irlEventTitle').textContent=ev[0]+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||5);
+ el('irlMatchBotLevel').value=String(irlSavedLevel(career.botLevel));
  el('irlPlayerName').textContent=player.name;el('irlBotName').textContent=bot.name;
  el('game501').style.display='none';el('irlMatch').hidden=false;document.documentElement.classList.add('irl-scoring-active');el('irlVisit').value='';el('irlNotice').textContent='Your throw!';irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';drawIRL();el('irlVisit').focus();
 }
@@ -2189,4 +2253,9 @@ html.irl-scoring-active #irlMatch{display:block!important;visibility:visible!imp
 #irlMatch .irlBotDarts{text-align:center;font-size:14px;font-weight:800;color:#f4db80;min-height:22px}
 #irlMatch .irlBoardPanel{display:flex!important}
 @media(max-width:760px){#irlMatch .irlBroadcastGrid{grid-template-columns:1fr!important}#irlMatch .irlBoardPanel{display:flex!important;padding:12px!important}#irlMatch .irlBoardPicture{max-width:320px}#irlMatch .irlScore{min-height:unset!important;padding:10px 5px!important}#irlMatch .irlExtraStats{gap:4px}#irlMatch .irlExtraStats span{font-size:9px}#irlMatch .irlExtraStats b{font-size:12px}}
-</style><style id="careerPerformanceStyle">.careerPerformance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:16px 0 22px}.careerPerformance .careerTile{min-width:0}.careerPerformance strong{font-size:clamp(22px,3vw,34px)!important;overflow-wrap:anywhere}@media(max-width:650px){.careerPerformance{grid-template-columns:1fr}}</style></body></html>
+</style><style id="careerPerformanceStyle">.careerPerformance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:16px 0 22px}.careerPerformance .careerTile{min-width:0}.careerPerformance strong{font-size:clamp(22px,3vw,34px)!important;overflow-wrap:anywhere}@media(max-width:650px){.careerPerformance{grid-template-columns:1fr}}</style><style id="irlMatchLevelControlStyle">
+#irlMatch #irlMatchLevelControl{display:flex;align-items:center;gap:8px;color:#fff;font-size:12px;font-weight:800;white-space:nowrap}
+#irlMatch #irlMatchBotLevel{background:#26232e;color:#fff;border:1px solid #92849c;border-radius:8px;padding:9px 6px;max-width:160px;font:inherit;cursor:pointer}
+@media(max-width:720px){#irlMatch #irlMatchLevelControl{width:100%;justify-content:center}#irlMatch #irlMatchBotLevel{max-width:190px}}
+</style>
+</body></html>
