@@ -166,7 +166,7 @@ body:has(#game501.extraView){overflow:auto!important;height:auto!important}
 #game501.tournamentLobby #dMatchContext{display:none}
 #game501.tournamentLobby #dExtraToggle{background:#7425ae;color:white;border-color:#ae62e8}
 #game501.tournamentPlaying .tourneyPanel{display:none!important}
-</style></head>
+</style><style id="proThrowStyle">#game501 .timingBox{border:1px solid #a5eb4c!important;box-shadow:0 0 22px #a5eb4c22!important}#game501 .timingBox h2{color:#b5ff4b!important}#dBoard .aimMark{transition:none}#game501 #dAimText{font-weight:700;color:#d6eeb5}</style></head>
 
 <style>
 #homeMode .modeCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:650px;margin:25px auto}
@@ -304,7 +304,7 @@ body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gra
  <div class="arenaGame">
   <aside class="arenaSide leftSide"><div class="arenaBox"><h2>Laatste worpen</h2><div class="dHistory" id="dHistory">Nog geen worpen.</div><div class="lastHitBox">LAATSTE PIJL <strong id="dLastHit">–</strong></div></div><div class="arenaBox"><h2>Wedstrijd</h2><label class="dLabel" for="dLegFormat">Aantal legs (best of)</label><select id="dLegFormat" class="dLegFormat"><option value="1">1 leg</option><option value="3">Best of 3 legs</option><option value="5" selected>Best of 5 legs</option><option value="7">Best of 7 legs</option><option value="9">Best of 9 legs</option><option value="11">Best of 11 legs</option><option value="15">Best of 15 legs</option><option value="21">Best of 21 legs</option></select><p class="dHelp" id="dLegExplanation">Wie als eerste 3 legs wint, wint de wedstrijd.</p><div class="statLine">Ronde <b id="dRound">–</b></div><div class="dMessage" id="dMessage">Kies je spelers en start de wedstrijd.</div><div class="dButtons"><button class="btn" id="dStart">Start wedstrijd</button><button class="btn alt" id="dNext" disabled>Volgende leg</button><button class="btn alt" id="dReset">Reset</button></div></div></aside>
   <div class="arenaBoard"><div class="dAiStage" id="dAiStage" aria-live="polite"><span id="dAiStageName">AI wacht op zijn beurt</span><div class="dAiThrower">🎯<span class="dAiArm">➤</span></div><span id="dAiStageResult">De tegenstander gooit straks zichtbaar.</span></div><div class="dBoard" id="dBoard"></div></div>
-  <aside class="arenaSide rightSide"><div class="arenaBox chooseBox"><h2>Spelers & instellingen</h2><label class="dLabel" for="aiAnimationToggle"><input type="checkbox" id="aiAnimationToggle" checked> Animatie tegenstander</label><label class="dLabel" for="replayToggle"><input type="checkbox" id="replayToggle" checked> 3D-animatie van jouw pijlen</label><label class="dLabel" for="dPlayerSelect">Jij (128 darters)</label><select id="dPlayerSelect"></select><label class="dLabel" for="dOpponentSelect">Tegenstander (128 darters)</label><select id="dOpponentSelect"></select></div><div class="arenaBox callerBox"><h2>🎙️ Mastercaller</h2><div class="callerControl"><div><strong id="callerStatus">Caller staat aan</strong><small>English · echte geluidsopnames</small></div><button type="button" id="callerToggle" aria-pressed="true">AAN</button></div><p class="dHelp">Roept scores, 180's, checkouts en gewonnen legs of wedstrijden om. Gebruik MP3-opnames in de map caller/. Geen computerstem.</p></div><div class="arenaBox timingBox"><h2>Timingmeter</h2><p class="dHelp" id="dAimText">Start de wedstrijd en klik op het dartbord.</p><div class="dDifficulty">MOEILIJK · perfecte zone is extra smal</div><div id="dMeterWrap" style="display:none"><div class="dMeter"><div class="dMeterGradient"></div><div id="dNeedle"></div></div><div class="dMeterLabels"><span>Te vroeg</span><b>PERFECT!</b><span>Te laat</span></div></div><div class="dButtons throwButtons"><button class="btn" id="dThrow" disabled>🎯 GOOI PIJL</button><button class="btn alt" id="dRestartMeter" disabled>⟳ Opnieuw mikken</button></div><div class="dMessage" id="dResult">Je worp verschijnt hier.</div></div></aside>
+  <aside class="arenaSide rightSide"><div class="arenaBox chooseBox"><h2>Spelers & instellingen</h2><label class="dLabel" for="aiAnimationToggle"><input type="checkbox" id="aiAnimationToggle" checked> Animatie tegenstander</label><label class="dLabel" for="replayToggle"><input type="checkbox" id="replayToggle" checked> 3D-animatie van jouw pijlen</label><label class="dLabel" for="dPlayerSelect">Jij (128 darters)</label><select id="dPlayerSelect"></select><label class="dLabel" for="dOpponentSelect">Tegenstander (128 darters)</label><select id="dOpponentSelect"></select></div><div class="arenaBox callerBox"><h2>🎙️ Mastercaller</h2><div class="callerControl"><div><strong id="callerStatus">Caller staat aan</strong><small>English · echte geluidsopnames</small></div><button type="button" id="callerToggle" aria-pressed="true">AAN</button></div><p class="dHelp">Roept scores, 180's, checkouts en gewonnen legs of wedstrijden om. Gebruik MP3-opnames in de map caller/. Geen computerstem.</p></div><div class="arenaBox timingBox"><h2>Pro Throw System</h2><p class="dHelp"><strong>1.</strong> Klik op het bord om te richten. <strong>2.</strong> Druk op GOOI wanneer de meter in het groen staat. Het groene richtpunt beweegt een beetje: precisie blijft belangrijk.</p><p class="dHelp" id="dAimText">Start de wedstrijd en klik op het dartbord.</p><div class="dDifficulty">EENVOUDIG TE LEREN · LASTIG TE BEHEERSEN</div><div id="dMeterWrap" style="display:none"><div class="dMeter"><div class="dMeterGradient"></div><div id="dNeedle"></div></div><div class="dMeterLabels"><span>Te vroeg</span><b>PERFECT!</b><span>Te laat</span></div></div><div class="dButtons throwButtons"><button class="btn" id="dThrow" disabled>🎯 GOOI PIJL</button><button class="btn alt" id="dRestartMeter" disabled>⟳ Opnieuw mikken</button></div><div class="dMessage" id="dResult">Je worp verschijnt hier.</div></div></aside>
  </div>
 
  
@@ -343,7 +343,7 @@ body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gra
 <section id="careerMode" class="career-not-started">
 <div class="careerNav"><h1>🏆 DARTS ARENA <span style="color:#68e9ce">CAREER</span></h1><button class="btn alt" id="careerHome">⌂ Home</button></div>
 <div id="careerSetup" class="careerPanel careerSetup"><h2>Start your career</h2><p class="careerMuted">Create a player or take control of one of the 128 PDC players.</p><label>Career type<select id="careerType"><option value="custom">Create your own player</option><option value="pro">Play as a PDC professional</option></select></label><div id="careerCustomFields"><label>Player name<input id="careerName" maxlength="36" placeholder="Your name"></label><label>Country<select id="careerCountry"><option>Netherlands</option><option>England</option><option>Scotland</option><option>Wales</option><option>Belgium</option><option>Germany</option><option>Other</option></select></label><label>Nickname<input id="careerNickname" maxlength="32" placeholder="The Challenger"></label></div><div id="careerProFields" style="display:none"><label>Choose player<select id="careerPro"></select></label></div><div class="careerActions"><button id="careerCreate">Create career</button><button id="careerContinue" style="display:none">Continue saved career</button></div><p id="careerSetupMsg" class="careerMuted"></p></div>
-<div id="careerDashboard" style="display:none"><div class="careerHelp">🏟️ <b>2026 PDC Career Calendar</b> · 34 Players Championships (floor events), 15 European Tour events and major championships. Prize money is paid for your finishing round. Rankings are simulated; dates are approximate within the game.</div><div class="careerFilters"><button class="btn alt" type="button" data-filter="all">All events</button><button class="btn alt" type="button" data-filter="floor">Floor</button><button class="btn alt" type="button" data-filter="euro">European Tour</button><button class="btn alt" type="button" data-filter="major">Majors</button></div><div class="careerGrid"><div class="careerTile"><small>PLAYER</small><strong id="careerPlayerLabel">–</strong><p id="careerNick" class="careerMuted"></p></div><div class="careerTile"><small>WORLD RANKING</small><strong id="careerRank">#128</strong><p id="careerSeason" class="careerMuted"></p></div><div class="careerTile"><small>CAREER EARNINGS</small><strong id="careerMoney">£0</strong><p id="careerSponsors" class="careerMuted"></p></div><div class="careerTile"><small>CAREER RECORD</small><strong id="careerRecord">0–0</strong><p id="careerTitles" class="careerMuted"></p></div></div><div class="careerPanel"><h2>Next tournament</h2><div id="careerNextEvent" class="careerEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button id="careerTrain">💪 Train (2 points)</button><button id="careerSponsor">🤝 Sign sponsor</button><button id="careerSave">💾 Save</button></div><p id="careerMessage" class="careerMuted"></p></div><div class="careerPanel careerTournamentPanel"><div class="careerTournamentHeader"><div><small>CURRENT CAREER EVENT · LIVE DRAW</small><h2 id="careerTournamentTitle">Current tournament draw</h2><p id="careerTournamentSubtitle"></p></div><span id="careerTournamentStatus" class="careerTournamentBadge">UPCOMING</span></div><div id="careerTournamentProgress" class="careerTournamentProgress"></div><div id="careerTournamentBracket" class="careerTournamentBracket"></div><div id="careerTournamentFooter" class="careerTournamentFooter"></div></div><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div id="careerCalendar" class="careerScroll"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div id="careerRanking" class="careerScroll"></div></div></div><div class="careerTwo"><div class="careerPanel"><h2>📈 Player development</h2><div id="careerSkills"></div><p class="careerMuted">Training improves your match simulation and timing accuracy.</p></div><div class="careerPanel"><h2>📰 News & career history</h2><div id="careerNews" class="careerScroll"></div></div></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input type="file" id="careerImportFile" accept=".json,application/json" style="display:none"></div></div></section></main><script>
+<div id="careerDashboard" style="display:none"><div class="careerHelp">🏟️ <b>2026 PDC Career Calendar</b> · 34 Players Championships (floor events), 15 European Tour events and major championships. Prize money is paid for your finishing round. New careers start with the PDC Order of Merit prize money snapshot of 9 November 2026. Career results change the ranking; dates are approximate within the game.</div><div class="careerFilters"><button class="btn alt" type="button" data-filter="all">All events</button><button class="btn alt" type="button" data-filter="floor">Floor</button><button class="btn alt" type="button" data-filter="euro">European Tour</button><button class="btn alt" type="button" data-filter="major">Majors</button></div><div class="careerGrid"><div class="careerTile"><small>PLAYER</small><strong id="careerPlayerLabel">–</strong><p id="careerNick" class="careerMuted"></p></div><div class="careerTile"><small>WORLD RANKING</small><strong id="careerRank">#128</strong><p id="careerSeason" class="careerMuted"></p></div><div class="careerTile"><small>CAREER EARNINGS</small><strong id="careerMoney">£0</strong><p id="careerSponsors" class="careerMuted" style="display:none"></p></div><div class="careerTile"><small>CAREER RECORD</small><strong id="careerRecord">0–0</strong><p id="careerTitles" class="careerMuted"></p></div></div><div class="careerPerformance" id="careerPerformance"><div class="careerTile"><small>RECENT FORM</small><strong id="careerFormValue">—</strong><p id="careerFormDetail" class="careerMuted">No matches played yet</p></div><div class="careerTile"><small>LAST MATCH AVERAGE</small><strong id="careerLastAverage">—</strong><p class="careerMuted">3-dart average</p></div><div class="careerTile"><small>OVERALL AVERAGE</small><strong id="careerOverallAverage">—</strong><p id="careerOverallDetail" class="careerMuted">Across recorded matches</p></div></div><div class="careerPanel"><h2>Next tournament</h2><div id="careerNextEvent" class="careerEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button id="careerTrain" style="display:none" hidden>Train</button><button id="careerSponsor" style="display:none" hidden>Sponsor</button><button id="careerSave">💾 Save</button></div><p id="careerMessage" class="careerMuted"></p></div><div class="careerPanel careerTournamentPanel"><div class="careerTournamentHeader"><div><small>CURRENT CAREER EVENT · LIVE DRAW</small><h2 id="careerTournamentTitle">Current tournament draw</h2><p id="careerTournamentSubtitle"></p></div><span id="careerTournamentStatus" class="careerTournamentBadge">UPCOMING</span></div><div id="careerTournamentProgress" class="careerTournamentProgress"></div><div id="careerTournamentBracket" class="careerTournamentBracket"></div><div id="careerTournamentFooter" class="careerTournamentFooter"></div></div><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div id="careerCalendar" class="careerScroll"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div id="careerRanking" class="careerScroll"></div></div></div><div class="careerTwo"><div class="careerPanel" style="display:none" hidden><h2>Player development</h2><div id="careerSkills"></div></div><div class="careerPanel"><h2>📰 News & career history</h2><div id="careerNews" class="careerScroll"></div></div></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input type="file" id="careerImportFile" accept=".json,application/json" style="display:none"></div></div></section></main><script>
 // Order of Merit names/ranks reflect the published live table around Nov 5, 2026.
 // Country and age are included for the gameplay data.
 const roster=[
@@ -471,6 +471,14 @@ function drawDartBoard(){let s='<svg viewBox="0 0 400 400" role="img" aria-label
  s+='<circle cx="200" cy="200" r="16" fill="#299b68" stroke="#111" stroke-width="1"/><circle cx="200" cy="200" r="8" fill="#df3535"/>';
  dSectors.forEach((n,i)=>{let [x,y]=dPoint(186,i*18);s+=`<text x="${x}" y="${y+5}" text-anchor="middle" font-size="15" font-weight="bold" fill="white" pointer-events="none">${n}</text>`});return s+'<g id="dMarks"></g><g id="dFlight"></g></svg>'}
 $('dBoard').innerHTML=drawDartBoard();
+let proAimPhase=0,proAimCenter=null,proAimPoint=null;
+function proAimCurrent(){
+ if(!proAimCenter)return dAim;
+ const name=$('dPlayerSelect').value;
+ const skill=dUserSpreadFactor(name);
+ const amp= Math.min(12,3.7*skill*daThrowModifier());
+ return {x:Math.max(25,Math.min(375,proAimCenter.x+Math.sin(proAimPhase*1.37)*amp+Math.sin(proAimPhase*.63)*amp*.32)),y:Math.max(25,Math.min(375,proAimCenter.y+Math.cos(proAimPhase*1.11)*amp+Math.sin(proAimPhase*.87)*amp*.3))};
+}
 let dLegTarget=3;
 let dScores=[501,501],dDarts=[0,0],dLegs=[0,0],dTurn=0,dLegOver=false,dMatch=false,dInterval=null,dPos=0,dDir=1,dActive=false,dHistory=[],dAim=null,dTurnStart=501,dTurnDarts=0,dStartingPlayer=0,dMarks=[],dToken=0,dAnimating=false,dVisitPoints=0;
 function dSay(t){$('dMessage').textContent=t}
@@ -602,13 +610,13 @@ function updateCheckoutStrip(){
 function dUpdate(){for(let i=0;i<2;i++){$('dScore'+i).textContent=dScores[i];$('dMeta'+i).textContent=`${dDarts[i]} pijlen totaal`;$('dPlayer'+i).classList.toggle('active',dTurn===i&&!dLegOver&&dMatch)}$('dLegs0').textContent=dLegs[0];$('dLegs1').textContent=dLegs[1];$('dPlayer0').querySelector('label').textContent=$('dPlayerSelect').value;$('dPlayer1').querySelector('label').textContent=$('dOpponentSelect').value;dUpdateLive();dcUpdate();updateCheckoutStrip()}
 function dStopMeter(){if(dInterval!==null)clearInterval(dInterval);dInterval=null;dActive=false}
 function dHideMeter(){dStopMeter();$('dMeterWrap').style.display='none';$('dThrow').disabled=true;$('dRestartMeter').disabled=true}
-function dStartMeter(){dStopMeter();dActive=true;dPos=0;dDir=1;$('dMeterWrap').style.display='block';$('dThrow').disabled=false;$('dRestartMeter').disabled=false;let last=performance.now();dInterval=setInterval(()=>{let now=performance.now(),dt=Math.min(45,now-last);last=now;dPos+=dDir*dt*.085;if(dPos>=100){dPos=200-dPos;dDir=-1}if(dPos<=0){dPos=-dPos;dDir=1}$('dNeedle').style.left=`calc(${dPos}% - 2px)`},16)}
-function dAimAt(x,y){if(!dMatch||dLegOver||dTurn!==0||dAnimating)return;let r=Math.hypot(x-200,y-200);if(r>176){$('dAimText').textContent='Klik binnen de scoringsvakken van het bord.';return}dAim={x,y};dDrawMarks();dStartMeter();let hit=dHit(x,y);$('dAimText').textContent=`Je mikt op ${hit.label}. Stop de meter op PERFECT om nauwkeurig te gooien.`;dSay(`Pijl ${dTurnDarts+1} van 3: je mikt op ${hit.label}.`)}
+function dStartMeter(){dStopMeter();dActive=true;dPos=0;dDir=1;$('dMeterWrap').style.display='block';$('dThrow').disabled=false;$('dRestartMeter').disabled=false;let last=performance.now();dInterval=setInterval(()=>{let now=performance.now(),dt=Math.min(45,now-last);last=now;dPos+=dDir*dt*.085;proAimPhase+=dt*.0036;proAimPoint=proAimCurrent();dDrawMarks();if(dPos>=100){dPos=200-dPos;dDir=-1}if(dPos<=0){dPos=-dPos;dDir=1}$('dNeedle').style.left=`calc(${dPos}% - 2px)`},16)}
+function dAimAt(x,y){if(!dMatch||dLegOver||dTurn!==0||dAnimating)return;let r=Math.hypot(x-200,y-200);if(r>176){$('dAimText').textContent='Klik binnen de scoringsvakken van het bord.';return}dAim={x,y};proAimCenter={x,y};proAimPhase=Math.random()*6.28;proAimPoint=dAim;dDrawMarks();dStartMeter();let hit=dHit(x,y);$('dAimText').textContent=`Je mikt op ${hit.label}. Gooi wanneer de meter in het groen staat.`;dSay(`Pijl ${dTurnDarts+1} van 3: je mikt op ${hit.label}.`)}
 $('dBoard').querySelector('svg').addEventListener('click',e=>{let svg=e.currentTarget,pt=svg.createSVGPoint();pt.x=e.clientX;pt.y=e.clientY;let m=svg.getScreenCTM();if(!m)return;let loc=pt.matrixTransform(m.inverse());dAimAt(loc.x,loc.y)});
 function dHit(x,y){let dx=x-200,dy=y-200,r=Math.hypot(dx,dy);if(r>176)return {score:0,double:false,label:'MIS'};if(r<=8)return {score:50,double:true,label:'BULL (50)'};if(r<=16)return {score:25,double:false,label:'OUTER BULL (25)'};let deg=(Math.atan2(dy,dx)*180/Math.PI+90+360)%360,i=Math.floor((deg+9)/18)%20,n=dSectors[i];if(r>=162)return {score:n*2,double:true,label:`D${n} (${n*2})`};if(r>=92&&r<=100)return {score:n*3,double:false,label:`T${n} (${n*3})`};return {score:n,double:false,label:`S${n} (${n})`}}
-function dDrawMarks(){let out=dMarks.map(m=>`<circle class="aimMark" cx="${m.x}" cy="${m.y}" r="5" fill="${m.who===0?'#ffdf51':'#70d8ff'}" stroke="#111" stroke-width="2"/>`).join('');if(dAim)out+=`<circle class="aimMark" cx="${dAim.x}" cy="${dAim.y}" r="9" fill="none" stroke="#ffdf51" stroke-width="2.5" stroke-dasharray="3 3"/><path class="aimMark" d="M${dAim.x-14} ${dAim.y}h28 M${dAim.x} ${dAim.y-14}v28" stroke="#ffdf51" stroke-width="1.5"/>`;$('dMarks').innerHTML=out}
+function dDrawMarks(){let out=dMarks.map(m=>`<circle class="aimMark" cx="${m.x}" cy="${m.y}" r="5" fill="${m.who===0?'#ffdf51':'#70d8ff'}" stroke="#111" stroke-width="2"/>`).join('');if(dAim)out+=`<circle class="aimMark" cx="${dAim.x}" cy="${dAim.y}" r="9" fill="none" stroke="#ffdf51" stroke-width="2.5" stroke-dasharray="3 3"/><path class="aimMark" d="M${dAim.x-14} ${dAim.y}h28 M${dAim.x} ${dAim.y-14}v28" stroke="#ffdf51" stroke-width="1.5"/>`;if(dAim&&proAimPoint){out+=`<circle class="aimMark" cx="${proAimPoint.x}" cy="${proAimPoint.y}" r="7" fill="#b5ff4b" fill-opacity=".2" stroke="#b5ff4b" stroke-width="2"/><path class="aimMark" d="M${proAimPoint.x-11} ${proAimPoint.y}h22 M${proAimPoint.x} ${proAimPoint.y-11}v22" stroke="#b5ff4b" stroke-width="1.4"/>`}$('dMarks').innerHTML=out}
 function dLog(text){dHistory.unshift(text);$('dHistory').textContent='';for(let line of dHistory.slice(0,32)){let div=document.createElement('div');div.textContent=line;$('dHistory').appendChild(div)}}
-function dSetTurn(who){$('dAiStage').classList.toggle('visible',who===1 && $('aiAnimationToggle').checked);$('dAiStage').classList.remove('throwing');dTurn=who;dTurnDarts=0;dTurnStart=dScores[who];dVisitPoints=0;dcVisitPoints=0;dcFirstVisitPoints=0;dcVisitFirstDarts=0;dAim=null;dMarks=[];dDrawMarks();dHideMeter();dUpdate();if(who===0){dSay('Jouw beurt: klik op het dartbord om pijl 1 te richten.');$('dAimText').textContent='Klik op het bord waar je wilt gooien.'}else{dSay(`${$('dOpponentSelect').value} gooit drie pijlen...`);let token=dToken;setTimeout(()=>{if(token===dToken)dComputerTurn()},$('aiAnimationToggle').checked?500:100)}}
+function dSetTurn(who){$('dAiStage').classList.toggle('visible',who===1 && $('aiAnimationToggle').checked);$('dAiStage').classList.remove('throwing');dTurn=who;dTurnDarts=0;dTurnStart=dScores[who];dVisitPoints=0;dcVisitPoints=0;dcFirstVisitPoints=0;dcVisitFirstDarts=0;dAim=null;proAimCenter=null;proAimPoint=null;dMarks=[];dDrawMarks();dHideMeter();dUpdate();if(who===0){dSay('Jouw beurt: klik op het dartbord om pijl 1 te richten.');$('dAimText').textContent='Klik op het bord waar je wilt gooien.'}else{dSay(`${$('dOpponentSelect').value} gooit drie pijlen...`);let token=dToken;setTimeout(()=>{if(token===dToken)dComputerTurn()},$('aiAnimationToggle').checked?500:100)}}
 // Echte stemopnames: plaats MP3-bestanden in de map caller/.
 // Geen synthetische stem. Ontbrekende opnames worden stil overgeslagen.
 let callerEnabled=true,callerSerial=0,callerAudio=null;
@@ -812,16 +820,16 @@ async function dFlyDart3D(x,y,who=0){
 function dFlyDart(x,y){return $('replayToggle').checked?dFlyDart3D(x,y,0):Promise.resolve()}
 async function dUserThrow(){
  if(!dMatch||dLegOver||dTurn!==0||!dActive||!dAim||dAnimating||dVisitShowing)return;
- // Moeilijk: slechts circa 4% van de balk is de perfecte zone.
+ // Timing is forgiving near the center, but perfect darts still demand precision.
  const error=Math.abs(dPos-50),q=Math.max(0,1-error/50);
- const baseSpread=error<=2?1.1:2.2+Math.pow(error/50,1.3)*58;
- const spread=baseSpread*dUserSpreadFactor($('dPlayerSelect').value);
+ const baseSpread=error<=5?1.4:2.5+Math.pow(error/50,1.45)*42;
+ const spread=baseSpread*dUserSpreadFactor($('dPlayerSelect').value)*daThrowModifier();
  const angle=Math.random()*Math.PI*2,r=Math.sqrt(-2*Math.log(Math.max(.00001,Math.random())))*spread;
- const x=dAim.x+Math.cos(angle)*r,y=dAim.y+Math.sin(angle)*r;
- dAim=null;dAnimating=true;dHideMeter();$('dAimText').textContent='Pijl onderweg...';
+ const liveAim=proAimPoint||dAim;const landing=window.dReleaseLanding;window.dReleaseLanding=null;const x=landing?landing.x:liveAim.x+Math.cos(angle)*r,y=landing?landing.y:liveAim.y+Math.sin(angle)*r;
+ dAim=null;proAimCenter=null;proAimPoint=null;dAnimating=true;dHideMeter();$('dAimText').textContent='Pijl onderweg...';
  await dFlyDart(x,y);dAnimating=false;
  if(!dMatch||dLegOver||dTurn!==0)return;
- const outcome=dApplyDart(0,dHit(x,y),x,y);
+ const outcome=dApplyDart(0,dHit(x,y),x,y);daTrackDart(dHit(x,y),outcome);
  if(outcome==='win')return;
  if(outcome==='bust'||outcome==='end'){dShowVisit(0,outcome==='bust'?0:dVisitPoints);setTimeout(()=>{if(dMatch&&!dLegOver&&dTurn===0)dSetTurn(1)},1150)}
  else{dSay(`Pijl ${dTurnDarts+1} van 3: klik opnieuw op het bord.`);$('dAimText').textContent='Kies je volgende doel op het dartbord.'}
@@ -1068,10 +1076,10 @@ function careerChooseOpponents(event){const player=careerPlayer(),ranked=careerR
  const pool=ranked.slice(0,Math.max(event[1],64)).filter(p=>p.id!==player.id);return pool[Math.floor(Math.random()*pool.length)]||null;
 }
 function careerAward(winnerId,event,round){let p=career.players.find(x=>x.id===winnerId);if(!p)return;let reward=Math.round(event[2]*Math.pow(.5,Math.max(0,Math.log2(event[1])-round-1)));p.money+=reward; if(p.id===career.playerId){career.earnings+=reward;careerLog('Earned '+careerMoneyFmt(reward)+' at '+event[0])}}
-function careerAdvance(){const event=careerEvents[career.eventIndex];careerSimOtherResults(event);career.eventIndex++;career.current=null;careerPending=null;if(career.eventIndex>=careerEvents.length){careerLog('Season '+career.season+' finished');career.season++;career.eventIndex=0;career.players.forEach(p=>{p.money=Math.round(p.money*.62);p.floorMoney=0;p.euroMoney=0;p.seasonMoney=0;p.form=0;p.skill=Math.max(35,Math.min(98,p.skill+(Math.random()-.5)*2))});career.form=0;career.training=0;careerLog('New season started. Tour rankings reset.')}careerSave();careerRender();}
+function careerAdvance(){const event=careerEvents[career.eventIndex];careerSimOtherResults(event);career.eventIndex++;career.current=null;careerPending=null;if(career.eventIndex>=careerEvents.length){careerLog('Season '+career.season+' finished');career.season++;career.eventIndex=0;career.players.forEach(p=>{p.money=Math.round(p.money*.62);p.floorMoney=0;p.euroMoney=0;p.seasonMoney=0;p.form=0;p.skill=Math.max(35,Math.min(98,p.skill+(Math.random()-.5)*2))});career.form=0;careerLog('New season started.')}careerSave();careerRender();}
 function careerStartEvent(){if(!career||careerPending)return;let event=careerEvents[career.eventIndex];let opp=careerChooseOpponents(event);if(!opp){careerLog('Not qualified for '+event[0]);careerAdvance();return}career.current={opponent:opp.id,round:0,wins:0,played:0,history:[]};careerLog('Entered '+event[0]+' vs '+opp.name);careerSave();careerRender()}
 function careerAfterMatch(won){const event=careerEvents[career.eventIndex],c=career.current;if(!c)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===c.opponent);c.played++;if(!Array.isArray(c.history))c.history=[];c.history.push({round:c.round,opponent:opp?.name||'Opponent',won:!!won});career.record[won?'wins':'losses']++;careerUpdateForm(career.playerId,!!won);careerUpdateForm(c.opponent,!won);
- if(won){c.round++;c.wins++;career.training++;careerLog('Beat '+opp.name+' at '+event[0]);if(c.round>=Math.ceil(Math.log2(event[1]))){career.titles++;careerLog('🏆 CHAMPION · '+event[0]);careerPayoutPrize(player.id,event,c.round);careerAdvance();return;}const next=careerChooseOpponents(event);c.opponent=next?.id||opp.id;careerSave();careerRender();}
+ if(won){c.round++;c.wins++;careerLog('Beat '+opp.name+' at '+event[0]);if(c.round>=Math.ceil(Math.log2(event[1]))){career.titles++;careerLog('🏆 CHAMPION · '+event[0]);careerPayoutPrize(player.id,event,c.round);careerAdvance();return;}const next=careerChooseOpponents(event);c.opponent=next?.id||opp.id;careerSave();careerRender();}
  else{careerLog('Lost to '+opp.name+' at '+event[0]);careerPayoutPrize(player.id,event,c.round);careerAdvance();}
 }
 function careerMatchFinished(winner){
@@ -1104,10 +1112,12 @@ async function careerSetDashboardPhoto(name){
  if(request!==careerPhotoRequest||!url)return;
  const img=new Image();img.alt='Foto van '+name;img.loading='lazy';img.onload=()=>{if(request===careerPhotoRequest)holder.replaceChildren(img)};img.src=url;
 }
-function careerRender(){if(!career)return;$('careerSetup').style.display='none';$('careerDashboard').style.display='block';const player=careerPlayer(),ranked=careerRanked(),rank=ranked.find(p=>p.id===player.id).position,event=careerEvents[career.eventIndex],cur=career.current;$('careerPlayerLabel').textContent=player.name;careerSetDashboardPhoto(player.name);$('careerNick').textContent=player.nickname||'Professional darter';$('careerRank').textContent='#'+rank;$('careerSeason').textContent='Season '+career.season;$('careerMoney').textContent=careerMoneyFmt(career.earnings);$('careerSponsors').textContent=career.sponsor?'Sponsor: '+career.sponsor:'No sponsor yet';$('careerRecord').textContent=career.record.wins+'–'+career.record.losses;$('careerTitles').textContent=career.titles+' career titles';$('careerNextEvent').innerHTML='<strong>'+careerSafe(event[0])+'</strong><p>Field: '+event[1]+' · Winner prize: '+careerMoneyFmt(event[2])+' · Best of '+event[3]+' legs · '+careerSafe(careerEventType(event))+'</p>'+(cur?'<p>Current round '+(cur.round+1)+' · Opponent: '+careerSafe(career.players.find(p=>p.id===cur.opponent)?.name||'TBA')+'</p>':'<p>Ready to enter the event</p>');$('careerCalendar').innerHTML=careerEvents.map((e,i)=>'<div data-event-type="'+(e[4]==='floor'?'floor':e[4]==='euro'?'euro':'major')+'" class="careerEvent '+(i<career.eventIndex?'done':'')+'">'+(i===career.eventIndex?'▶ ':'')+careerSafe(e[0])+' <small>· '+e[1]+' players · Winner '+careerMoneyFmt(e[2])+'</small></div>').join('');$('careerRanking').innerHTML='<table class="careerTable"><thead><tr><th>#</th><th>Player</th><th>Ranking £</th></tr></thead><tbody>'+ranked.map(p=>'<tr'+(p.id===player.id?' style="background:#23506a"':'')+'><td>'+p.position+'</td><td>'+careerSafe(p.name)+'</td><td>'+careerMoneyFmt(p.money)+'</td></tr>').join('')+'</tbody></table>';$('careerSkills').innerHTML=['Scoring','Finishing','Consistency'].map((n,i)=>'<div style="margin:13px 0">'+n+' <b style="float:right">'+Math.round(player.skill+(i===1?-3:i===2?-1:0))+'/99</b><div style="height:9px;background:#0b1629;border-radius:10px;overflow:hidden;clear:both"><div style="height:100%;background:#34c89b;width:'+Math.min(99,player.skill)+'%"></div></div></div>').join('')+'<p>Training points: '+career.training+' · Form: '+career.form+'</p>';$('careerNews').innerHTML=career.news.map(n=>'<p style="border-bottom:1px solid #35506c;padding-bottom:9px">'+careerSafe(n)+'</p>').join('');$('careerMessage').textContent='Career autosaves in this browser. Your original 501 and tournament modes are still available.';}
-function careerCreate(){const pro=$('careerType').value==='pro',picked=roster.find(p=>p.name===$('careerPro').value),name=pro?picked.name:$('careerName').value.trim();if(!name){$('careerSetupMsg').textContent='Enter a player name.';return}if(!pro&&roster.some(p=>p.name.toLowerCase()===name.toLowerCase())){$('careerSetupMsg').textContent='Choose a different name from the existing pros.';return}let players=roster.map((p,i)=>({id:'p'+i,name:p.name,nickname:p.nickname,seed:i+1,money:Math.round(17000+3100000*Math.pow((128-i)/128,5)),form:0,skill:Math.round(47+49*Math.pow((128-i)/128,.75))}));let playerId;if(pro){playerId='p'+roster.indexOf(picked)}else{playerId='custom';players.push({id:playerId,name,nickname:$('careerNickname').value.trim()||'The Challenger',seed:129,money:0,form:0,skill:56})}career={version:1,season:1,eventIndex:0,playerId,players,earnings:0,titles:0,record:{wins:0,losses:0},training:0,form:0,sponsor:'',news:[],current:null};careerLog('Career started as '+name);careerSave();careerRender()}
+function careerRender(){if(!career)return;$('careerSetup').style.display='none';$('careerDashboard').style.display='block';const player=careerPlayer(),ranked=careerRanked(),rank=ranked.find(p=>p.id===player.id).position,event=careerEvents[career.eventIndex],cur=career.current;$('careerPlayerLabel').textContent=player.name;careerSetDashboardPhoto(player.name);$('careerNick').textContent=player.nickname||'Professional darter';$('careerRank').textContent='#'+rank;$('careerSeason').textContent='Season '+career.season;$('careerMoney').textContent=careerMoneyFmt(career.earnings);$('careerSponsors').textContent='';$('careerRecord').textContent=career.record.wins+'–'+career.record.losses;$('careerTitles').textContent=career.titles+' career titles';$('careerNextEvent').innerHTML='<strong>'+careerSafe(event[0])+'</strong><p>Field: '+event[1]+' · Winner prize: '+careerMoneyFmt(event[2])+' · Best of '+event[3]+' legs · '+careerSafe(careerEventType(event))+'</p>'+(cur?'<p>Current round '+(cur.round+1)+' · Opponent: '+careerSafe(career.players.find(p=>p.id===cur.opponent)?.name||'TBA')+'</p>':'<p>Ready to enter the event</p>');$('careerCalendar').innerHTML=careerEvents.map((e,i)=>'<div data-event-type="'+(e[4]==='floor'?'floor':e[4]==='euro'?'euro':'major')+'" class="careerEvent '+(i<career.eventIndex?'done':'')+'">'+(i===career.eventIndex?'▶ ':'')+careerSafe(e[0])+' <small>· '+e[1]+' players · Winner '+careerMoneyFmt(e[2])+'</small></div>').join('');$('careerRanking').innerHTML='<table class="careerTable"><thead><tr><th>#</th><th>Player</th><th>Ranking £</th></tr></thead><tbody>'+ranked.map(p=>'<tr'+(p.id===player.id?' style="background:#23506a"':'')+'><td>'+p.position+'</td><td>'+careerSafe(p.name)+'</td><td>'+careerMoneyFmt(p.money)+'</td></tr>').join('')+'</tbody></table>';$('careerSkills').innerHTML=['Scoring','Finishing','Consistency'].map((n,i)=>'<div style="margin:13px 0">'+n+' <b style="float:right">'+Math.round(player.skill+(i===1?-3:i===2?-1:0))+'/99</b><div style="height:9px;background:#0b1629;border-radius:10px;overflow:hidden;clear:both"><div style="height:100%;background:#34c89b;width:'+Math.min(99,player.skill)+'%"></div></div></div>').join('')+'<p>Form: '+career.form+'</p>';$('careerNews').innerHTML=career.news.map(n=>'<p style="border-bottom:1px solid #35506c;padding-bottom:9px">'+careerSafe(n)+'</p>').join('');$('careerMessage').textContent='Career autosaves in this browser. Your original 501 and tournament modes are still available.';}
+const PDC_RANKING_SNAPSHOT_2026_11_09={"Luke Littler":3141000,"Luke Humphries":1062500,"Gian van Veen":1058750,"Gerwyn Price":833500,"Jonny Clayton":717250,"Ross Smith":715250,"James Wade":672750,"Josh Rock":603750,"Stephen Bunting":598000,"Danny Noppert":595750,"Michael van Gerwen":595500,"Nathan Aspinall":595500,"Wessel Nijman":590750,"Gary Anderson":572000,"Ryan Searle":559000,"Chris Dobey":550500,"Luke Woodhouse":509000,"Jermaine Wattimena":507500,"Krzysztof Ratajski":492750,"Martin Schindler":466000,"Dirk van Duijvenbode":426750,"Damon Heta":426750,"Kevin Doets":399750,"Rob Cross":398250,"Ryan Joyce":397500,"Cameron Menzies":387000,"Andrew Gilding":353000,"Niels Zonneveld":336250,"William O'Connor":290500,"Daryl Gurney":290500,"Dave Chisnall":287750,"Joe Cullen":273500,"Mike De Decker":252500,"Niko Springer":251750,"Peter Wright":228000,"Ricardo Pietreczko":227250,"Michael Smith":222750,"Justin Hood":198500,"Jeffrey de Graaf":195000,"Callan Rydz":194250,"Mickey Mansell":193750,"Karel Sedlacek":193500,"Martin Lukeman":186500,"Kim Huybrechts":180500,"Scott Williams":177750,"James Hurrell":177500,"Raymond van Barneveld":173000,"Brendan Dolan":172250,"Madars Razma":171750,"Connor Scutt":169750,"Sebastian Bialecki":168750,"Ricky Evans":167500,"Gabriel Clemens":160000,"Ritchie Edhouse":156250,"Mensur Suljovic":155750,"Keane Barry":151000,"Ian White":143750,"Richard Veenstra":140250,"Bradley Brooks":135750,"Dimitri Van den Bergh":135500,"Alan Soutar":130500,"Rob Owen":128250,"Lukas Wenig":119500,"Nick Kenny":119000,"Cristo Reyes":117250,"Max Hopp":116250,"Ryan Meikle":115750,"Mario Vandenbogaerde":114000,"Cam Crabtree":107750,"Wesley Plaisier":103500,"Maik Kuivenhoven":98750,"Thibault Tricole":98500,"Tom Bissell":84250,"Beau Greaves":81750,"Adam Lipscombe":81250,"Darryl Pilgrim":72000,"Charlie Manby":69250,"Cor Dekker":68750,"Dominik Gruellich":65250,"Christian Kist":63000,"Tom Sykes":62250,"Tommy Morris":57250,"Andy Boulton":57250,"Jim Long":56500,"Oskar Lukasiak":49750,"Joe Hunt":48000,"Darius Labanauskas":46250,"Jimmy van Schie":46250,"Thomas Lovely":44250,"Leon Weber":41250,"Viktor Tingstrom":41000,"Shane McGuirk":39250,"Marvin van Velzen":39000,"Alexander Merkx":38000,"Owen Bates":37500,"Henry Coates":37250,"Tavis Dudeney":37250,"Adam Gawlas":37000,"Jurjen van der Velde":35000,"Greg Ritchie":34750,"Jeffrey De Zwaan":34000,"Kai Gotthardt":33000,"Adam Paxton":32750,"David Sharp":32500,"Stephen Burton":32250,"Chris Landman":30750,"Mervyn King":30250,"Benjamin Pratnemer":29750,"Martijn Dragt":29500,"Dennie Olde Kalter":28750,"Adam Warner":28750,"Tyler Thorpe":28250,"Jeffrey Sparidaans":28250,"Tommy Lishman":27000,"Sietse Lap":24500,"Derek Coulson":24000,"Niall Culleton":24000,"Adam Leek":22500,"Stefan Bellmont":22500,"Scott Waites":22500,"Steve Lennon":22000,"Jack Tweddell":21750,"Arno Merk":21500,"Maximilian Czerwinski":20000,"Stephen Rosney":19500,"Rhys Griffin":19250,"Stefaan Henderyck":18000,"Nathan Potter":17000};
+function pdcRankingMoney(name){const norm=s=>String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");const key=norm(name);for(const [n,m] of Object.entries(PDC_RANKING_SNAPSHOT_2026_11_09))if(norm(n)===key)return m;return 0;}
+function careerCreate(){const pro=$('careerType').value==='pro',picked=roster.find(p=>p.name===$('careerPro').value),name=pro?picked.name:$('careerName').value.trim();if(!name){$('careerSetupMsg').textContent='Enter a player name.';return}if(!pro&&roster.some(p=>p.name.toLowerCase()===name.toLowerCase())){$('careerSetupMsg').textContent='Choose a different name from the existing pros.';return}let players=roster.map((p,i)=>({id:'p'+i,name:p.name,nickname:p.nickname,seed:i+1,money:pdcRankingMoney(p.name),form:0,skill:Math.round(47+49*Math.pow((128-i)/128,.75))}));let playerId;if(pro){playerId='p'+roster.indexOf(picked)}else{playerId='custom';players.push({id:playerId,name,nickname:$('careerNickname').value.trim()||'The Challenger',seed:129,money:0,form:0,skill:56})}career={version:1,season:1,eventIndex:0,playerId,players,earnings:0,titles:0,record:{wins:0,losses:0},training:0,form:0,sponsor:'',news:[],current:null};careerLog('Career started as '+name);careerSave();careerRender()}
 function careerOpen(){showMode('career');$('careerContinue').style.display=localStorage.getItem(CAREER_KEY)?'inline-block':'none';if(career)careerRender();else{$('careerSetup').style.display='block';$('careerDashboard').style.display='none'}}
-$('openCareer').onclick=careerOpen;$('careerHome').onclick=()=>{careerSave();showMode('home')};$('careerType').onchange=()=>{let pro=$('careerType').value==='pro';$('careerProFields').style.display=pro?'block':'none';$('careerCustomFields').style.display=pro?'none':'block'};roster.forEach(p=>{const o=document.createElement('option');o.value=p.name;o.textContent='#'+p.rank+' · '+p.name;$('careerPro').appendChild(o)});$('careerPro').value='Wessel Nijman';$('careerCreate').onclick=careerCreate;$('careerContinue').onclick=()=>{try{let c=JSON.parse(localStorage.getItem(CAREER_KEY));if(!c||!Array.isArray(c.players)||!c.playerId)throw Error('Invalid save');career=c;careerRender()}catch(e){$('careerSetupMsg').textContent='Unable to load this save.'}};$('careerPlay').onclick=careerPlay;$('careerSim').onclick=careerSimulate;$('careerSkip').onclick=()=>{if(!career)return;careerLog('Skipped '+careerEventName());careerAdvance()};$('careerTrain').onclick=()=>{if(!career||career.training<2){$('careerMessage').textContent='You need 2 training points. Win matches to earn points.';return}career.training-=2;careerPlayer().skill=Math.min(99,careerPlayer().skill+1);careerLog('Training completed. Skill +1');careerSave();careerRender()};$('careerSponsor').onclick=()=>{if(!career)return;if(career.sponsor){$('careerMessage').textContent='Sponsor already signed.';return}if(career.record.wins<2){$('careerMessage').textContent='Win at least 2 matches to attract a sponsor.';return}career.sponsor='Arena Sports';career.earnings+=1500;careerLog('Signed Arena Sports sponsorship (+£1,500)');careerSave();careerRender()};$('careerSave').onclick=()=>{careerSave();$('careerMessage').textContent='Career saved.'};$('careerNew').onclick=()=>{if(!confirm('Start a new career? Your current save will be replaced.'))return;career=null;careerPending=null;$('careerSetup').style.display='block';$('careerDashboard').style.display='none';$('careerContinue').style.display='inline-block'};$('careerExport').onclick=()=>{if(!career)return;const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(career,null,2)],{type:'application/json'}));a.href=url;a.download='darts-arena-career.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};$('careerImport').onclick=()=>$('careerImportFile').click();$('careerImportFile').onchange=async e=>{try{let c=JSON.parse(await e.target.files[0].text());if(!c||!Array.isArray(c.players)||!c.players.some(p=>p.id===c.playerId)||!Number.isInteger(c.eventIndex))throw Error('Invalid');career=c;careerSave();careerRender()}catch(err){alert('Invalid career save file.')}};
+$('openCareer').onclick=careerOpen;$('careerHome').onclick=()=>{careerSave();showMode('home')};$('careerType').onchange=()=>{let pro=$('careerType').value==='pro';$('careerProFields').style.display=pro?'block':'none';$('careerCustomFields').style.display=pro?'none':'block'};roster.forEach(p=>{const o=document.createElement('option');o.value=p.name;o.textContent='#'+p.rank+' · '+p.name;$('careerPro').appendChild(o)});$('careerPro').value='Wessel Nijman';$('careerCreate').onclick=careerCreate;$('careerContinue').onclick=()=>{try{let c=JSON.parse(localStorage.getItem(CAREER_KEY));if(!c||!Array.isArray(c.players)||!c.playerId)throw Error('Invalid save');career=c;careerRender()}catch(e){$('careerSetupMsg').textContent='Unable to load this save.'}};$('careerPlay').onclick=careerPlay;$('careerSim').onclick=careerSimulate;$('careerSkip').onclick=()=>{if(!career)return;careerLog('Skipped '+careerEventName());careerAdvance()};$('careerTrain').onclick=()=>{};$('careerSponsor').onclick=()=>{};$('careerSave').onclick=()=>{careerSave();$('careerMessage').textContent='Career saved.'};$('careerNew').onclick=()=>{if(!confirm('Start a new career? Your current save will be replaced.'))return;career=null;careerPending=null;$('careerSetup').style.display='block';$('careerDashboard').style.display='none';$('careerContinue').style.display='inline-block'};$('careerExport').onclick=()=>{if(!career)return;const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(career,null,2)],{type:'application/json'}));a.href=url;a.download='darts-arena-career.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};$('careerImport').onclick=()=>$('careerImportFile').click();$('careerImportFile').onchange=async e=>{try{let c=JSON.parse(await e.target.files[0].text());if(!c||!Array.isArray(c.players)||!c.players.some(p=>p.id===c.playerId)||!Number.isInteger(c.eventIndex))throw Error('Invalid');career=c;careerSave();careerRender()}catch(err){alert('Invalid career save file.')}};
 document.querySelectorAll('.careerFilters button').forEach(b=>b.onclick=()=>{const filter=b.dataset.filter;document.querySelectorAll('#careerCalendar [data-event-type]').forEach(el=>el.style.display=filter==='all'||el.dataset.eventType===filter?'':'none');document.querySelectorAll('.careerFilters button').forEach(x=>x.style.outline=x===b?'2px solid #ffe27c':'none');});
 // When leaving an active career match, keep the career pending; resetting the match allows replay.
 const careerOriginalReset=$('dReset').onclick;
@@ -1128,7 +1138,7 @@ $('dCareerReturn').onclick=()=>{dStopMeter();careerMatchCompleted=false;restoreS
 </style><div id="dVisitOverlay" aria-live="polite"><div class="visitName" id="dVisitName"></div><div class="visitScore" id="dVisitScore"></div><div class="visitSub">SCORE · 3 DART VISIT</div></div>
 <script>
 let dVisitShowing=false,dVisitTimer=null;
-function dShowVisit(who,score){
+function dShowVisit(who,score){if(who===0)daTrackVisit(score);
  const overlay=document.getElementById('dVisitOverlay');
  document.getElementById('dVisitName').textContent=document.getElementById(who===0?'dPlayerSelect':'dOpponentSelect').value;
  document.getElementById('dVisitScore').textContent=score;
@@ -1374,7 +1384,7 @@ body:has(#game501[style*="block"]){background:#08090e}
    careerPayoutPrize(career.playerId,event,c.wins);
    careerAdvance();careerRender();return;
   }
-  c.wins++;career.training++;
+  c.wins++;
   careerLog('Beat '+(opponent?.name||'opponent')+' at '+event[0]);
   if(r===c.drawRounds.length-1){
    career.titles++;careerLog('🏆 CHAMPION · '+event[0]);
@@ -1496,4 +1506,687 @@ body:has(#game501[style*="block"]){background:#08090e}
  syncCareerVisibility();
 })();
 </script>
-</body></html>
+<style id="careerCenteredLayoutFix">
+/* Center Career Mode within the browser viewport, including the tournament bracket. */
+body:has(#careerMode[style*="block"]){display:flex!important;flex-direction:column;align-items:center!important;justify-content:flex-start!important;min-height:100vh;width:100%;}
+body:has(#careerMode[style*="block"]) > main.app{width:min(1400px,calc(100% - 0px))!important;max-width:1400px;margin:0 auto!important;align-self:center!important;}
+#careerMode{width:100%;max-width:1350px;margin-left:auto!important;margin-right:auto!important;}
+#careerDashboard{width:100%;min-width:0;}
+#careerDashboard .careerTournamentPanel{width:100%;min-width:0;}
+@media(max-width:700px){body:has(#careerMode[style*="block"]) > main.app{width:100%!important;}}
+</style>
+<style id="daProDepthStyle">
+#daProHUD{margin:9px 0;padding:11px;border:1px solid #67547a;border-radius:7px;background:#1a1424;color:#fff;font:700 12px Arial,sans-serif}
+#daProHUD .daStats{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+#daProHUD .daMeter{height:6px;background:#403348;border-radius:10px;overflow:hidden;margin-top:8px}
+#daProHUD .daMeter>div{height:100%;background:linear-gradient(90deg,#a94bd4,#b9f276);transition:width .25s}
+#daTrainingPanel{margin-top:15px;padding:15px;background:#1b1923;border:1px solid #574664;border-radius:9px}
+#daTrainingPanel h3{margin:0 0 8px;color:#b9f276}#daTrainingPanel button{margin:5px;padding:9px 12px;border:0;border-radius:5px;background:#a7df5d;color:#16161a;font-weight:800;cursor:pointer}
+#daTrainingPanel button:disabled{opacity:.4;cursor:not-allowed}
+#daReplayFlash{position:fixed;z-index:145;left:50%;top:12%;transform:translateX(-50%) scale(.85);background:linear-gradient(115deg,#2b1939,#17141b);border:2px solid #b9f276;border-radius:12px;padding:16px 34px;color:#fff;font:bold clamp(24px,5vw,54px) Arial;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;box-shadow:0 12px 45px #0009}
+#daReplayFlash.show{opacity:1;transform:translateX(-50%) scale(1)}#daReplayFlash small{display:block;font-size:12px;color:#b9f276;letter-spacing:3px;margin-bottom:4px}
+</style>
+<div id="daReplayFlash" aria-live="polite"><small>ARENA HIGHLIGHT</small><span id="daReplayLabel"></span></div>
+<script id="daProDepthLogic">
+// Career development is saved in the existing career save object; standalone 501 stays playable.
+let daMomentum=0,daVisit180=0,daHighlightTimer=null;
+function daIsCareerMatch(){return typeof career!=='undefined'&&!!career&&typeof careerPending!=='undefined'&&!!careerPending;}
+function daDevelopment(){if(!daIsCareerMatch())return {timing:0,scoring:0,finishing:0};return career.development||{timing:0,scoring:0,finishing:0};}
+function daPressure(){
+ if(!daIsCareerMatch())return 0;
+ const ev=careerEvents[career.eventIndex],title=String(ev?.[0]||'').toLowerCase(),round=career.current?.round||0;
+ let pressure=title.includes('world championship')||title.includes('world matchplay')?0.12:title.includes('players championship')?0.025:0.06;
+ const rounds=career.current?.drawRounds?.length||7;
+ if(round>=rounds-2)pressure+=0.12;
+ if(round>=rounds-1)pressure+=0.1;
+ if(typeof dScores!=='undefined'&&dScores[0]<=80)pressure+=0.05;
+ return Math.min(.35,pressure);
+}
+function daThrowModifier(){
+ const dev=daDevelopment();
+ // A strong run steadies the hand; high-stakes matches introduce a modest challenge.
+ return Math.max(.68,Math.min(1.4,1+daPressure()-Math.min(.17,daMomentum*.025)-dev.timing*.012-dev.scoring*.009));
+}
+function daTrackDart(hit,outcome){
+ if(!hit)return;
+ if(hit.score>=60)daMomentum=Math.min(7,daMomentum+1);
+ else if(hit.score<=10)daMomentum=Math.max(-5,daMomentum-1);
+ if(outcome==='bust')daMomentum=Math.max(-5,daMomentum-2);
+ if(outcome==='win'&&typeof dScores!=='undefined')daHighlight('MATCH DART!');
+ daRenderHUD();
+}
+function daTrackVisit(score){
+ if(score>=100)daMomentum=Math.min(7,daMomentum+1);
+ else if(score<45)daMomentum=Math.max(-5,daMomentum-1);
+ if(score===180)daHighlight('ONE HUNDRED AND EIGHTY!');
+ else if(score>=140)daHighlight('BIG SCORE · '+score);
+ daRenderHUD();
+}
+function daHighlight(label){
+ const flash=document.getElementById('daReplayFlash');if(!flash)return;
+ document.getElementById('daReplayLabel').textContent=label;
+ clearTimeout(daHighlightTimer);flash.classList.remove('show');void flash.offsetWidth;flash.classList.add('show');
+ daHighlightTimer=setTimeout(()=>flash.classList.remove('show'),1650);
+}
+function daRenderHUD(){
+ const el=document.getElementById('daProHUD');if(!el)return;
+ const pressure=Math.round(daPressure()*100),dev=daDevelopment();
+ const form=daMomentum>=3?'HOT STREAK 🔥':daMomentum<=-2?'FIND YOUR RHYTHM':'STEADY';
+ el.querySelector('[data-form]').textContent=form;
+ el.querySelector('[data-pressure]').textContent=pressure?'PRESSURE +'+pressure+'%':'NORMAL PRESSURE';
+ el.querySelector('[data-skills]').textContent='AIM '+dev.scoring+' · TIMING '+dev.timing+' · FINISH '+dev.finishing;
+ el.querySelector('.daMeter>div').style.width=Math.max(8,Math.min(100,50+daMomentum*7))+'%';
+}
+function daTraining(){
+ const parent=document.getElementById('careerSkills');if(!parent||!career)return;
+ if(!career.development)career.development={timing:0,scoring:0,finishing:0};
+ let panel=document.getElementById('daTrainingPanel');if(!panel){panel=document.createElement('div');panel.id='daTrainingPanel';parent.after(panel);}
+ const pts=career.training||0;
+ panel.innerHTML='<h3>🎯 PRO TRAINING</h3><p>Training points: <b>'+pts+'</b> · Improve one skill for 2 points.</p>'+[['timing','Timing'],['scoring','Triple accuracy'],['finishing','Doubles']].map(([key,name])=>'<button type="button" data-train="'+key+'" '+(pts<2||career.development[key]>=10?'disabled':'')+'>'+name+' · '+career.development[key]+'/10</button>').join('')+'<p class="careerMuted">These upgrades improve your control in Career Mode. Training is saved with your career.</p>';
+ panel.querySelectorAll('button[data-train]').forEach(btn=>btn.onclick=()=>{
+  const key=btn.dataset.train;if(!career||career.training<2||career.development[key]>=10)return;
+  career.training-=2;career.development[key]++;
+  if(key==='finishing')careerPlayer().skill=Math.min(99,careerPlayer().skill+.35);
+  careerSave();careerRender();daTraining();daRenderHUD();
+ });
+}
+(function(){
+ const timing=document.querySelector('.timingBox');if(timing){const hud=document.createElement('div');hud.id='daProHUD';hud.innerHTML='<div class="daStats"><span data-form>STEADY</span><span data-pressure>NORMAL PRESSURE</span></div><div class="daMeter"><div style="width:50%"></div></div><div style="display:none" data-skills>AIM 0 · TIMING 0 · FINISH 0</div>';timing.insertBefore(hud,timing.querySelector('#dMeterWrap'));}
+ const originalRender=careerRender;careerRender=function(){const result=originalRender.apply(this,arguments);daRenderHUD();return result;};
+ const originalStart=dStartMeter;dStartMeter=function(){originalStart.apply(this,arguments);daRenderHUD();};
+ const originalFinish=dFinishLeg;dFinishLeg=function(who){const matchEnding=dLegs[who]+1>=dLegTarget;if(who===0&&matchEnding)daHighlight('MATCH WINNER!');return originalFinish.apply(this,arguments);};
+ daRenderHUD();
+})();
+</script>
+<style id="simpleThrowUI">
+.timingBox #dRestartMeter{display:none!important}
+.timingBox .dDifficulty{font-size:11px;opacity:.8;margin:7px 0}
+.timingBox .dHelp{line-height:1.4}
+.timingBox #daProHUD{margin:8px 0!important;padding:7px!important}
+.timingBox #daProHUD .daMeter{display:none!important}
+.timingBox .throwButtons{margin-top:9px}
+.timingBox #dThrow{font-size:20px;min-height:54px}
+</style>
+<style id="holdReleaseStyle">
+/* The dartboard itself is the ONLY throw control. */
+#game501 #dThrow,#game501 #dRestartMeter,#game501 #dMeterWrap,#game501 #holdFocusTrack,#game501 #holdFocusLabel{display:none!important}
+#game501 #dBoard svg{touch-action:none!important;user-select:none;cursor:crosshair}
+#game501 #dBoard svg.boardHolding{cursor:grabbing}
+#game501 #dBoard{position:relative}
+#game501 #boardReleaseHUD{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:min(75%,290px);padding:9px 12px;border-radius:12px;background:rgba(14,17,20,.9);border:1px solid #7f9c53;pointer-events:none;z-index:5;text-align:center;color:#f1f6e9;font-weight:800;box-shadow:0 5px 24px #0009}
+#game501 #boardReleaseHUD[hidden]{display:none!important}
+#game501 #boardReleaseBar{height:16px;border-radius:8px;background:linear-gradient(90deg,#c92e43 0%,#dc4450 12%,#e67c43 20%,#f4b14b 30%,#b8df65 39%,#82cf62 44%,#178d44 45%,#086d38 50%,#178d44 55%,#82cf62 56%,#b8df65 61%,#f4b14b 70%,#e67c43 80%,#dc4450 88%,#c92e43 100%);margin-top:10px;position:relative;border:1px solid #ffffff55}
+#game501 #boardReleaseFill{height:100%;width:0;background:#fff3;pointer-events:none}#game501 #boardReleaseZone{position:absolute;left:45%;width:10%;height:100%;border-left:2px solid #fff;border-right:2px solid #fff;box-sizing:border-box}#game501 #boardReleaseNeedle{position:absolute;top:-5px;left:0;width:5px;height:24px;border-radius:3px;background:white;box-shadow:0 0 8px #fff;transform:translateX(-50%)}#game501 #boardReleaseHint{font-size:11px;margin-top:6px;color:#dce6d4}#game501 #boardReleaseHUD.releasePerfect{border:2px solid #b8ff4b;background:rgba(23,66,25,.96);box-shadow:0 0 26px #a5e845aa;animation:releaseGlow .38s ease-in-out infinite alternate}#game501 #boardReleaseHUD.releasePerfect #boardReleaseText{color:#c7ff63;font-size:19px}@keyframes releaseGlow{from{box-shadow:0 0 9px #a5e84577}to{box-shadow:0 0 28px #a5e845dd}}
+#game501 .timingBox .throwButtons{display:none!important}
+</style>
+<script id="holdReleaseLogic">
+// Direct board press -> stabilize -> release. Works in both 501 and Career matches.
+(function(){
+ const svg=document.querySelector('#dBoard svg');
+ const board=document.getElementById('dBoard');
+ const btn=document.getElementById('dThrow');
+ if(!svg||!board||!btn)return;
+ const hud=document.createElement('div');hud.id='boardReleaseHUD';hud.hidden=true;
+ hud.innerHTML='<div id="boardReleaseText">HOUD VAST · WACHT OP DONKERGROEN</div><div id="boardReleaseBar"><div id="boardReleaseZone"></div><div id="boardReleaseFill"></div><div id="boardReleaseNeedle"></div></div><div id="boardReleaseHint">De wijzer gaat heen en weer · laat los in het donkergroene midden</div>';
+ board.appendChild(hud);
+ const message=hud.querySelector('#boardReleaseText'),fill=hud.querySelector('#boardReleaseFill'),needle=hud.querySelector('#boardReleaseNeedle'),hint=hud.querySelector('#boardReleaseHint');
+ let active=false,downAt=0,ptr=null,frame=0,needlePosition=0,travelMs=1550;
+ // One full left-to-right sweep takes travelMs; the needle then bounces back.
+ // Stronger players and career training slow the needle down; pressure speeds it up.
+ function sweepDuration(){
+  const name=document.getElementById('dPlayerSelect')?.value||'';
+  const skill=typeof dUserSpreadFactor==='function'?dUserSpreadFactor(name):1;
+  const training=typeof daDevelopment==='function'?Number(daDevelopment().timing||0):0;
+  const pressure=typeof daPressure==='function'?daPressure():0;
+  const momentum=typeof daMomentum==='number'?daMomentum:0;
+  // Duration is milliseconds for ONE sweep across the bar. Shorter = harder.
+  // Even experienced players must react quickly; training/form provide small bonuses.
+  const quality=Math.max(.7,Math.min(1.5,skill));
+  const base=780/quality;
+  return Math.max(430,Math.min(1050,base+training*12-pressure*220+momentum*7));
+ }
+ function positionAt(elapsed){const phase=(elapsed/travelMs)%2;return (phase<=1?phase:2-phase)*100;}
+ const getBand=position=>position<15?'red':position<30?'orange':position<45?'light':position<55?'dark':position<70?'light':position<85?'orange':'red';
+ const bandChance={red:.10,orange:.25,light:.55,dark:.85};
+ // Aim is locked on pointer-down; the release zone determines accuracy.
+ function getLanding(aim,band){
+  // Sample a point inside the requested scoring segment, never an arbitrary
+  // wide-angle miss. Dark green: 85% exact, otherwise adjacent ring/same number.
+  const intended=dHit(aim.x,aim.y);
+  const exact=Math.random()<bandChance[band];
+  const dx=aim.x-200,dy=aim.y-200;
+  const r0=Math.hypot(dx,dy);
+  const bull=r0<=16;
+  const angle=Math.atan2(dy,dx);
+  const sectorHalf=Math.PI/20;
+  const sectorCenter=Math.round((angle+Math.PI/2)/(Math.PI/10))*(Math.PI/10)-Math.PI/2;
+  const label=intended.label;
+  const ring=label.startsWith('T')?'triple':label.startsWith('D')?'double':bull?'bull':'single';
+  function sampleRing(kind){
+   if(kind==='triple')return 93+Math.random()*6;
+   if(kind==='double')return 163+Math.random()*11;
+   if(kind==='innerBull')return Math.sqrt(Math.random())*7.5;
+   if(kind==='outerBull')return 9+Math.random()*6;
+   // Singles must not accidentally cross into the triple or double.
+   return Math.random()<.5?18+Math.random()*71:102+Math.random()*58;
+  }
+  function pick(){
+   if(bull){
+    const target=exact?(r0<=8?'innerBull':'outerBull'):(r0<=8?'outerBull':'innerBull');
+    const r=sampleRing(target),a=Math.random()*Math.PI*2;
+    return {x:200+Math.cos(a)*r,y:200+Math.sin(a)*r};
+   }
+   let target;
+   if(exact)target=ring;
+   else if(ring==='triple'||ring==='double')target='single';
+   else target=Math.random()<.5?'triple':'double';
+   // Keep the selected number for dark/light misses. Orange/red can
+   // occasionally land in a neighbouring number, but never far off board.
+   let a=sectorCenter+(Math.random()-.5)*sectorHalf*1.55;
+   if(!exact&&(band==='orange'||band==='red')&&Math.random()<(band==='red'?.55:.3)){
+    a+= (Math.random()<.5?-1:1)*(Math.PI/10);
+   }
+   const r=sampleRing(target);
+   return {x:200+Math.cos(a)*r,y:200+Math.sin(a)*r};
+  }
+  const intendedNumber=label.match(/^[STD](\d+)/)?.[1];
+  for(let i=0;i<80;i++){
+   const point=pick(),hit=dHit(point.x,point.y);
+   const sameNumber=!intendedNumber||hit.label.match(/^[STD](\d+)/)?.[1]===intendedNumber;
+   if(exact&&hit.label===label)return point;
+   if(!exact&&hit.label!==label&&(band==='red'||band==='orange'||sameNumber))return point;
+  }
+  // Fail safe: use the actual selected coordinate rather than a wild miss.
+  return {x:aim.x,y:aim.y};
+ }
+ let selectedBand='red';
+ function end(throwDart){
+  if(!active)return;
+  active=false;cancelAnimationFrame(frame);svg.classList.remove('boardHolding');
+  needlePosition=positionAt(performance.now()-downAt);selectedBand=getBand(needlePosition);
+  hud.hidden=true;hud.classList.remove('releasePerfect');ptr=null;
+  if(!throwDart||!dMatch||dLegOver||dTurn!==0||!dActive||!dAim)return;
+  dPos=50;window.dReleaseLanding=getLanding(dAim,selectedBand);
+  dUserThrow();
+ }
+ function tick(){
+  if(!active)return;
+  const elapsed=performance.now()-downAt;needlePosition=positionAt(elapsed);const band=getBand(needlePosition),quality=bandChance[band];
+  const perfect=band==='dark';
+  hud.classList.toggle('releasePerfect',perfect);
+  message.textContent=band==='dark'?'🎯 DONKERGROEN · LAAT LOS!':band==='light'?'LICHTGROEN · GOEDE KANS':band==='orange'?'ORANJE · MATIGE KANS':'ROOD · LAGE KANS';
+  hint.textContent=band==='dark'?'85% op je gekozen vak':band==='light'?'55% op je gekozen vak; anders hetzelfde getal':band==='orange'?'25% op je gekozen vak':'10% op je gekozen vak';
+  fill.style.width='0%';needle.style.left=needlePosition+'%';
+  proAimPhase+=.033+(1-quality)*.018;
+  proAimPoint=proAimCurrent();dDrawMarks();
+  frame=requestAnimationFrame(tick);
+ }
+ function down(e){
+  if(active||!dMatch||dLegOver||dTurn!==0||dAnimating||dVisitShowing)return;
+  if(e.button!==undefined&&e.button!==0)return;
+  const m=svg.getScreenCTM();if(!m)return;
+  const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;
+  const loc=p.matrixTransform(m.inverse());
+  if(Math.hypot(loc.x-200,loc.y-200)>176)return;
+  e.preventDefault();e.stopPropagation();
+  dAimAt(loc.x,loc.y);
+  if(!dActive||!dAim)return;
+  active=true;ptr=e.pointerId;downAt=performance.now();travelMs=sweepDuration();needlePosition=0;
+  svg.classList.add('boardHolding');hud.hidden=false;
+  try{svg.setPointerCapture(e.pointerId)}catch(_){}
+  tick();
+ }
+ svg.addEventListener('pointerdown',down,true);
+ svg.addEventListener('pointerup',e=>{if(active&&e.pointerId===ptr){e.preventDefault();end(true)}},true);
+ svg.addEventListener('pointercancel',e=>{if(active&&e.pointerId===ptr)end(false)},true);
+ svg.addEventListener('lostpointercapture',e=>{if(active&&e.pointerId===ptr)end(false)});
+ // Suppress legacy click-to-aim, which would otherwise restart the old meter on release.
+ svg.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation()},true);
+ // Replace the old meter with a ready state; the board controls the release.
+ dStartMeter=function(){dStopMeter();dActive=true;dPos=50;document.getElementById('dMeterWrap').style.display='none'};
+ const previousHide=dHideMeter;
+ dHideMeter=function(){end(false);previousHide();hud.hidden=true};
+ const previousAim=dAimAt;
+ dAimAt=function(x,y){previousAim(x,y);if(dActive)document.getElementById('dAimText').textContent='Houd je muis of vinger op het bord en laat los om te gooien.'};
+ const help=document.querySelector('#game501 .timingBox .dHelp');
+ if(help)help.innerHTML='<strong>GOOIEN:</strong> Houd de plek op het dartbord ingedrukt waar je wilt mikken. De wijzer beweegt heen en weer: laat los in het DONKERGROENE MIDDEN (85% kans). Zijn snelheid hangt af van je speler, training en wedstrijddruk.';
+ btn.disabled=true;
+ document.getElementById('dAimText').textContent='Houd je muis of vinger op het dartbord om te gooien.';
+})();
+</script>
+<!-- LIVE SIDE PLAYER STATS -->
+<style id="liveSideStatsStyle">
+#game501 .arenaGame{grid-template-columns:minmax(215px,1fr) minmax(340px,1.6fr) minmax(215px,1fr)!important;align-items:start;max-width:1550px;margin-inline:auto}
+#game501 .arenaSide{min-width:0}
+#game501 .livePlayerStats{background:linear-gradient(145deg,#292132,#15151c);border:2px solid #694375;border-top:4px solid #b1ed39;border-radius:12px;padding:13px;margin-bottom:10px;color:white;box-shadow:0 10px 24px #0005}
+#game501 .livePlayerStats .lpsTitle{font-weight:900;font-size:16px;line-height:1.25;overflow-wrap:anywhere;margin-bottom:9px;text-transform:uppercase}
+#game501 .livePlayerStats .lpsRow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #ffffff20;font-size:12px;color:#d7cfde}
+#game501 .livePlayerStats .lpsRow strong{font-size:16px;color:#fff;font-variant-numeric:tabular-nums}
+#game501 .livePlayerStats .lpsRow:first-of-type strong{color:#b1ed39;font-size:23px}
+#game501 .arenaBoard{min-width:0;justify-self:center;width:100%}
+@media(max-width:850px){#game501 .arenaGame{grid-template-columns:1fr!important}#game501 .arenaBoard{grid-row:1}#game501 .arenaSide{overflow:visible!important}#game501 .livePlayerStats{margin-top:8px}}
+</style>
+<script>
+(function(){
+ function install(){
+  const sides=document.querySelectorAll('#game501 .arenaGame > .arenaSide');
+  if(sides.length!==2||document.getElementById('liveStatsSide0'))return;
+  const metrics=[['Avg','3-dart average'],['First','First 9 average'],['Co','Checkout %'],['High','Highest visit'],['Finish','Highest finish'],['Best','Best leg'],['100','100+ visits'],['140','140+ visits'],['180','180s'],['Darts','Darts thrown']];
+  for(let i=0;i<2;i++){
+   const panel=document.createElement('div');panel.className='livePlayerStats';panel.id='liveStatsSide'+i;
+   const title=document.createElement('div');title.className='lpsTitle';title.id='liveName'+i;title.textContent=i?'Opponent':'Your player';panel.append(title);
+   for(const [key,label] of metrics){const r=document.createElement('div');r.className='lpsRow';const l=document.createElement('span');l.textContent=label;const v=document.createElement('strong');v.id='live'+key+i;v.textContent='–';r.append(l,v);panel.append(r)}
+   sides[i].prepend(panel);
+  }
+  function refresh(){
+   for(let i=0;i<2;i++){
+    const name=document.getElementById('dcName'+i),title=document.getElementById('liveName'+i);
+    if(name&&title)title.textContent=name.textContent;
+    for(const [key] of metrics){const src=document.getElementById('dc'+key+i),dest=document.getElementById('live'+key+i);if(src&&dest)dest.textContent=src.textContent}
+   }
+  }
+  if(typeof dcUpdate==='function'){
+   const original=dcUpdate;
+   dcUpdate=function(){const result=original.apply(this,arguments);refresh();return result};
+  }
+  refresh();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
+})();
+</script>
+<style id="careerAccountStyles">
+#careerAccountGate{display:none;max-width:510px;margin:24px auto;padding:30px;border-radius:20px;background:linear-gradient(145deg,#202338,#10121f);border:1px solid #6d638e;box-shadow:0 15px 50px #0007;color:#fff;text-align:left}
+#careerAccountGate h2{margin:0 0 10px;font-size:28px;color:#baf65b}#careerAccountGate p{color:#c4c5d3;line-height:1.5}
+#careerAccountGate label{display:block;margin:14px 0 5px;font-weight:700}#careerAccountGate input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #6e728b;border-radius:9px;background:#111523;color:white;font-size:16px}
+#careerAccountGate .accountButtons{display:flex;gap:10px;margin-top:17px;flex-wrap:wrap}#careerAccountGate button,.careerAccountLogout{padding:12px 16px;border:0;border-radius:9px;background:#baf65b;color:#111523;font-weight:800;cursor:pointer}#careerAccountGate button.secondary,.careerAccountLogout{background:#333950;color:white;border:1px solid #777e99}
+#careerAccountError{color:#ffb3b3!important;min-height:20px}#careerAccountGate .accountNote{font-size:12px}
+#careerMode.account-locked #careerSetup,#careerMode.account-locked #careerDashboard,#careerMode.account-locked #careerAutomaticFixture{display:none!important;visibility:hidden!important}
+#careerMode.account-locked #careerAccountGate{display:block!important}
+#careerAccountBar{display:none;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 18px;background:#181e30;border:1px solid #505a72;padding:12px;border-radius:12px}
+#careerMode.account-unlocked #careerAccountBar{display:flex}
+</style>
+<script id="careerAccountLoginJS">
+(function(){
+ const mode=document.getElementById('careerMode');if(!mode)return;
+ const gate=document.createElement('section');gate.id='careerAccountGate';gate.innerHTML=`<h2>🎯 Darts Arena Account</h2><p>Log in to continue your career from where you left off.</p><label for="daAccountName">Username</label><input id="daAccountName" maxlength="30" autocomplete="username" placeholder="Your username"><label for="daAccountPin">Passcode (at least 4 characters)</label><input id="daAccountPin" type="password" maxlength="64" autocomplete="current-password" placeholder="Your passcode"><div class="accountButtons"><button type="button" id="daLogin">Log in</button><button type="button" class="secondary" id="daRegister">Create account</button></div><p id="careerAccountError" role="status"></p><p class="accountNote">Saved on this browser and device. This is a local profile, not an online account. For another device use Export save / Import save. Do not use a password you use elsewhere.</p>`;
+ const bar=document.createElement('div');bar.id='careerAccountBar';bar.innerHTML='<span id="daLoggedIn"></span><button type="button" class="careerAccountLogout" id="daLogout">Log out</button>';
+ const setup=document.getElementById('careerSetup');mode.insertBefore(gate,setup);mode.insertBefore(bar,setup);
+ const $a=id=>document.getElementById(id);
+ const profileKey='dartsArenaProfilesV2', legacyKey='dartsArenaCareerV1';let current=null;
+ function profiles(){try{return JSON.parse(localStorage.getItem(profileKey))||{}}catch(e){return {}}}
+ function normalized(){return $a('daAccountName').value.trim().toLowerCase()}
+ function error(msg){$a('careerAccountError').textContent=msg}
+ async function digest(value){const data=new TextEncoder().encode(value);const buf=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
+ function validSave(v){return v&&Array.isArray(v.players)&&v.players.some(p=>p.id===v.playerId)}
+ function setLocked(locked){mode.classList.toggle('account-locked',locked);mode.classList.toggle('account-unlocked',!locked);gate.style.display=locked?'block':'none';bar.style.display=locked?'none':'flex';if(locked){$a('careerSetup').style.display='none';$a('careerDashboard').style.display='none'}else{$a('daLoggedIn').textContent='👤 '+current}}
+ function persist(){if(!current||!career)return;try{const all=profiles();if(all[current]){all[current].save=career;all[current].updated=Date.now();localStorage.setItem(profileKey,JSON.stringify(all))}}catch(e){console.warn('Career account autosave failed',e)}}
+ const originalSave=careerSave;careerSave=function(){originalSave();persist()};
+ async function login(register){const name=normalized(),pin=$a('daAccountPin').value;if(!/^[a-z0-9_. -]{3,30}$/.test(name)){error('Use 3–30 letters, numbers, spaces, dots or underscores.');return}if(pin.length<4){error('Enter a passcode of at least 4 characters.');return}if(!crypto?.subtle){error('This browser cannot create a local profile securely.');return}
+ const all=profiles(),hash=await digest(name+'|'+pin);
+ if(register){if(all[name]){error('This username already exists. Log in instead.');return}all[name]={hash,save:null,updated:Date.now()};try{localStorage.setItem(profileKey,JSON.stringify(all))}catch(e){error('Browser storage is unavailable.');return}}
+ else if(!all[name]||all[name].hash!==hash){error('Username or passcode is incorrect.');return}
+ current=name;career=null;careerPending=null;
+ const saved=all[name].save;if(validSave(saved)){career=saved}else if(register){try{const old=JSON.parse(localStorage.getItem(legacyKey));if(validSave(old)&&confirm('Import the career already saved in this browser into your new account?')){career=old;persist()}}catch(e){}}
+ $a('daAccountPin').value='';error('');setLocked(false);
+ if(career){careerRender()}else{$a('careerSetup').style.display='block';$a('careerDashboard').style.display='none'}
+ }
+ $a('daLogin').onclick=()=>login(false);$a('daRegister').onclick=()=>login(true);
+ $a('daAccountPin').addEventListener('keydown',e=>{if(e.key==='Enter')login(false)});
+ $a('daLogout').onclick=()=>{careerSave();current=null;career=null;careerPending=null;setLocked(true);$a('daAccountPin').value=''};
+ // The old button stored a reference to the original function, so replace its handler.
+ $a('openCareer').onclick=()=>{showMode('career');if(!current)setLocked(true);else{setLocked(false);if(career)careerRender();else{$a('careerSetup').style.display='block';$a('careerDashboard').style.display='none'}}};
+ // The old single-slot Continue button must not import another profile's save.
+ $a('careerContinue').style.display='none';$a('careerContinue').onclick=()=>{if(career)careerRender()};
+ // When a user creates a new career, it will be saved into their active profile.
+ $a('careerNew').addEventListener('click',()=>{if(current)queueMicrotask(()=>{if(!career){const all=profiles();if(all[current]){all[current].save=null;localStorage.setItem(profileKey,JSON.stringify(all))}}})});
+ setLocked(true);
+})();
+</script>
+
+<style id="irlCareerStyles">
+#irlMatch[hidden]{display:none!important}#irlMatch{position:fixed;inset:0;z-index:210;overflow:auto;background:radial-gradient(circle at 50% 5%,#34234e,#0b101a 65%);color:white;padding:20px;font-family:Arial,sans-serif}
+.irlWrap{max-width:1050px;margin:auto}.irlTop{display:flex;justify-content:space-between;align-items:center;gap:15px}.irlScores{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}.irlScore{background:#141b29;border:2px solid #43445a;padding:18px;border-radius:14px;text-align:center}.irlScore.active{border-color:#a8e45d}.irlScore strong{display:block;font-size:clamp(55px,10vw,108px);line-height:1.1}.irlScore .irlName{font-size:clamp(14px,2vw,23px);font-weight:900}.irlEntry{max-width:540px;margin:20px auto;background:#181e2b;border-radius:15px;padding:22px;text-align:center}.irlEntry input[type=number]{width:100%;font-size:44px;text-align:center;padding:10px;background:#080e16;color:#fff;border:2px solid #66758b;border-radius:10px}.irlEntry button,.irlTop button{background:#b8f35a;color:#101810;font-weight:900;border:0;border-radius:8px;padding:12px 20px;cursor:pointer}.irlEntry label{display:block;margin:15px 0}.irlHistory{display:grid;grid-template-columns:1fr 1fr;gap:15px}.irlHistory div{background:#171f2b;border-radius:10px;padding:12px;min-height:80px}.irlHint{color:#aab8ce}.irlNotice{color:#b8f35a;min-height:22px;font-weight:700}#careerMode.irlActive #careerSim,#careerMode.irlActive #careerSkip{display:none!important}
+@media(max-width:620px){#irlMatch{padding:10px}.irlScores{gap:7px}.irlScore{padding:9px}.irlHistory{font-size:12px}}
+</style>
+<div id="irlMatch" hidden>
+ <div class="irlWrap irlBroadcast">
+  <header class="irlTop"><button id="irlBack" type="button">← BACK TO CAREER</button><div class="irlMatchHeader"><span id="irlEventTitle">Tournament match</span><strong id="irlLegLabel">BEST OF 5 LEGS</strong></div><span class="irlLive">● LIVE SCORING</span></header>
+  <div class="irlBroadcastGrid">
+   <section class="irlControlPanel">
+    <div class="irlScores">
+     <div class="irlScore active" id="irlPlayerBox"><div class="irlName" id="irlPlayerName">YOU</div><strong id="irlPlayerRemaining">501</strong><div class="irlLegCounter" id="irlPlayerLegs">0 legs</div><small id="irlPlayerAvg">Average: —</small><div class="irlExtraStats" id="irlPlayerExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlPlayerVisits">—</p></div></div>
+     <div class="irlScore" id="irlBotBox"><div class="irlName" id="irlBotName">BOT</div><strong id="irlBotRemaining">501</strong><div class="irlLegCounter" id="irlBotLegs">0 legs</div><small id="irlBotAvg">Average: —</small><div class="irlExtraStats" id="irlBotExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlBotVisits">—</p></div></div>
+    </div>
+    <div class="irlEntry"><div class="irlHint">YOUR TURN · ENTER 3-DART SCORE</div><div class="irlInputRow"><input type="text" id="irlVisit" maxlength="3" pattern="[0-9]*" autocomplete="off" inputmode="numeric" placeholder="0–180" aria-label="Your three-dart score"><button id="irlSubmit" class="irlScoreConfirm" type="button">ENTER ↵</button></div>
+     <div class="irlKeypad" aria-label="Score keypad"><button type="button" data-irl-key="1">1</button><button type="button" data-irl-key="2">2</button><button type="button" data-irl-key="3">3</button><button type="button" data-irl-key="4">4</button><button type="button" data-irl-key="5">5</button><button type="button" data-irl-key="6">6</button><button type="button" data-irl-key="7">7</button><button type="button" data-irl-key="8">8</button><button type="button" data-irl-key="9">9</button><button type="button" data-irl-key="clear" class="irlKeyUtility">CLEAR</button><button type="button" data-irl-key="0">0</button><button type="button" data-irl-key="back" class="irlKeyUtility">⌫</button></div>
+     <p class="irlCheckoutHelp">Finish your remaining score? Enter the exact score and confirm. We will ask about your double automatically.</p><p id="irlNotice" class="irlNotice" aria-live="polite">Enter your score after throwing three darts.</p>
+    </div>
+   </section>
+   <aside class="irlBoardPanel"><div class="irlBoardHeading"><span>DARTS ARENA</span><strong>IRL MATCH CENTRE</strong></div><div class="irlBoardPicture" id="irlRealBoard" aria-label="Standard dartboard showing the bot’s last three darts"></div><div class="irlBotDarts" id="irlBotDarts">BOT DARTS: —</div><div class="irlBoardFooter">THROW ON YOUR REAL BOARD <span>→</span> ENTER YOUR SCORE ON THE LEFT</div><div class="irlBoardTip">No digital throwing or animations in IRL Career Mode.</div></aside>
+  </div>
+ </div>
+</div>
+<script id="irlCareerLogic">
+(function(){
+const IRL_KEY='dartsArenaIRLCareerV1';
+const IRL_LEVELS=Array.from({length:20},(_,i)=>({level:i+1,average:Math.round(28+i*4.15)}));
+let irlMode=false,normalCareer=null,irlCareer=null,irlMatch=null;
+const el=id=>document.getElementById(id);
+const originalSave=careerSave;
+careerSave=function(){if(!career)return;try{localStorage.setItem(irlMode?IRL_KEY:CAREER_KEY,JSON.stringify(career))}catch(e){console.warn('Career save unavailable',e)}};
+function openCareerVariant(irl){
+ if(irlMode===irl && career){showMode('career');careerRender();updateIRLSetup();return;}
+ careerSave();
+ if(irlMode)irlCareer=career;else normalCareer=career;
+ irlMode=irl;career=irl?(irlCareer||null):(normalCareer||null);
+ if(!career){try{career=JSON.parse(localStorage.getItem(irl?IRL_KEY:CAREER_KEY)||'null')}catch(e){career=null}}
+ el('careerMode').classList.toggle('irlActive',irl);
+ el('careerContinue').style.display=localStorage.getItem(irl?IRL_KEY:CAREER_KEY)?'inline-block':'none';
+ el('careerSetup').style.display=career?'none':'block';el('careerDashboard').style.display=career?'block':'none';
+ updateIRLSetup();
+ document.querySelector('.careerNav h1').innerHTML=irl?'🏆 DARTS ARENA <span style="color:#b8f35a">IRL CAREER</span>':'🏆 DARTS ARENA <span style="color:#68e9ce">CAREER</span>';
+ el('careerPlay').textContent=irl?'🎯 Play real-life match':'🎯 Play next match';
+ if(career)careerRender();showMode('career');
+ updateIRLSetup();
+}
+const btn=document.createElement('button');btn.id='openIRLCareer';btn.className='modeCard';btn.innerHTML='<span class="modeEmoji">🎯</span><b>IRL Career Mode</b><small>Throw real darts · enter scores · play PDC tournaments</small>';
+el('openCareer').after(btn);btn.onclick=()=>openCareerVariant(true);
+el('openCareer').onclick=()=>openCareerVariant(false);
+// IRL careers always use a self-created player. The 20 bot levels apply to
+// every AI opponent while individual PDC player skill and form still matter.
+const irlLevelWrap=document.createElement('div');irlLevelWrap.id='irlLevelWrap';irlLevelWrap.innerHTML='<label>Bot difficulty (1–20)<select id="irlBotLevel"></select></label><p id="irlLevelDescription" class="careerMuted" style="margin:4px 0 12px"></p>';
+el('careerCustomFields').after(irlLevelWrap);
+const irlLevelSelect=el('irlBotLevel');
+IRL_LEVELS.forEach(({level,average})=>{const opt=document.createElement('option');opt.value=level;opt.textContent='Level '+level+' · approx. '+average+' average';irlLevelSelect.appendChild(opt)});
+irlLevelSelect.value='10';
+const irlDashboardLevel=document.createElement('div');irlDashboardLevel.id='irlDashboardLevel';irlDashboardLevel.className='careerPanel';irlDashboardLevel.innerHTML='<h2>🎯 IRL Bot Difficulty</h2><label>Choose opponent level <select id="irlActiveBotLevel"></select></label><p id="irlActiveLevelDescription" class="careerMuted"></p>';
+el('careerDashboard').prepend(irlDashboardLevel);
+const activeLevelSelect=el('irlActiveBotLevel');
+IRL_LEVELS.forEach(({level,average})=>{const opt=document.createElement('option');opt.value=level;opt.textContent='Level '+level+' · approx. '+average+' average';activeLevelSelect.appendChild(opt)});
+function levelDescription(level){const avg=IRL_LEVELS[level-1].average;return 'Target: about '+avg+' three-dart average. Match form and opponent quality cause natural variation.'}
+function updateIRLSetup(){
+ const type=el('careerType');const proOption=type.querySelector('option[value="pro"]');
+ if(proOption)proOption.disabled=irlMode;
+ if(irlMode){type.value='custom';type.dispatchEvent(new Event('change'))}
+ type.closest('label').style.display=irlMode?'none':'';
+ el('careerProFields').style.display=irlMode?'none':(type.value==='pro'?'block':'none');
+ el('careerCustomFields').style.display=irlMode?'block':(type.value==='pro'?'none':'block');
+ irlLevelWrap.style.display=irlMode?'block':'none';irlDashboardLevel.style.display=irlMode&&career?'block':'none';
+ const level=Math.max(1,Math.min(20,Number(career?.botLevel)||10));
+ if(irlMode&&career)activeLevelSelect.value=String(level);
+ el('irlLevelDescription').textContent=levelDescription(Number(irlLevelSelect.value));
+ el('irlActiveLevelDescription').textContent=levelDescription(level);
+ const intro=el('careerSetup').querySelector('p.careerMuted');
+ if(intro)intro.textContent=irlMode?'Create your own player and play real darts against PDC opponents.':'Create a player or take control of one of the 128 PDC players.';
+}
+irlLevelSelect.addEventListener('change',()=>el('irlLevelDescription').textContent=levelDescription(Number(irlLevelSelect.value)));
+activeLevelSelect.addEventListener('change',()=>{if(!irlMode||!career)return;career.botLevel=Number(activeLevelSelect.value);careerSave();el('irlActiveLevelDescription').textContent=levelDescription(career.botLevel)});
+// Capture the chosen level after the original create handler builds the career.
+el('careerCreate').addEventListener('click',()=>{if(!irlMode||!career)return;career.botLevel=Number(irlLevelSelect.value);careerSave();updateIRLSetup()});
+
+el('careerContinue').onclick=()=>{try{let c=JSON.parse(localStorage.getItem(irlMode?IRL_KEY:CAREER_KEY));if(!c||!Array.isArray(c.players)||!c.playerId)throw Error('Invalid save');career=c;careerRender();updateIRLSetup()}catch(e){el('careerSetupMsg').textContent='Unable to load this save.'}};
+el('careerHome').onclick=()=>{careerSave();showMode('home')};
+el('careerPlay').onclick=()=>{if(irlMode)startIRLMatch();else careerPlay()};
+// IRL fixture buttons previously called careerPlay() directly, opening the
+// digital board instead of the score-entry screen. Intercept them first.
+document.addEventListener('click',function(e){
+ if(!irlMode)return;
+ const trigger=e.target.closest('#careerFixturePlay, #careerPlay, #careerTournamentBracket button, #careerAutomaticFixture button');
+ if(!trigger || trigger.disabled)return;
+ e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+ startIRLMatch();
+},true);
+
+el('careerNew').onclick=()=>{if(!confirm('Start a new career? Your current save will be replaced.'))return;career=null;careerPending=null;if(irlMode)irlCareer=null;else normalCareer=null;el('careerSetup').style.display='block';el('careerDashboard').style.display='none';el('careerContinue').style.display='inline-block';updateIRLSetup()};
+function targetAvg(p){const level=Math.max(1,Math.min(20,Number(career?.botLevel)||10));const base=IRL_LEVELS[level-1].average;const skill=Math.max(30,Math.min(98,Number(p.skill)||55));const form=Math.max(-5,Math.min(5,Number(p.form)||0));return Math.max(24,Math.min(116,base+(skill-70)*.22+form*1.1))}
+function sample(){return (Math.random()+Math.random()+Math.random()+Math.random()-2)}
+function botVisit(){
+ const b=irlMatch,remaining=b.remaining[1],avg=targetAvg(b.bot);
+ if(remaining<=170){
+  const checkout=Math.min(.64,Math.max(.035,(avg-37)/180))*(remaining>100?.42:remaining>60?.68:1);
+  if(remaining!==169&&remaining!==168&&remaining!==166&&remaining!==165&&remaining!==163&&remaining!==162&&remaining!==159&&Math.random()<checkout){return {score:remaining,finish:true}};
+ }
+ let score=Math.round(avg+sample()*(avg>90?27:34));
+ if(Math.random()<.09)score=Math.round(score*.42); // occasional bad visit
+ if(Math.random()<.055)score=Math.round(Math.max(score,avg+28)); // occasional great visit
+ score=Math.max(0,Math.min(180,score));
+ if(score>=remaining-1)score=Math.max(0,remaining-(2+2*Math.floor(Math.random()*20)));
+ return {score,finish:false};
+}
+// Standard 20-segment board, with actual scoring rings and bot dart markers.
+const IRL_NUMBERS=[20,1,18,4,13,6,10,15,2,17,3,19,7,16,8,11,14,9,12,5];
+function irlBoardPoint(index,r){const a=(index*18-90)*Math.PI/180;return [200+r*Math.cos(a),200+r*Math.sin(a)]}
+function irlWedge(i,inner,outer){const a=(i*18-99)*Math.PI/180,b=(i*18-81)*Math.PI/180;const pt=(r,t)=>[200+r*Math.cos(t),200+r*Math.sin(t)];const A=pt(outer,a),B=pt(outer,b),C=pt(inner,b),D=pt(inner,a);return `M${A} A${outer},${outer} 0 0 1 ${B} L${C} A${inner},${inner} 0 0 0 ${D} Z`}
+function irlDrawBoard(darts=[]){const host=el('irlRealBoard');if(!host)return;let out='<svg viewBox="0 0 400 400" role="img" aria-label="Standard dartboard and last bot darts" xmlns="http://www.w3.org/2000/svg"><circle cx="200" cy="200" r="195" fill="#141819" stroke="#929b97" stroke-width="3"/>';
+ for(let i=0;i<20;i++){const light=i%2===0;out+=`<path d="${irlWedge(i,16,170)}" fill="${light?'#f0e4c8':'#202325'}" stroke="#7d7d75" stroke-width=".6"/>`;out+=`<path d="${irlWedge(i,101,113)}" fill="${light?'#c72e39':'#16854b'}"/>`;out+=`<path d="${irlWedge(i,158,170)}" fill="${light?'#c72e39':'#16854b'}"/>`;const [x,y]=irlBoardPoint(i,183);out+=`<text x="${x}" y="${y+5}" fill="#f5f5f5" font-size="15" text-anchor="middle" font-weight="700">${IRL_NUMBERS[i]}</text>`}
+ out+='<circle cx="200" cy="200" r="16" fill="#158b4c" stroke="#222" stroke-width="1"/><circle cx="200" cy="200" r="7" fill="#c52b3c"/>';
+ darts.forEach((d,i)=>{const [x,y]=irlDartXY(d,i);out+=`<circle cx="${x}" cy="${y}" r="7" fill="#f6d24e" stroke="#171717" stroke-width="2"/><text x="${x}" y="${y+3.5}" text-anchor="middle" font-size="10" font-weight="900" fill="#181818">${i+1}</text>`});out+='</svg>';host.innerHTML=out}
+function irlDartXY(d,i){if(d.kind==='MISS')return [35+i*14,200];if(d.kind==='BULL')return [200+(i-1)*2,200+(i-1)*2];if(d.kind==='OUTER')return [200+23*Math.cos(i*2),200+23*Math.sin(i*2)];const idx=IRL_NUMBERS.indexOf(d.n);const radius=d.mult===3?107:d.mult===2?164:75;const [x,y]=irlBoardPoint(Math.max(0,idx),radius);return [x+(i-1)*2,y+(i-1)*2]}
+const IRL_DART_OPTIONS=[{score:0,kind:'MISS',n:0,mult:0},{score:25,kind:'OUTER',n:25,mult:1},{score:50,kind:'BULL',n:25,mult:2}];
+for(let n=1;n<=20;n++)for(let mult=1;mult<=3;mult++)IRL_DART_OPTIONS.push({score:n*mult,kind:'NUMBER',n,mult});
+function irlBotDartsForScore(score,finish){const options=IRL_DART_OPTIONS;let best=null,bestWeight=-Infinity;const candidates=new Map();for(const d of options){const list=candidates.get(d.score)||[];list.push(d);candidates.set(d.score,list)}
+ // Construct a valid three-dart combination matching the simulated bot visit exactly.
+ for(const a of options)for(const b of options){const last=candidates.get(score-a.score-b.score);if(!last)continue;for(const c of last){if(finish&&c.mult!==2)continue;const darts=[a,b,c];let weight=0;for(const d of darts){weight+=d.kind==='MISS'?-3:d.mult===3?3:d.mult===2?0.6:d.kind==='NUMBER'?1:0;weight+=d.n===20?1.4:0}weight+=Math.random()*12;if(weight>bestWeight){best=darts;bestWeight=weight}}}
+ return best||[{score:0,kind:'MISS',n:0,mult:0},{score:0,kind:'MISS',n:0,mult:0},{score:0,kind:'MISS',n:0,mult:0}]}
+function irlShowBotDarts(score,finish=false){const darts=irlBotDartsForScore(score,finish);irlDrawBoard(darts);el('irlBotDarts').textContent='BOT DARTS: '+darts.map(d=>d.kind==='MISS'?'MISS':d.kind==='BULL'?'BULL':d.kind==='OUTER'?'25':(d.mult===3?'T':d.mult===2?'D':'S')+d.n).join('  ·  ')}
+function startIRLMatch(){
+ if(!career)return;
+ if(!career.current)careerStartEvent();if(!career.current)return;
+ const bot=career.players.find(p=>p.id===career.current.opponent),player=careerPlayer();
+ if(!bot||!player)return;
+ const ev=careerEvents[career.eventIndex];
+ irlMatch={bot,player,best:Math.max(1,Number(ev[3])||5),remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
+ el('irlEventTitle').textContent=ev[0]+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||10);
+ el('irlPlayerName').textContent=player.name;el('irlBotName').textContent=bot.name;
+ el('game501').style.display='none';el('irlMatch').hidden=false;document.documentElement.classList.add('irl-scoring-active');el('irlVisit').value='';el('irlNotice').textContent='Your throw!';irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';drawIRL();el('irlVisit').focus();
+}
+function drawIRL(){const b=irlMatch;if(!b)return;
+ for(let i=0;i<2;i++){
+  const prefix=i?'irlBot':'irlPlayer';el(prefix+'Remaining').textContent=b.remaining[i];el(prefix+'Legs').textContent=b.legs[i]+' legs';
+  el(prefix+'Avg').textContent='Average: '+(b.darts[i]?((b.total[i]/b.darts[i])*3).toFixed(2):'—');
+  el(prefix+'Visits').textContent=b.visits[i].slice(-10).reverse().join(' · ')||'—';
+  const scores=b.visits[i].map(v=>parseInt(v,10)).filter(Number.isFinite);const last=scores.length?scores[scores.length-1]:'—';
+  const best=scores.length?Math.max(...scores):'—';const high=scores.filter(v=>v>=100).length;const big=scores.filter(v=>v>=140).length;const max=scores.filter(v=>v===180).length;
+  const first9=b.firstNineDarts[i]?(b.firstNinePoints[i]*3/b.firstNineDarts[i]).toFixed(2):'—';
+  const attempts=b.doubleAttemptsByPlayer[i],hits=b.doubleHitsByPlayer[i];
+  const doublePct=attempts?(hits*100/attempts).toFixed(1)+'%':'—';
+  el(prefix+'Extra').innerHTML=`<div><span>FIRST 9 AVG</span><b>${first9}</b></div><div><span>DOUBLES %</span><b>${doublePct}</b></div><div><span>DOUBLES HIT / ATT</span><b>${hits} / ${attempts}</b></div><div><span>LAST SCORE</span><b>${last}</b></div><div><span>DARTS THROWN</span><b>${b.darts[i]}</b></div><div><span>HIGHEST VISIT</span><b>${best}</b></div><div><span>100+ / 140+ / 180</span><b>${high} / ${big} / ${max}</b></div>`;
+ }
+ el('irlLegLabel').textContent='Best of '+b.best+' legs · First to '+(Math.floor(b.best/2)+1);
+}
+// Record the first nine darts separately for each leg; only actual scoring darts count.
+function irlRecordFirstNine(who,score,used){
+ const b=irlMatch;if(!b)return;
+ const eligible=Math.max(0,Math.min(used,9-b.legDarts[who]));
+ if(eligible){b.firstNinePoints[who]+=eligible===used?score:Math.round(score*eligible/used);b.firstNineDarts[who]+=eligible;}
+ b.legDarts[who]+=used;
+}
+function finishLeg(who){const b=irlMatch;b.legs[who]++;drawIRL();const needed=Math.floor(b.best/2)+1;
+ if(b.legs[who]>=needed){
+  el('irlMatch').hidden=true;const won=who===0;if(b.darts[0]>0){if(!Array.isArray(career.matchPerformance))career.matchPerformance=[];career.matchPerformance.push({points:b.total[0],darts:b.darts[0],average:Number((b.total[0]*3/b.darts[0]).toFixed(2)),won,date:new Date().toISOString(),type:'irl'});}careerAfterMatch(won);careerSave();irlMatch=null;
+  el('careerMessage').textContent=won?'Match won! Your career has been updated.':'Match lost. Your career has been updated.';showMode('career');careerRender();updateIRLSetup();return;
+ }
+ b.remaining=[501,501];b.legDarts=[0,0];b.starter=1-b.starter;irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';el('irlNotice').textContent=(who===0?'You':'The bot')+' won the leg! Next leg.';
+ if(b.starter===1){setTimeout(()=>{if(irlMatch===b)botTurn()},450)}
+}
+function botTurn(){const b=irlMatch;if(!b)return;
+ const r=botVisit(),old=b.remaining[1];
+ if(r.finish){b.total[1]+=r.score;const botUsed=Math.max(1,Math.min(3,Math.ceil(r.score/60)));irlRecordFirstNine(1,r.score,botUsed);b.darts[1]+=botUsed;b.doubleAttemptsByPlayer[1]++;b.doubleHitsByPlayer[1]++;b.visits[1].push(r.score+' ✓');b.remaining[1]=0;irlShowBotDarts(r.score,true);finishLeg(1);return}
+ const bust=r.score>=old-1;b.remaining[1]=bust?old:old-r.score;b.total[1]+=bust?0:r.score;irlRecordFirstNine(1,bust?0:r.score,3);b.darts[1]+=3;if(irlCheckoutPossible(old)){const botAttempts=Math.random()<.55?1:Math.random()<.75?2:0;b.doubleAttemptsByPlayer[1]+=botAttempts;}b.visits[1].push(bust?'BUST':r.score);irlShowBotDarts(r.score,false);drawIRL();
+ el('irlNotice').textContent=bust?b.bot.name+' busts! Your throw.':b.bot.name+' scores '+r.score+'. Your throw.';
+}
+// IRL checkout tracking: collect actual darts rather than inferring attempts from score.
+function irlCheckoutPossible(n){return n>=2&&n<=170&&![169,168,166,165,163,162,159].includes(n)}
+function irlAskCheckout(details,onDone){
+ const shade=el('irlCheckoutPrompt'),title=el('irlCheckoutPromptTitle');
+ const darts=el('irlCheckoutDarts'),doubles=el('irlCheckoutDoubles');
+ const finishChoices=el('irlFinishChoices'),finishYes=el('irlFinishYes'),finishNo=el('irlFinishNo');
+ const confirm=el('irlCheckoutConfirm'),error=el('irlCheckoutPromptError');
+ const dartsLabel=darts.closest('label');
+ let finished=false;
+ shade.hidden=false;error.textContent='';doubles.value='0';darts.value='3';
+ function showDetails(isFinish){
+  finished=isFinish;finishChoices.hidden=true;confirm.hidden=false;
+  dartsLabel.hidden=!finished;
+  doubles.value=finished?'1':'0';
+  title.textContent=finished?'Checkout completed — confirm your darts':'How many darts did you throw at a double?';
+ }
+ if(details.canFinish){
+  title.textContent='Did you finish on a double?';
+  finishChoices.hidden=false;confirm.hidden=true;dartsLabel.hidden=true;
+  finishYes.onclick=()=>showDetails(true);
+  finishNo.onclick=()=>showDetails(false);
+ }else showDetails(false);
+ confirm.onclick=()=>{
+  const used=Number(darts.value),attempts=Number(doubles.value);
+  if(!Number.isInteger(attempts)||attempts<0||attempts>3||(finished&&(!Number.isInteger(used)||used<1||used>3||attempts<1||attempts>used))){error.textContent='Choose valid dart counts (0–3 attempts, 1–3 darts to finish).';return}
+  error.textContent='';shade.hidden=true;onDone({used:finished?used:3,attempts,finished});
+ };
+}
+el('irlSubmit').onclick=()=>{
+ const b=irlMatch;if(!b)return;const raw=el('irlVisit').value;const score=Number(raw);if(raw.trim()===''||!Number.isInteger(score)||score<0||score>180){el('irlNotice').textContent='Enter a whole-number score between 0 and 180.';return}
+ const old=b.remaining[0];
+ const possibleFinish=score===old&&irlCheckoutPossible(old);
+ const invalidFinish=score===old&&!irlCheckoutPossible(old);
+ const automaticBust=score>old||old-score===1||invalidFinish;
+ const apply=(info)=>{
+  const checkout=possibleFinish&&!!info.finished;
+  const bust=automaticBust||(score===old&&!checkout);
+  b.remaining[0]=checkout?0:bust?old:old-score;b.total[0]+=bust?0:score;
+  irlRecordFirstNine(0,bust?0:score,info.used);b.darts[0]+=info.used;b.visits[0].push(bust?'BUST':score+(checkout?' ✓':''));
+  b.doubleAttemptsByPlayer[0]+=info.attempts;
+  b.doubleHitsByPlayer[0]+=(checkout?1:0);
+  el('irlVisit').value='';drawIRL();
+  if(checkout){finishLeg(0);return}
+  el('irlNotice').textContent=bust?'Bust! Score restored.':'You scored '+score+'.';
+  setTimeout(()=>{if(irlMatch===b)botTurn()},450);
+ };
+ if(irlCheckoutPossible(old))irlAskCheckout({canFinish:possibleFinish},apply);
+ else apply({used:3,attempts:0,finished:false});
+};
+document.querySelectorAll('[data-irl-key]').forEach(button=>button.addEventListener('click',()=>{const input=el('irlVisit'),key=button.dataset.irlKey;let value=input.value;if(key==='clear')value='';else if(key==='back')value=value.slice(0,-1);else if(value.length<3)value+=key;input.value=value;input.focus();}));
+el('irlVisit').addEventListener('input',()=>{const input=el('irlVisit');input.value=input.value.replace(/[^0-9]/g,'').slice(0,3)});
+el('irlVisit').addEventListener('keydown',e=>{if(e.key==='Enter')el('irlSubmit').click()});
+el('irlBack').onclick=()=>{if(!confirm('Leave this match? The current leg will restart next time.'))return;irlMatch=null;el('irlMatch').hidden=true;showMode('career');careerRender()};
+})();
+</script>
+<style id="irlKeypadStyle">
+#irlMatch .irlWrap{max-width:950px}#irlMatch .irlEntry{max-width:420px;margin:14px auto;padding:18px 20px}#irlMatch #irlVisit{font-size:48px;font-weight:900;letter-spacing:3px;height:76px;box-sizing:border-box;appearance:textfield}#irlMatch #irlVisit::-webkit-inner-spin-button,#irlMatch #irlVisit::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}#irlMatch .irlKeypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}#irlMatch .irlKeypad button{min-height:57px;background:#2b3447;color:white;font-size:25px;font-weight:900;border:1px solid #53617a;border-radius:9px;touch-action:manipulation}#irlMatch .irlKeypad button:active{background:#557a41;transform:scale(.98)}#irlMatch .irlKeypad .irlKeyUtility{font-size:15px;background:#3c344b}#irlMatch .irlCheckout{display:flex;align-items:center;justify-content:center;gap:9px;margin:12px 0;color:#e9f2f8}#irlMatch .irlCheckout input{width:20px;height:20px;accent-color:#b8f35a}#irlMatch .irlScoreConfirm{width:100%;min-height:55px;font-size:18px}#irlMatch .irlScores{margin:10px 0}#irlMatch .irlScore strong{font-size:clamp(42px,8vw,78px)}@media(min-width:900px){#irlMatch .irlWrap{max-width:1080px}#irlMatch .irlScores{grid-template-columns:1fr 1fr}}
+</style>
+
+<style id="irlScorepadVisibilityFix">
+/* IRL match is a dedicated scoring screen, never the digital dartboard. */
+html.irl-scoring-active #game501,html.irl-scoring-active #d3dOverlay,html.irl-scoring-active #dAiStage,html.irl-scoring-active #dMeterWrap{display:none!important}
+html.irl-scoring-active #irlMatch{display:block!important;visibility:visible!important;opacity:1!important;z-index:999999!important}
+#irlMatch[hidden]{display:none!important}
+#irlMatch .irlEntry{display:block!important;visibility:visible!important}
+#irlMatch .irlKeypad{display:grid!important}
+</style>
+<script id="irlScorepadVisibilityLogic">
+(function(){
+ const screen=document.getElementById('irlMatch');
+ if(!screen)return;
+ function sync(){
+  const active=!screen.hidden;
+  document.documentElement.classList.toggle('irl-scoring-active',active);
+  if(active){
+   const digital=document.getElementById('game501');
+   if(digital)digital.style.display='none';
+  }
+ }
+ new MutationObserver(sync).observe(screen,{attributes:true,attributeFilter:['hidden']});
+ sync();
+ // Entering an IRL match always uses the scorepad, not the digital throwing screen.
+ const play=document.getElementById('careerPlay');
+ if(play)play.addEventListener('click',function(){requestAnimationFrame(sync)},true);
+ const back=document.getElementById('irlBack');
+ if(back)back.addEventListener('click',()=>{document.documentElement.classList.remove('irl-scoring-active')});
+ // On-screen keypad works independently of the computer keyboard.
+ document.querySelectorAll('#irlMatch [data-irl-key]').forEach(button=>{
+  button.addEventListener('pointerdown',e=>e.stopPropagation(),true);
+ });
+})();
+</script>
+<script id="careerPerformanceDashboard">
+(function(){
+ const original=careerRender;
+ careerRender=function(){
+  original();
+  if(!career)return;
+  const history=Array.isArray(career.matchPerformance)?career.matchPerformance:[];
+  const valid=history.filter(m=>Number.isFinite(m.points)&&Number.isFinite(m.darts)&&m.darts>0);
+  const last=valid[valid.length-1];
+  const darts=valid.reduce((n,m)=>n+m.darts,0),points=valid.reduce((n,m)=>n+m.points,0);
+  const set=(id,value)=>{const e=document.getElementById(id);if(e)e.textContent=value};
+  set('careerLastAverage',last?(last.average??(last.points*3/last.darts)).toFixed(2):'—');
+  set('careerOverallAverage',darts?(points*3/darts).toFixed(2):'—');
+  set('careerOverallDetail',valid.length?valid.length+' recorded match'+(valid.length===1?'':'es'):'No recorded match averages yet');
+  const recent=Array.isArray(career.recentResults)?career.recentResults:[];
+  const results=recent.length?recent.slice(-5):[];
+  const record=career.record||{wins:0,losses:0};
+  set('careerFormValue',results.length?results.map(w=>w?'W':'L').join(' · '):'—');
+  set('careerFormDetail',results.length?'Last '+results.length+' matches · '+results.filter(Boolean).length+' wins':(record.wins+record.losses?'Form tracking starts with your next match':'No matches played yet'));
+ };
+ const previousAfter=careerAfterMatch;
+ careerAfterMatch=function(won){
+  if(career){if(!Array.isArray(career.recentResults))career.recentResults=[];career.recentResults.push(!!won);if(career.recentResults.length>20)career.recentResults.shift();}
+  return previousAfter(won);
+ };
+})();
+</script>
+<style id="irlBroadcastRedesign">
+#irlMatch{box-sizing:border-box;background:linear-gradient(125deg,#201e27 0%,#30232c 50%,#171c20 100%)!important;padding:clamp(10px,2vw,28px)!important}
+#irlMatch *{box-sizing:border-box}#irlMatch .irlWrap.irlBroadcast{max-width:1320px!important;width:100%;margin:0 auto}
+#irlMatch .irlTop{min-height:64px;display:flex;justify-content:space-between;gap:14px;align-items:center;border-radius:16px 16px 0 0;background:#181920;padding:12px 18px;margin:0!important}
+#irlMatch #irlBack{background:#39343e;color:#fff;border:1px solid #625564;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:800}
+#irlMatch .irlMatchHeader{display:flex;flex-direction:column;text-align:center;gap:5px;min-width:0}#irlMatch #irlEventTitle{font-size:12px;color:#b7b5c0;white-space:normal}#irlMatch #irlLegLabel{font-size:16px;color:#fff;letter-spacing:.05em}#irlMatch .irlLive{font-size:11px;font-weight:900;color:#b3f178;white-space:nowrap}
+#irlMatch .irlBroadcastGrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);min-height:610px;background:#2b2730;border-radius:0 0 16px 16px;overflow:hidden}
+#irlMatch .irlControlPanel{display:flex;flex-direction:column;min-width:0;background:linear-gradient(150deg,#473640,#25232d 65%)}
+#irlMatch .irlScores{display:grid!important;grid-template-columns:1fr 1fr!important;gap:0!important;margin:0!important}
+#irlMatch .irlScore{min-width:0;min-height:260px;background:transparent!important;border:0!important;border-right:1px solid #ffffff20!important;border-radius:0!important;padding:20px 10px 13px!important;text-align:center}
+#irlMatch .irlScore.active{background:#ffffff09!important;box-shadow:inset 0 4px #f47a4b}#irlMatch .irlName{font-size:clamp(13px,1.6vw,19px);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#irlMatch .irlScore strong{font-size:clamp(58px,8vw,106px)!important;line-height:1.2;color:white!important;font-variant-numeric:tabular-nums}
+#irlMatch .irlLegCounter{font-weight:900;color:#e7b1f1;background:#65496d;display:inline-block;padding:5px 12px;border-radius:6px}
+#irlMatch .irlScore small{display:block;margin-top:12px;font-weight:800;color:#ff9874;font-size:13px}
+#irlMatch .irlVisitHistory{margin-top:14px;font-size:11px;color:#c9bdc7}#irlMatch .irlVisitHistory span{color:#ff9874;font-weight:800}#irlMatch .irlVisitHistory p{margin:4px 0;overflow-wrap:anywhere;line-height:1.5}
+#irlMatch .irlEntry{display:block!important;max-width:none!important;margin:0!important;padding:18px 20px 22px!important;background:linear-gradient(135deg,#f57845,#e85737)!important;border:0!important;border-radius:0!important;color:#fff!important;flex:1}
+#irlMatch .irlHint{font-size:13px;font-weight:900;color:white!important;letter-spacing:.04em;margin:0 0 10px}
+#irlMatch .irlInputRow{display:flex;gap:8px;align-items:stretch}#irlMatch #irlVisit{width:100%;min-width:0;flex:1;height:66px!important;background:white!important;color:#23232a!important;border:0!important;border-radius:9px!important;font-size:37px!important;text-align:center!important}
+#irlMatch #irlSubmit{width:38%;min-height:66px!important;background:#24232b!important;color:#fff!important;border:0!important;border-radius:9px!important;font-size:15px!important;font-weight:900;cursor:pointer}
+#irlMatch .irlKeypad{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:7px!important;margin:12px 0!important}
+#irlMatch .irlKeypad button{min-height:46px!important;background:#fff!important;color:#24232a!important;border:0!important;border-radius:8px!important;font-size:21px!important;font-weight:900;cursor:pointer}
+#irlMatch .irlKeypad button.irlKeyUtility{background:#3b343b!important;color:#fff!important;font-size:13px!important}#irlMatch .irlKeypad button:active{transform:scale(.96)}
+#irlMatch .irlCheckout{display:flex;justify-content:flex-start;align-items:center;gap:9px;margin:10px 0;color:white;font-size:13px;font-weight:700}#irlMatch .irlCheckout input{accent-color:#25232d;width:20px;height:20px}
+#irlMatch .irlNotice{font-weight:700;color:#fff!important;margin:8px 0 0!important;font-size:13px}
+#irlMatch .irlBoardPanel{background:radial-gradient(circle at 45% 40%,#34343c,#1c2027 75%);padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:12px;min-width:0}
+#irlMatch .irlBoardHeading{text-align:center;display:flex;flex-direction:column;gap:3px}#irlMatch .irlBoardHeading span{font-size:25px;color:#f279b2;font-weight:950;letter-spacing:.1em}#irlMatch .irlBoardHeading strong{font-size:12px;color:#ddd}
+#irlMatch .irlBoardPicture{width:min(100%,390px);aspect-ratio:1;position:relative;display:grid;place-items:center}
+#irlMatch .irlBoardRings{width:93%;aspect-ratio:1;border-radius:50%;border:15px solid #121518;box-shadow:0 7px 20px #0009,0 0 0 2px #777;display:grid;place-items:center;background:repeating-conic-gradient(from -9deg,#eee5ce 0deg 18deg,#202427 18deg 36deg);position:relative;overflow:hidden}
+#irlMatch .irlBoardRings:before,#irlMatch .irlBoardRings:after{content:'';position:absolute;border-radius:50%;pointer-events:none}#irlMatch .irlBoardRings:before{inset:6%;border:12px solid #bc2735;box-shadow:0 0 0 1px #eee}#irlMatch .irlBoardRings:after{inset:33%;border:12px solid #168b57;box-shadow:0 0 0 1px #eee}
+#irlMatch .irlBoardInner{width:20%;height:20%;border-radius:50%;background:#eee5ce;display:grid;place-items:center;z-index:2}#irlMatch .irlBull{width:48%;aspect-ratio:1;border-radius:50%;background:#b62838;border:6px solid #1b985b}
+#irlMatch .irlBoardNumbers{position:absolute;top:-3px;left:50%;transform:translateX(-50%);font-size:21px;font-weight:900;z-index:4}
+#irlMatch .irlBoardFooter{text-align:center;font-weight:900;color:#f58b65;font-size:12px;letter-spacing:.04em}#irlMatch .irlBoardFooter span{color:#fff;padding:0 6px}#irlMatch .irlBoardTip{font-size:12px;color:#aaa;text-align:center}
+@media(max-width:760px){#irlMatch .irlBroadcastGrid{grid-template-columns:1fr}#irlMatch .irlBoardPanel{display:none}#irlMatch .irlScore{min-height:210px}#irlMatch .irlTop{padding:10px}#irlMatch .irlLive{display:none}#irlMatch .irlEntry{padding:14px!important}#irlMatch .irlKeypad button{min-height:51px!important}}
+</style>
+<div id="irlCheckoutPrompt" hidden role="dialog" aria-modal="true" aria-labelledby="irlCheckoutPromptTitle">
+ <div class="irlCheckoutPromptCard"><h2 id="irlCheckoutPromptTitle">Checkout opportunity</h2><p>Enter what actually happened during your turn.</p>
+ <label>Darts used to finish <select id="irlCheckoutDarts"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+ <label>Darts thrown at a double <select id="irlCheckoutDoubles"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+ <div id="irlFinishChoices" hidden><button id="irlFinishYes" type="button">✓ YES, I FINISHED</button><button id="irlFinishNo" type="button">NO, BUST</button></div><p id="irlCheckoutPromptError" aria-live="polite"></p><button id="irlCheckoutConfirm" type="button">CONFIRM &amp; CONTINUE</button></div></div>
+<style id="irlCheckoutPromptStyles">
+#irlCheckoutPrompt:not([hidden]){position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#070a10d9;padding:20px}
+#irlCheckoutPrompt .irlCheckoutPromptCard{width:min(100%,420px);background:#29242f;color:#fff;padding:26px;border-radius:18px;border:1px solid #8b6c8d;box-shadow:0 20px 80px #000b}
+#irlCheckoutPrompt h2{margin:0 0 10px;font-size:22px}#irlCheckoutPrompt p{color:#d8cdd9}#irlCheckoutPrompt label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;font-weight:700}#irlCheckoutPrompt label[hidden]{display:none}#irlCheckoutPrompt select{background:#fff;color:#17171d;border:0;border-radius:7px;padding:10px;font-size:18px}#irlCheckoutPrompt button{width:100%;padding:15px;background:#a7e34e;border:0;border-radius:9px;color:#182119;font-weight:900;cursor:pointer}#irlCheckoutPromptError{color:#ffb5ad!important}
+#irlMatch .irlCheckoutHelp{font-size:12px;color:white;margin:10px 0;opacity:.92}#irlFinishChoices:not([hidden]){display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}#irlFinishChoices button{font-size:13px;padding:14px 8px}#irlFinishNo{background:#4d4253!important;color:white!important}#irlCheckoutConfirm[hidden]{display:none!important}
+</style>
+<style id="irlBoardAndStatsFix">
+#irlMatch .irlBoardPicture{width:min(100%,430px)!important;aspect-ratio:1!important;display:block!important;height:auto!important;position:relative!important}
+#irlMatch .irlBoardPicture svg{display:block;width:100%;height:100%;filter:drop-shadow(0 8px 12px #0009)}
+#irlMatch .irlExtraStats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0 8px}
+#irlMatch .irlExtraStats>div{padding:7px 4px;background:#ffffff0a;border-radius:6px;min-width:0}
+#irlMatch .irlExtraStats span{display:block;color:#f0a188;font-size:10px;font-weight:800;letter-spacing:.04em}
+#irlMatch .irlExtraStats b{display:block;font-size:15px;color:white;margin-top:3px}
+#irlMatch .irlBotDarts{text-align:center;font-size:14px;font-weight:800;color:#f4db80;min-height:22px}
+#irlMatch .irlBoardPanel{display:flex!important}
+@media(max-width:760px){#irlMatch .irlBroadcastGrid{grid-template-columns:1fr!important}#irlMatch .irlBoardPanel{display:flex!important;padding:12px!important}#irlMatch .irlBoardPicture{max-width:320px}#irlMatch .irlScore{min-height:unset!important;padding:10px 5px!important}#irlMatch .irlExtraStats{gap:4px}#irlMatch .irlExtraStats span{font-size:9px}#irlMatch .irlExtraStats b{font-size:12px}}
+</style><style id="careerPerformanceStyle">.careerPerformance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:16px 0 22px}.careerPerformance .careerTile{min-width:0}.careerPerformance strong{font-size:clamp(22px,3vw,34px)!important;overflow-wrap:anywhere}@media(max-width:650px){.careerPerformance{grid-template-columns:1fr}}</style></body></html>
