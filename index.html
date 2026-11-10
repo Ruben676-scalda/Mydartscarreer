@@ -340,10 +340,10 @@ body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gra
  </div></section>
  <p class="arenaFooter">501 • 3 pijlen per beurt • Double-out • Bust = score terug naar begin van de beurt</p>
 </section>
-<section id="careerMode">
+<section id="careerMode" class="career-not-started">
 <div class="careerNav"><h1>🏆 DARTS ARENA <span style="color:#68e9ce">CAREER</span></h1><button class="btn alt" id="careerHome">⌂ Home</button></div>
 <div id="careerSetup" class="careerPanel careerSetup"><h2>Start your career</h2><p class="careerMuted">Create a player or take control of one of the 128 PDC players.</p><label>Career type<select id="careerType"><option value="custom">Create your own player</option><option value="pro">Play as a PDC professional</option></select></label><div id="careerCustomFields"><label>Player name<input id="careerName" maxlength="36" placeholder="Your name"></label><label>Country<select id="careerCountry"><option>Netherlands</option><option>England</option><option>Scotland</option><option>Wales</option><option>Belgium</option><option>Germany</option><option>Other</option></select></label><label>Nickname<input id="careerNickname" maxlength="32" placeholder="The Challenger"></label></div><div id="careerProFields" style="display:none"><label>Choose player<select id="careerPro"></select></label></div><div class="careerActions"><button id="careerCreate">Create career</button><button id="careerContinue" style="display:none">Continue saved career</button></div><p id="careerSetupMsg" class="careerMuted"></p></div>
-<div id="careerDashboard" style="display:none"><div class="careerHelp">🏟️ <b>2026 PDC Career Calendar</b> · 34 Players Championships (floor events), 15 European Tour events and major championships. Prize money is paid for your finishing round. Rankings are simulated; dates are approximate within the game.</div><div class="careerFilters"><button class="btn alt" type="button" data-filter="all">All events</button><button class="btn alt" type="button" data-filter="floor">Floor</button><button class="btn alt" type="button" data-filter="euro">European Tour</button><button class="btn alt" type="button" data-filter="major">Majors</button></div><div class="careerGrid"><div class="careerTile"><small>PLAYER</small><strong id="careerPlayerLabel">–</strong><p id="careerNick" class="careerMuted"></p></div><div class="careerTile"><small>WORLD RANKING</small><strong id="careerRank">#128</strong><p id="careerSeason" class="careerMuted"></p></div><div class="careerTile"><small>CAREER EARNINGS</small><strong id="careerMoney">£0</strong><p id="careerSponsors" class="careerMuted"></p></div><div class="careerTile"><small>CAREER RECORD</small><strong id="careerRecord">0–0</strong><p id="careerTitles" class="careerMuted"></p></div></div><div class="careerPanel"><h2>Next tournament</h2><div id="careerNextEvent" class="careerEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button id="careerTrain">💪 Train (2 points)</button><button id="careerSponsor">🤝 Sign sponsor</button><button id="careerSave">💾 Save</button></div><p id="careerMessage" class="careerMuted"></p></div><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div id="careerCalendar" class="careerScroll"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div id="careerRanking" class="careerScroll"></div></div></div><div class="careerTwo"><div class="careerPanel"><h2>📈 Player development</h2><div id="careerSkills"></div><p class="careerMuted">Training improves your match simulation and timing accuracy.</p></div><div class="careerPanel"><h2>📰 News & career history</h2><div id="careerNews" class="careerScroll"></div></div></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input type="file" id="careerImportFile" accept=".json,application/json" style="display:none"></div></div></section></main><script>
+<div id="careerDashboard" style="display:none"><div class="careerHelp">🏟️ <b>2026 PDC Career Calendar</b> · 34 Players Championships (floor events), 15 European Tour events and major championships. Prize money is paid for your finishing round. Rankings are simulated; dates are approximate within the game.</div><div class="careerFilters"><button class="btn alt" type="button" data-filter="all">All events</button><button class="btn alt" type="button" data-filter="floor">Floor</button><button class="btn alt" type="button" data-filter="euro">European Tour</button><button class="btn alt" type="button" data-filter="major">Majors</button></div><div class="careerGrid"><div class="careerTile"><small>PLAYER</small><strong id="careerPlayerLabel">–</strong><p id="careerNick" class="careerMuted"></p></div><div class="careerTile"><small>WORLD RANKING</small><strong id="careerRank">#128</strong><p id="careerSeason" class="careerMuted"></p></div><div class="careerTile"><small>CAREER EARNINGS</small><strong id="careerMoney">£0</strong><p id="careerSponsors" class="careerMuted"></p></div><div class="careerTile"><small>CAREER RECORD</small><strong id="careerRecord">0–0</strong><p id="careerTitles" class="careerMuted"></p></div></div><div class="careerPanel"><h2>Next tournament</h2><div id="careerNextEvent" class="careerEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button id="careerTrain">💪 Train (2 points)</button><button id="careerSponsor">🤝 Sign sponsor</button><button id="careerSave">💾 Save</button></div><p id="careerMessage" class="careerMuted"></p></div><div class="careerPanel careerTournamentPanel"><div class="careerTournamentHeader"><div><small>CURRENT CAREER EVENT · LIVE DRAW</small><h2 id="careerTournamentTitle">Current tournament draw</h2><p id="careerTournamentSubtitle"></p></div><span id="careerTournamentStatus" class="careerTournamentBadge">UPCOMING</span></div><div id="careerTournamentProgress" class="careerTournamentProgress"></div><div id="careerTournamentBracket" class="careerTournamentBracket"></div><div id="careerTournamentFooter" class="careerTournamentFooter"></div></div><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div id="careerCalendar" class="careerScroll"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div id="careerRanking" class="careerScroll"></div></div></div><div class="careerTwo"><div class="careerPanel"><h2>📈 Player development</h2><div id="careerSkills"></div><p class="careerMuted">Training improves your match simulation and timing accuracy.</p></div><div class="careerPanel"><h2>📰 News & career history</h2><div id="careerNews" class="careerScroll"></div></div></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input type="file" id="careerImportFile" accept=".json,application/json" style="display:none"></div></div></section></main><script>
 // Order of Merit names/ranks reflect the published live table around Nov 5, 2026.
 // Country and age are included for the gameplay data.
 const roster=[
@@ -884,7 +884,7 @@ function tSetWinner(ri,mi,winner,score){
 function tSimulate(m){
  const difference=dRank(m.b)-dRank(m.a);
  // 20 rankingplaatsen verschil geeft ongeveer 75% winstkans aan de hoger geplaatste speler.
- const chance=1/(1+Math.exp(-difference/18));
+ const chance=Math.max(.18,Math.min(.82,1/(1+Math.exp(-(difference+(Math.random()-.5)*38)/36))));
  const winner=Math.random()<chance?m.a:m.b;
  const target=(tState.legs+1)/2;
  const loserLegs=Math.floor(Math.random()*target);
@@ -1040,8 +1040,26 @@ function careerRanked(){return [...career.players].sort((a,b)=>b.money-a.money||
 function careerPlayer(){return career.players.find(p=>p.id===career.playerId)}
 function careerLog(t){career.news.unshift('Season '+career.season+' · '+t);career.news=career.news.slice(0,80)}
 function careerSkill(id){const p=career.players.find(p=>p.id===id);return p?.skill||60}
-function careerChance(a,b){return Math.max(.07,Math.min(.93,1/(1+Math.exp((careerSkill(b)-careerSkill(a))/11))))}
-function careerSimResult(a,b){return Math.random()<careerChance(a,b)?a:b}
+// Rankings set baseline ability; current form, match-day variance and upsets decide results.
+function careerPlayerForm(id){const p=career?.players?.find(x=>x.id===id);return p ? (Number.isFinite(p.form)?p.form:(id===career.playerId?(career.form||0):0)) : 0}
+function careerChance(a,b){
+ const skillGap=careerSkill(a)-careerSkill(b);
+ const formGap=careerPlayerForm(a)-careerPlayerForm(b);
+ const dayVariance=(Math.random()+Math.random()+Math.random()-1.5)*15;
+ const strength=skillGap*.60+formGap*2.5+dayVariance;
+ return Math.max(.16,Math.min(.84,1/(1+Math.exp(-strength/12))));
+}
+function careerUpdateForm(id,won){
+ const p=career?.players?.find(x=>x.id===id);if(!p)return;
+ const old=careerPlayerForm(id);
+ p.form=Math.max(-5,Math.min(5,old+(won?1:-1)+(Math.random()<.16?(won?1:-1):0)));
+ if(id===career.playerId)career.form=p.form;
+}
+function careerSimResult(a,b){
+ const winner=Math.random()<careerChance(a,b)?a:b;
+ careerUpdateForm(a,winner===a);careerUpdateForm(b,winner===b);
+ return winner;
+}
 function careerChooseOpponents(event){const player=careerPlayer(),ranked=careerRanked(),type=careerEventType(event);const rank=ranked.findIndex(p=>p.id===player.id)+1;
  const euroRank=[...career.players].sort((a,b)=>(b.euroMoney||0)-(a.euroMoney||0)||a.seed-b.seed).findIndex(p=>p.id===player.id)+1;
  const floorRank=[...career.players].sort((a,b)=>(b.floorMoney||0)-(a.floorMoney||0)||a.seed-b.seed).findIndex(p=>p.id===player.id)+1;
@@ -1050,9 +1068,9 @@ function careerChooseOpponents(event){const player=careerPlayer(),ranked=careerR
  const pool=ranked.slice(0,Math.max(event[1],64)).filter(p=>p.id!==player.id);return pool[Math.floor(Math.random()*pool.length)]||null;
 }
 function careerAward(winnerId,event,round){let p=career.players.find(x=>x.id===winnerId);if(!p)return;let reward=Math.round(event[2]*Math.pow(.5,Math.max(0,Math.log2(event[1])-round-1)));p.money+=reward; if(p.id===career.playerId){career.earnings+=reward;careerLog('Earned '+careerMoneyFmt(reward)+' at '+event[0])}}
-function careerAdvance(){const event=careerEvents[career.eventIndex];careerSimOtherResults(event);career.eventIndex++;career.current=null;careerPending=null;if(career.eventIndex>=careerEvents.length){careerLog('Season '+career.season+' finished');career.season++;career.eventIndex=0;career.players.forEach(p=>{p.money=Math.round(p.money*.62);p.floorMoney=0;p.euroMoney=0;p.seasonMoney=0;p.skill=Math.max(35,Math.min(98,p.skill+(Math.random()-.5)*2))});career.form=0;career.training=0;careerLog('New season started. Tour rankings reset.')}careerSave();careerRender();}
-function careerStartEvent(){if(!career||careerPending)return;let event=careerEvents[career.eventIndex];let opp=careerChooseOpponents(event);if(!opp){careerLog('Not qualified for '+event[0]);careerAdvance();return}career.current={opponent:opp.id,round:0,wins:0,played:0};careerLog('Entered '+event[0]+' vs '+opp.name);careerSave();careerRender()}
-function careerAfterMatch(won){const event=careerEvents[career.eventIndex],c=career.current;if(!c)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===c.opponent);c.played++;career.record[won?'wins':'losses']++;career.form=Math.max(-5,Math.min(5,career.form+(won?1:-1)));
+function careerAdvance(){const event=careerEvents[career.eventIndex];careerSimOtherResults(event);career.eventIndex++;career.current=null;careerPending=null;if(career.eventIndex>=careerEvents.length){careerLog('Season '+career.season+' finished');career.season++;career.eventIndex=0;career.players.forEach(p=>{p.money=Math.round(p.money*.62);p.floorMoney=0;p.euroMoney=0;p.seasonMoney=0;p.form=0;p.skill=Math.max(35,Math.min(98,p.skill+(Math.random()-.5)*2))});career.form=0;career.training=0;careerLog('New season started. Tour rankings reset.')}careerSave();careerRender();}
+function careerStartEvent(){if(!career||careerPending)return;let event=careerEvents[career.eventIndex];let opp=careerChooseOpponents(event);if(!opp){careerLog('Not qualified for '+event[0]);careerAdvance();return}career.current={opponent:opp.id,round:0,wins:0,played:0,history:[]};careerLog('Entered '+event[0]+' vs '+opp.name);careerSave();careerRender()}
+function careerAfterMatch(won){const event=careerEvents[career.eventIndex],c=career.current;if(!c)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===c.opponent);c.played++;if(!Array.isArray(c.history))c.history=[];c.history.push({round:c.round,opponent:opp?.name||'Opponent',won:!!won});career.record[won?'wins':'losses']++;careerUpdateForm(career.playerId,!!won);careerUpdateForm(c.opponent,!won);
  if(won){c.round++;c.wins++;career.training++;careerLog('Beat '+opp.name+' at '+event[0]);if(c.round>=Math.ceil(Math.log2(event[1]))){career.titles++;careerLog('🏆 CHAMPION · '+event[0]);careerPayoutPrize(player.id,event,c.round);careerAdvance();return;}const next=careerChooseOpponents(event);c.opponent=next?.id||opp.id;careerSave();careerRender();}
  else{careerLog('Lost to '+opp.name+' at '+event[0]);careerPayoutPrize(player.id,event,c.round);careerAdvance();}
 }
@@ -1075,7 +1093,7 @@ function careerPlay(){
  }
  if(careerPending){careerPending=null;careerMatchCompleted=false;}
 if(!career.current)careerStartEvent();if(!career.current)return;const opp=career.players.find(p=>p.id===career.current.opponent),player=careerPlayer();careerPending=true;careerMatchCompleted=false;$('dCareerReturn').hidden=true;$('dMatchContext').textContent='CAREER MATCH · '+careerEvents[career.eventIndex][0];$('dPlayerSelect').innerHTML='';$('dOpponentSelect').innerHTML='';const option=(el,p)=>{let o=document.createElement('option');o.value=p.name;o.textContent=p.name;el.appendChild(o)};option($('dPlayerSelect'),player);option($('dOpponentSelect'),opp);$('dLegFormat').value=String(careerEvents[career.eventIndex][3]);$('dLegFormat').dispatchEvent(new Event('change'));showMode('501');$('dStart').textContent='Career match';dSetPortrait(0);dSetPortrait(1);dStart();}
-function careerSimulate(){if(!career||dMatch)return;if(!career.current)careerStartEvent();if(!career.current)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===career.current.opponent);const won=careerSimResult(player.id,opp.id)===player.id;careerAfterMatch(won)}
+function careerSimulate(){if(!career)return;if(dMatch){if(careerPending){$('careerMessage').textContent='Finish your current career match before simulating.';return;}dStopMeter();$('dReset').click();}if(!career.current)careerStartEvent();if(!career.current)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===career.current.opponent);const won=careerSimResult(player.id,opp.id)===player.id;careerAfterMatch(won)}
 let careerPhotoRequest=0;
 async function careerSetDashboardPhoto(name){
  const target=$('careerPlayerLabel');if(!target)return;
@@ -1087,7 +1105,7 @@ async function careerSetDashboardPhoto(name){
  const img=new Image();img.alt='Foto van '+name;img.loading='lazy';img.onload=()=>{if(request===careerPhotoRequest)holder.replaceChildren(img)};img.src=url;
 }
 function careerRender(){if(!career)return;$('careerSetup').style.display='none';$('careerDashboard').style.display='block';const player=careerPlayer(),ranked=careerRanked(),rank=ranked.find(p=>p.id===player.id).position,event=careerEvents[career.eventIndex],cur=career.current;$('careerPlayerLabel').textContent=player.name;careerSetDashboardPhoto(player.name);$('careerNick').textContent=player.nickname||'Professional darter';$('careerRank').textContent='#'+rank;$('careerSeason').textContent='Season '+career.season;$('careerMoney').textContent=careerMoneyFmt(career.earnings);$('careerSponsors').textContent=career.sponsor?'Sponsor: '+career.sponsor:'No sponsor yet';$('careerRecord').textContent=career.record.wins+'–'+career.record.losses;$('careerTitles').textContent=career.titles+' career titles';$('careerNextEvent').innerHTML='<strong>'+careerSafe(event[0])+'</strong><p>Field: '+event[1]+' · Winner prize: '+careerMoneyFmt(event[2])+' · Best of '+event[3]+' legs · '+careerSafe(careerEventType(event))+'</p>'+(cur?'<p>Current round '+(cur.round+1)+' · Opponent: '+careerSafe(career.players.find(p=>p.id===cur.opponent)?.name||'TBA')+'</p>':'<p>Ready to enter the event</p>');$('careerCalendar').innerHTML=careerEvents.map((e,i)=>'<div data-event-type="'+(e[4]==='floor'?'floor':e[4]==='euro'?'euro':'major')+'" class="careerEvent '+(i<career.eventIndex?'done':'')+'">'+(i===career.eventIndex?'▶ ':'')+careerSafe(e[0])+' <small>· '+e[1]+' players · Winner '+careerMoneyFmt(e[2])+'</small></div>').join('');$('careerRanking').innerHTML='<table class="careerTable"><thead><tr><th>#</th><th>Player</th><th>Ranking £</th></tr></thead><tbody>'+ranked.map(p=>'<tr'+(p.id===player.id?' style="background:#23506a"':'')+'><td>'+p.position+'</td><td>'+careerSafe(p.name)+'</td><td>'+careerMoneyFmt(p.money)+'</td></tr>').join('')+'</tbody></table>';$('careerSkills').innerHTML=['Scoring','Finishing','Consistency'].map((n,i)=>'<div style="margin:13px 0">'+n+' <b style="float:right">'+Math.round(player.skill+(i===1?-3:i===2?-1:0))+'/99</b><div style="height:9px;background:#0b1629;border-radius:10px;overflow:hidden;clear:both"><div style="height:100%;background:#34c89b;width:'+Math.min(99,player.skill)+'%"></div></div></div>').join('')+'<p>Training points: '+career.training+' · Form: '+career.form+'</p>';$('careerNews').innerHTML=career.news.map(n=>'<p style="border-bottom:1px solid #35506c;padding-bottom:9px">'+careerSafe(n)+'</p>').join('');$('careerMessage').textContent='Career autosaves in this browser. Your original 501 and tournament modes are still available.';}
-function careerCreate(){const pro=$('careerType').value==='pro',picked=roster.find(p=>p.name===$('careerPro').value),name=pro?picked.name:$('careerName').value.trim();if(!name){$('careerSetupMsg').textContent='Enter a player name.';return}if(!pro&&roster.some(p=>p.name.toLowerCase()===name.toLowerCase())){$('careerSetupMsg').textContent='Choose a different name from the existing pros.';return}let players=roster.map((p,i)=>({id:'p'+i,name:p.name,nickname:p.nickname,seed:i+1,money:Math.round(17000+3100000*Math.pow((128-i)/128,5)),skill:Math.round(47+49*Math.pow((128-i)/128,.75))}));let playerId;if(pro){playerId='p'+roster.indexOf(picked)}else{playerId='custom';players.push({id:playerId,name,nickname:$('careerNickname').value.trim()||'The Challenger',seed:129,money:0,skill:56})}career={version:1,season:1,eventIndex:0,playerId,players,earnings:0,titles:0,record:{wins:0,losses:0},training:0,form:0,sponsor:'',news:[],current:null};careerLog('Career started as '+name);careerSave();careerRender()}
+function careerCreate(){const pro=$('careerType').value==='pro',picked=roster.find(p=>p.name===$('careerPro').value),name=pro?picked.name:$('careerName').value.trim();if(!name){$('careerSetupMsg').textContent='Enter a player name.';return}if(!pro&&roster.some(p=>p.name.toLowerCase()===name.toLowerCase())){$('careerSetupMsg').textContent='Choose a different name from the existing pros.';return}let players=roster.map((p,i)=>({id:'p'+i,name:p.name,nickname:p.nickname,seed:i+1,money:Math.round(17000+3100000*Math.pow((128-i)/128,5)),form:0,skill:Math.round(47+49*Math.pow((128-i)/128,.75))}));let playerId;if(pro){playerId='p'+roster.indexOf(picked)}else{playerId='custom';players.push({id:playerId,name,nickname:$('careerNickname').value.trim()||'The Challenger',seed:129,money:0,form:0,skill:56})}career={version:1,season:1,eventIndex:0,playerId,players,earnings:0,titles:0,record:{wins:0,losses:0},training:0,form:0,sponsor:'',news:[],current:null};careerLog('Career started as '+name);careerSave();careerRender()}
 function careerOpen(){showMode('career');$('careerContinue').style.display=localStorage.getItem(CAREER_KEY)?'inline-block':'none';if(career)careerRender();else{$('careerSetup').style.display='block';$('careerDashboard').style.display='none'}}
 $('openCareer').onclick=careerOpen;$('careerHome').onclick=()=>{careerSave();showMode('home')};$('careerType').onchange=()=>{let pro=$('careerType').value==='pro';$('careerProFields').style.display=pro?'block':'none';$('careerCustomFields').style.display=pro?'none':'block'};roster.forEach(p=>{const o=document.createElement('option');o.value=p.name;o.textContent='#'+p.rank+' · '+p.name;$('careerPro').appendChild(o)});$('careerPro').value='Wessel Nijman';$('careerCreate').onclick=careerCreate;$('careerContinue').onclick=()=>{try{let c=JSON.parse(localStorage.getItem(CAREER_KEY));if(!c||!Array.isArray(c.players)||!c.playerId)throw Error('Invalid save');career=c;careerRender()}catch(e){$('careerSetupMsg').textContent='Unable to load this save.'}};$('careerPlay').onclick=careerPlay;$('careerSim').onclick=careerSimulate;$('careerSkip').onclick=()=>{if(!career)return;careerLog('Skipped '+careerEventName());careerAdvance()};$('careerTrain').onclick=()=>{if(!career||career.training<2){$('careerMessage').textContent='You need 2 training points. Win matches to earn points.';return}career.training-=2;careerPlayer().skill=Math.min(99,careerPlayer().skill+1);careerLog('Training completed. Skill +1');careerSave();careerRender()};$('careerSponsor').onclick=()=>{if(!career)return;if(career.sponsor){$('careerMessage').textContent='Sponsor already signed.';return}if(career.record.wins<2){$('careerMessage').textContent='Win at least 2 matches to attract a sponsor.';return}career.sponsor='Arena Sports';career.earnings+=1500;careerLog('Signed Arena Sports sponsorship (+£1,500)');careerSave();careerRender()};$('careerSave').onclick=()=>{careerSave();$('careerMessage').textContent='Career saved.'};$('careerNew').onclick=()=>{if(!confirm('Start a new career? Your current save will be replaced.'))return;career=null;careerPending=null;$('careerSetup').style.display='block';$('careerDashboard').style.display='none';$('careerContinue').style.display='inline-block'};$('careerExport').onclick=()=>{if(!career)return;const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(career,null,2)],{type:'application/json'}));a.href=url;a.download='darts-arena-career.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};$('careerImport').onclick=()=>$('careerImportFile').click();$('careerImportFile').onchange=async e=>{try{let c=JSON.parse(await e.target.files[0].text());if(!c||!Array.isArray(c.players)||!c.players.some(p=>p.id===c.playerId)||!Number.isInteger(c.eventIndex))throw Error('Invalid');career=c;careerSave();careerRender()}catch(err){alert('Invalid career save file.')}};
 document.querySelectorAll('.careerFilters button').forEach(b=>b.onclick=()=>{const filter=b.dataset.filter;document.querySelectorAll('#careerCalendar [data-event-type]').forEach(el=>el.style.display=filter==='all'||el.dataset.eventType===filter?'':'none');document.querySelectorAll('.careerFilters button').forEach(x=>x.style.outline=x===b?'2px solid #ffe27c':'none');});
@@ -1219,4 +1237,263 @@ body:has(#game501[style*="block"]){background:#08090e}
 .careerPlayerPortrait{width:112px;height:140px;display:flex;align-items:center;justify-content:center;float:right;margin:0 0 12px 18px;border:2px solid #b9f276;border-radius:9px;overflow:hidden;background:linear-gradient(135deg,#35223d,#17151d);font-size:38px;font-weight:900;color:#f2f2f2}
 .careerPlayerPortrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center}
 @media(max-width:600px){.careerPlayerPortrait{width:75px;height:95px;font-size:24px}}
-</style></body></html>
+</style>
+<style id="careerTournamentUpgrade">
+.careerTournamentPanel{background:radial-gradient(ellipse at 50% 55%,#0a744c 0%,#06432f 43%,#022b22 100%)!important;border:2px solid #20b77b!important;box-shadow:inset 0 0 90px #001a18,0 16px 36px #0008;overflow:hidden}
+.careerTournamentHeader{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;border-bottom:1px solid #ffffff30;padding-bottom:14px}
+.careerTournamentHeader small{font-size:11px;font-weight:900;color:#ffed25;letter-spacing:2px}.careerTournamentHeader h2{font-size:clamp(23px,3vw,38px)!important;color:white;text-transform:uppercase;margin:4px 0!important}.careerTournamentHeader p{color:#d2eade;margin:0}.careerTournamentBadge{background:#f7e900!important;color:#052e23!important;padding:8px 14px;border-radius:2px;font-weight:1000}
+.careerTournamentProgress{display:flex;gap:4px;margin:14px 0}.careerTournamentProgress span{height:5px;flex:1;background:#ffffff33}.careerTournamentProgress span.passed{background:#f6e800}.careerTournamentProgress span.current{background:#a7ffdd}
+.careerBracketTools{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:12px 0;color:#dcf9e8;font-size:12px}.careerBracketTools button{background:#f6e800;color:#053b29;border:0;padding:7px 12px;border-radius:3px;font-weight:900;cursor:pointer}
+.careerTournamentBracket{display:block!important;overflow:auto!important;max-height:680px;border:1px solid #7dcbac55;background:linear-gradient(125deg,#033e2d,#01573d 48%,#023a2a);padding:18px!important;scrollbar-color:#f6e800 #04412e}
+.careerWorldBracket{display:grid;grid-template-columns:minmax(0,1fr) 130px minmax(0,1fr);gap:18px;min-width:980px;align-items:center}
+.careerBracketWing{display:flex;gap:7px;align-items:stretch;min-width:0;height:var(--bracket-height)}.careerBracketWing.left{flex-direction:row}.careerBracketWing.right{flex-direction:row-reverse}
+.careerBracketRound{flex:1;min-width:92px;display:flex;flex-direction:column;justify-content:space-around;position:relative;gap:0}
+.careerBracketRound h4{position:absolute;bottom:100%;left:0;right:0;color:#073c2a;background:#f5e900;text-align:center;font-size:9px;padding:5px 2px;margin:0 0 8px;text-transform:uppercase;white-space:nowrap}
+.careerBracketMatch{position:relative;min-height:22px;margin:1px 0;display:flex;flex-direction:column;justify-content:center;background:#f7fff9;border-left:4px solid #13a76b;color:#06462f;font-size:9px;line-height:1.2;box-shadow:0 1px 4px #0019;overflow:visible}
+.careerBracketMatch::after{content:'';position:absolute;top:50%;left:100%;width:7px;border-top:2px solid #f7fff9}.careerBracketWing.right .careerBracketMatch::after{left:auto;right:100%}.careerBracketMatch.active{background:#f9e800;border-left-color:#fff;box-shadow:0 0 12px #ffe500}.careerBracketMatch.done{border-left-color:#9bff8a}.careerBracketMatch .bmPlayer{display:flex;align-items:center;gap:3px;padding:2px 3px;white-space:nowrap;overflow:hidden}.careerBracketMatch .bmPlayer+.bmPlayer{border-top:1px solid #095d3540}.careerBracketMatch .bmPlayer img{height:14px;width:14px;object-fit:cover;border-radius:50%;flex:none}.careerBracketMatch .bmPlayer span{overflow:hidden;text-overflow:ellipsis}.careerBracketMatch .bmPlayer.me{font-weight:1000;color:#b52610}.careerBracketMatch .bmPlayer.winner{font-weight:1000}.careerBracketMatch .bmPlayer.tbd{color:#769b87;font-style:italic}
+.careerBracketCenter{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;color:white}.careerBracketCenter .bracketTrophy{font-size:48px}.careerBracketCenter strong{background:#f8e900;color:#063f2d;padding:9px 12px;width:100%;font-weight:1000;letter-spacing:1px}.careerBracketCenter .bracketFinalists{width:100%;font-size:11px;line-height:1.7}.careerBracketCenter .bracketFinalists div{background:#fff;color:#06442d;margin:5px 0;padding:7px 3px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.careerBracketCenter .bracketFinalists div.me{background:#f8e900}.careerBracketCenter small{font-size:10px;color:#d2eadc}
+.careerTournamentFooter{border-top:1px solid #ffffff33;margin-top:14px;padding-top:13px;display:flex;gap:15px;flex-wrap:wrap;color:#d9f2e5;font-size:12px}.careerTournamentFooter strong{color:#f8e900}
+@media(max-width:600px){.careerTournamentPanel{padding:12px!important}.careerTournamentBracket{max-height:530px}.careerWorldBracket{min-width:850px;grid-template-columns:minmax(0,1fr) 105px minmax(0,1fr);gap:8px}.careerBracketWing{gap:4px}}
+</style>
+<script id="careerTournamentUpgradeJS">
+(function(){
+ const oldRender=careerRender;
+ function nameFor(id){return career.players.find(p=>p.id===id)?.name||'TBD'}
+ function photo(name){if(!name)return '';const k=String(name).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');return typeof embeddedPlayerPhotos!=='undefined'?(embeddedPlayerPhotos[k]||''):''}
+ function escapeHTML(v){return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ function stage(n){return n===2?'FINAL':n===4?'SEMI-FINAL':n===8?'QUARTER-FINAL':'LAST '+n}
+ function makeDraw(event){
+  const total=2**Math.ceil(Math.log2(event[1]));const sorted=careerRanked().map(x=>x.id).filter(id=>career.players.some(p=>p.id===id));
+  const field=sorted.slice(0,Math.min(event[1],sorted.length));const mine=career.playerId;
+  if(!field.includes(mine))field[Math.max(0,field.length-1)]=mine;
+  const slots=Array(total).fill(null);let seed=field.indexOf(mine);if(seed>=0){field.splice(seed,1);field.unshift(mine)}
+  // Spread stronger seeds across the draw and keep the player in a stable bracket slot.
+  const order=[0];for(let size=2;size<=total;size*=2){const previous=order.splice(0);for(const x of previous){order.push(x,size-1-x)}}
+  field.forEach((id,i)=>{slots[order[i]]=id});return slots;
+ }
+ function build(event,cur){
+  const total=2**Math.ceil(Math.log2(event[1]));const rounds=Math.log2(total);
+  if(cur&&Array.isArray(cur.drawRounds)&&cur.drawRounds.length===rounds){
+   return {result:cur.drawRounds.map(r=>r.map(m=>[m[0],m[1]])),total,rounds,slots:cur.visualDraw};
+  }
+  const slots=cur?.visualDraw||makeDraw(event);
+  const result=[Array.from({length:total/2},(_,i)=>[slots[i*2],slots[i*2+1]])];
+  for(let r=1;r<rounds;r++)result.push(Array.from({length:total/2**(r+1)},()=>[null,null]));
+  return {result,total,rounds,slots};
+ }
+ function playerHTML(id){const name=id?nameFor(id):'TBD';const pic=id?photo(name):'';return '<div class="bmPlayer '+(id===career.playerId?'me ':'')+(!id?'tbd':'')+'">'+(pic?'<img src="'+pic+'" alt="">':'')+'<span title="'+escapeHTML(name)+'">'+escapeHTML(name)+'</span></div>'}
+ function matchHTML(pair,r,i,cur,slots){const slot=slots.indexOf(career.playerId);const myIndex=Math.floor(slot/2**(r+1));const isMine=cur&&cur.round===r&&myIndex===i;return '<div class="careerBracketMatch '+(isMine?'active':'')+'" title="'+stage(2**(Math.ceil(Math.log2(slots.length))-r))+'">'+playerHTML(pair[0])+playerHTML(pair[1])+'</div>'}
+ function wing(result,rounds,side,cur,slots){const half=result[0].length/2;const cols=[];for(let r=0;r<rounds-1;r++){
+  const matches=result[r];const cut=matches.length/2;const subset=side==='left'?matches.slice(0,cut):matches.slice(cut);cols.push('<div class="careerBracketRound"><h4>'+stage(2**(rounds-r))+'</h4>'+subset.map((pair,i)=>matchHTML(pair,r,i+(side==='right'?cut:0),cur,slots)).join('')+'</div>')
+ }return '<div class="careerBracketWing '+side+'">'+cols.join('')+'</div>'}
+ function render(){if(!career)return;const event=careerEvents[career.eventIndex],cur=career.current,player=careerPlayer();if(!event||!player)return;
+  const title=document.getElementById('careerTournamentTitle');if(!title)return;
+  title.textContent=event[0];document.getElementById('careerTournamentSubtitle').textContent=event[1]+' players · Best of '+event[3]+' legs · Season '+career.season;
+  document.getElementById('careerTournamentStatus').textContent=cur?'LIVE DRAW':'UPCOMING';
+  const b=build(event,cur);const wins=Math.min(cur?.wins||0,b.rounds);
+  document.getElementById('careerTournamentProgress').innerHTML=Array.from({length:b.rounds},(_,i)=>'<span class="'+(i<wins?'passed':i===wins&&cur?'current':'')+'"></span>').join('');
+  const last=b.result[b.rounds-1][0]||[null,null];const center='<div class="careerBracketCenter"><span class="bracketTrophy">🏆</span><strong>FINAL</strong><div class="bracketFinalists"><div class="'+(last[0]===career.playerId?'me':'')+'">'+escapeHTML(last[0]?nameFor(last[0]):'TBD')+'</div><div class="'+(last[1]===career.playerId?'me':'')+'">'+escapeHTML(last[1]?nameFor(last[1]):'TBD')+'</div></div><small>WINNER PRIZE</small><strong>'+escapeHTML(careerMoneyFmt(event[2]))+'</strong></div>';
+  const bracket=document.getElementById('careerTournamentBracket');bracket.innerHTML='<div class="careerBracketTools"><span>🟨 Yellow = your current match · Scroll to explore the full draw</span><button type="button" id="careerFindMe">FIND MY MATCH</button></div><div class="careerWorldBracket">'+wing(b.result,b.rounds,'left',cur,b.slots)+center+wing(b.result,b.rounds,'right',cur,b.slots)+'</div>';
+  const height=Math.max(560,Math.min(2200,b.total*13));bracket.querySelectorAll('.careerBracketWing').forEach(w=>w.style.setProperty('--bracket-height',height+'px'));
+  const find=bracket.querySelector('#careerFindMe');find.onclick=()=>{const el=bracket.querySelector('.careerBracketMatch.active')||bracket.querySelector('.bmPlayer.me');if(el)el.scrollIntoView({block:'center',inline:'nearest',behavior:'smooth'})};
+  document.getElementById('careerTournamentFooter').innerHTML='<span>🏆 Prize: <strong>'+escapeHTML(careerMoneyFmt(event[2]))+'</strong></span><span>🎯 '+(cur?'Round '+(cur.round+1)+' of '+b.rounds:'Event not started')+'</span><span>📅 '+escapeHTML(String(career.season))+'</span>';
+ }
+ careerRender=function(){oldRender();render()};if(career)careerRender();
+})();
+</script>
+
+<script id="careerRealEventFlow">
+// The bracket is part of the current scheduled career event, not a separate game mode.
+(function(){
+ function tournamentSlots(event){
+  const size=2**Math.ceil(Math.log2(event[1]));
+  const sorted=careerRanked().map(p=>p.id);
+  const chosen=sorted.slice(0,Math.min(event[1],sorted.length));
+  if(!chosen.includes(career.playerId))chosen[chosen.length-1]=career.playerId;
+  // Seeded placement distributes the highest-ranked players across the draw.
+  let positions=[0];for(let n=2;n<=size;n*=2){positions=positions.flatMap(x=>[x,n-1-x]);}
+  const slots=Array(size).fill(null);
+  chosen.forEach((id,i)=>slots[positions[i]]=id);
+  return slots;
+ }
+ function winner(a,b){if(!a)return b;if(!b)return a;return careerSimResult(a,b)}
+ function fillRound(cur,r){
+  const current=cur.drawRounds[r];
+  for(let i=0;i<current.length;i++){
+   const pair=current[i];
+   if(pair[0]===career.playerId||pair[1]===career.playerId)continue;
+   const w=winner(pair[0],pair[1]);
+   if(r+1<cur.drawRounds.length)cur.drawRounds[r+1][Math.floor(i/2)][i%2]=w;
+  }
+ }
+ function initDraw(event){
+  const slots=tournamentSlots(event),rounds=Math.log2(slots.length);
+  const drawRounds=[Array.from({length:slots.length/2},(_,i)=>[slots[2*i],slots[2*i+1]])];
+  for(let r=1;r<rounds;r++)drawRounds.push(Array.from({length:slots.length/2**(r+1)},()=>[null,null]));
+  return {slots,drawRounds,rounds};
+ }
+ function nextMatch(cur){
+  const me=career.playerId;
+  for(let r=cur.round;r<cur.drawRounds.length;r++){
+   const matchIndex=Math.floor(cur.visualDraw.indexOf(me)/2**(r+1));
+   const pair=cur.drawRounds[r][matchIndex];
+   const opponent=pair.find(id=>id&&id!==me);
+   if(!pair.includes(me))return false;
+   if(opponent){cur.round=r;cur.opponent=opponent;return true;}
+   // A bye automatically advances the player without recording a played win.
+   if(r+1<cur.drawRounds.length){cur.drawRounds[r+1][Math.floor(matchIndex/2)][matchIndex%2]=me;cur.round=r+1;}
+  }
+  return false;
+ }
+ careerStartEvent=function(){
+  if(!career||careerPending)return;
+  const event=careerEvents[career.eventIndex];
+  if(!event)return;
+  const type=careerEventType(event),rank=careerRanked().find(p=>p.id===career.playerId)?.position||128;
+  const qualified=type==='floor'||type==='uk'||type==='world'||type==='euro'&&rank<=64||type==='europeanchamp'&&rank<=32||type==='pcfinal'&&rank<=64||type==='grandslam'&&rank<=48||['masters','series','matchplay','grandprix'].includes(type)&&rank<=32;
+  if(!qualified){careerLog('Not qualified for '+event[0]);careerAdvance();careerRender();return;}
+  const draw=initDraw(event);
+  const cur={opponent:null,round:0,wins:0,played:0,history:[],visualDraw:draw.slots,drawRounds:draw.drawRounds};
+  career.current=cur;
+  // Resolve every other match in the opening round; retain your own fixture.
+  fillRound(cur,0);
+  nextMatch(cur);
+  careerLog('Entered '+event[0]+' · '+event[1]+' player draw');
+  careerSave();careerRender();
+ };
+ careerAfterMatch=function(won){
+  if(!career||!career.current)return;
+  const event=careerEvents[career.eventIndex],c=career.current;
+  const opponent=career.players.find(p=>p.id===c.opponent);
+  const r=c.round,index=Math.floor(c.visualDraw.indexOf(career.playerId)/2**(r+1));
+  c.played++;c.history.push({round:r,opponent:opponent?.name||'Opponent',won:!!won});
+  career.record[won?'wins':'losses']++;
+  careerUpdateForm(career.playerId,!!won);careerUpdateForm(c.opponent,!won);
+  if(!won){
+   careerLog('Lost to '+(opponent?.name||'opponent')+' at '+event[0]);
+   careerPayoutPrize(career.playerId,event,c.wins);
+   careerAdvance();careerRender();return;
+  }
+  c.wins++;career.training++;
+  careerLog('Beat '+(opponent?.name||'opponent')+' at '+event[0]);
+  if(r===c.drawRounds.length-1){
+   career.titles++;careerLog('🏆 CHAMPION · '+event[0]);
+   careerPayoutPrize(career.playerId,event,c.drawRounds.length);
+   careerAdvance();careerRender();return;
+  }
+  c.drawRounds[r+1][Math.floor(index/2)][index%2]=career.playerId;
+  c.round=r+1;
+  fillRound(c,r+1);
+  nextMatch(c);
+  careerSave();careerRender();
+ };
+ // Existing career saves: safely initialize a consistent draw when entering the next fixture.
+ const oldPlay=careerPlay;
+ careerPlay=function(){
+  if(career?.current&&!Array.isArray(career.current.drawRounds)){
+   const event=careerEvents[career.eventIndex],d=initDraw(event),c=career.current;
+   c.visualDraw=d.slots;c.drawRounds=d.drawRounds;c.round=0;c.wins=0;c.played=0;c.history=[];
+   fillRound(c,0);nextMatch(c);careerSave();
+  }
+  oldPlay();
+ };
+ const oldSim=careerSimulate;
+ careerSimulate=function(){
+  if(career?.current&&!Array.isArray(career.current.drawRounds)){
+   const d=initDraw(careerEvents[career.eventIndex]),c=career.current;
+   c.visualDraw=d.slots;c.drawRounds=d.drawRounds;c.round=0;c.wins=0;c.played=0;c.history=[];
+   fillRound(c,0);nextMatch(c);careerSave();
+  }
+  oldSim();
+ };
+})();
+</script>
+<style id="careerAutomaticEventCSS">
+/* The career calendar owns tournaments; there is no manual tournament creator. */
+#tourneyPanel{display:none!important}
+#careerDashboard .careerTournamentPanel{display:block!important;visibility:visible!important;order:0}
+#careerDashboard{flex-direction:column;gap:16px}
+#careerDashboard:not([style*="display: none"]){display:flex!important}
+#careerDashboard[style*="display: none"]{display:none!important}
+#careerDashboard .careerHelp{order:-3}
+#careerDashboard .careerGrid{order:-2}
+#careerDashboard .careerTournamentPanel{order:-1}
+#careerDashboard .careerTournamentBracket{display:block!important;min-height:280px}
+#careerDashboard .careerTournamentPanel .careerBracketTools{position:sticky;left:0;z-index:2}
+#careerDashboard .careerTournamentPanel .careerBracketMatch.active{outline:3px solid #ffe000;outline-offset:1px}
+.careerFixture{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#092f25;border:1px solid #39b980;border-radius:8px;padding:12px;margin:12px 0;color:white}
+.careerFixture strong{color:#f7e900;font-size:17px}.careerFixture small{display:block;color:#b4e5d1}
+.careerFixture button{background:#f5e900;color:#073f2e;border:0;border-radius:5px;padding:11px 15px;font-weight:900;cursor:pointer}
+</style>
+<script id="careerAutomaticEventJS">
+(function(){
+  // Automatically generate the draw for the scheduled event, never a manually created tournament.
+  const previousRender=careerRender;
+  let generating=false;
+  function ensureScheduledDraw(){
+    if(!career||career.current||careerPending||generating)return;
+    const event=careerEvents[career.eventIndex];if(!event)return;
+    generating=true;
+    try{careerStartEvent()}finally{generating=false}
+  }
+  careerRender=function(){
+    if(!career)return;
+    if(!generating)ensureScheduledDraw();
+    previousRender();
+    const panel=document.querySelector('#careerDashboard .careerTournamentPanel');
+    if(!panel)return;
+    let fixture=document.getElementById('careerAutomaticFixture');
+    if(!fixture){fixture=document.createElement('div');fixture.id='careerAutomaticFixture';fixture.className='careerFixture';panel.insertBefore(fixture,document.getElementById('careerTournamentBracket'));}
+    const event=careerEvents[career.eventIndex],current=career.current;
+    if(!event){fixture.textContent='Season completed';return;}
+    const opponent=current&&career.players.find(p=>p.id===current.opponent);
+    const player=careerPlayer();
+    const safe=careerSafe;
+    fixture.innerHTML='<div><small>SCHEDULED EVENT · '+safe(event[0])+'</small><strong>'+safe(player?.name||'You')+' vs '+safe(opponent?.name||'Awaiting draw')+'</strong><small>'+(current?'Round '+(current.round+1)+' · '+event[1]+' entrants':'Qualification / next scheduled event')+'</small></div><button type="button" id="careerFixturePlay" '+(!opponent?'disabled':'')+'>PLAY MY MATCH</button>';
+    fixture.querySelector('button').onclick=()=>careerPlay();
+    // Keep the current bracket in view instead of forcing a separate game mode.
+    panel.style.display='block';
+  };
+  const previousOpen=careerOpen;
+  careerOpen=function(){previousOpen();if(career)careerRender()};
+  // Existing saves are migrated by the current careerStartEvent logic.
+  if(career)careerRender();
+})();
+</script>
+<style id="careerVisibilityHardFix">
+/* A career draw must never appear until a career is explicitly created or loaded. */
+#careerMode.career-not-started #careerDashboard,
+#careerMode.career-not-started .careerTournamentPanel,
+#careerMode.career-not-started #careerAutomaticFixture,
+#careerMode.career-not-started #careerTournamentBracket {display:none!important;visibility:hidden!important}
+#careerMode.career-not-started #careerSetup{display:block!important;visibility:visible!important}
+#careerMode.career-started #careerSetup{display:none!important}
+#careerMode.career-started #careerDashboard{display:flex!important;visibility:visible!important}
+</style>
+<script id="careerVisibilityHardFixJS">
+(function(){
+ const mode=document.getElementById('careerMode');
+ const setup=document.getElementById('careerSetup');
+ const dashboard=document.getElementById('careerDashboard');
+ if(!mode||!setup||!dashboard)return;
+ function syncCareerVisibility(){
+  const active=!!(career&&career.playerId&&Array.isArray(career.players)&&career.players.some(p=>p.id===career.playerId));
+  mode.classList.toggle('career-started',active);
+  mode.classList.toggle('career-not-started',!active);
+  setup.style.display=active?'none':'block';
+  dashboard.style.display=active?'flex':'none';
+  if(!active){const fixture=document.getElementById('careerAutomaticFixture');if(fixture)fixture.style.display='none';}
+  else {const fixture=document.getElementById('careerAutomaticFixture');if(fixture)fixture.style.display='flex';}
+ }
+ const render=careerRender;
+ careerRender=function(){syncCareerVisibility();if(!career)return;render();syncCareerVisibility()};
+ const open=careerOpen;
+ careerOpen=function(){syncCareerVisibility();open();syncCareerVisibility()};
+ ['careerCreate','careerContinue','careerNew','careerImportFile'].forEach(id=>{
+  const el=document.getElementById(id);if(!el)return;
+  el.addEventListener(id==='careerImportFile'?'change':'click',()=>queueMicrotask(syncCareerVisibility));
+ });
+ syncCareerVisibility();
+})();
+</script>
+</body></html>
