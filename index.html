@@ -1886,7 +1886,7 @@ function daTraining(){
      <p class="irlCheckoutHelp">Finish your remaining score? Enter the exact score and confirm. We will ask about your double automatically.</p><p id="irlNotice" class="irlNotice" aria-live="polite">Enter your score after throwing three darts.</p>
     </div>
    </section>
-   <aside class="irlBoardPanel"><div class="irlBoardHeading"><span>DARTS ARENA</span><strong>IRL MATCH CENTRE</strong></div><div class="irlBoardPicture" id="irlRealBoard" aria-label="Standard dartboard showing the bot’s last three darts"></div><div class="irlBotDarts" id="irlBotDarts">BOT DARTS: —</div><div class="irlBoardFooter">THROW ON YOUR REAL BOARD <span>→</span> ENTER YOUR SCORE ON THE LEFT</div><div class="irlBoardTip">No digital throwing or animations in IRL Career Mode.</div></aside>
+   <aside class="irlBoardPanel"><div class="irlBoardHeading"><span>DARTS ARENA</span><strong>IRL MATCH CENTRE</strong></div><div class="irlBoardPicture" id="irlRealBoard" aria-label="Standard dartboard showing the bot’s last three darts"></div><div class="irlBotDarts" id="irlBotDarts">BOT DARTS: —</div><div id="irlBotScoreFlash" class="irlBotScoreFlash" hidden>SCORE 100</div><div class="irlBoardFooter">THROW ON YOUR REAL BOARD <span>→</span> ENTER YOUR SCORE ON THE LEFT</div><div class="irlBoardTip">No digital throwing or animations in IRL Career Mode.</div></aside>
   </div>
  </div>
 </div>
@@ -1911,6 +1911,9 @@ function irlSavedLevel(value){const n=Number(value)||5;if(n<=10)return irlClampL
 const irlLevelLabel=({level,average,min,max})=>'Level '+level+' · average day '+average+' · usually '+min+'–'+max;
 
 let irlMode=false,normalCareer=null,irlCareer=null,irlMatch=null;
+let irlBotBusy=false;let irlBotTimers=[];
+function irlSchedule(fn,ms){const id=setTimeout(fn,ms);irlBotTimers.push(id);return id}
+function irlClearTimers(){irlBotTimers.forEach(clearTimeout);irlBotTimers=[];irlBotBusy=false}
 const el=id=>document.getElementById(id);
 const originalSave=careerSave;
 careerSave=function(){if(!career)return;try{localStorage.setItem(irlMode?IRL_KEY:CAREER_KEY,JSON.stringify(career))}catch(e){console.warn('Career save unavailable',e)}};
@@ -2031,12 +2034,12 @@ function irlBotDartsForScore(score,finish){const options=IRL_DART_OPTIONS;let be
  return best||[{score:0,kind:'MISS',n:0,mult:0},{score:0,kind:'MISS',n:0,mult:0},{score:0,kind:'MISS',n:0,mult:0}]}
 function irlShowBotDarts(score,finish=false){const darts=irlBotDartsForScore(score,finish);irlDrawBoard(darts);el('irlBotDarts').textContent='BOT DARTS: '+darts.map(d=>d.kind==='MISS'?'MISS':d.kind==='BULL'?'BULL':d.kind==='OUTER'?'25':(d.mult===3?'T':d.mult===2?'D':'S')+d.n).join('  ·  ')}
 function startIRLMatch(){
- if(!career)return;
+ irlClearTimers();if(!career)return;
  if(!career.current)careerStartEvent();if(!career.current)return;
  const bot=career.players.find(p=>p.id===career.current.opponent),player=careerPlayer();
  if(!bot||!player)return;
  const ev=careerEvents[career.eventIndex];
- irlMatch={bot,player,best:Math.max(1,Number(ev[3])||5),remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
+ irlMatch={bot,player,best:Math.max(1,Number(ev[3])||5),remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,botCheckoutMisses:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
  // One match-day form roll, influenced by consistency; remains stable for the match.
  const profile=aiInit(bot);irlMatch.botDay=(Math.random()+Math.random()+Math.random()-1.5)*(15-profile.consistency*9);
  el('irlEventTitle').textContent=ev[0]+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||5);
@@ -2065,19 +2068,95 @@ function irlRecordFirstNine(who,score,used){
  if(eligible){b.firstNinePoints[who]+=eligible===used?score:Math.round(score*eligible/used);b.firstNineDarts[who]+=eligible;}
  b.legDarts[who]+=used;
 }
-function finishLeg(who){const b=irlMatch;b.legs[who]++;drawIRL();const needed=Math.floor(b.best/2)+1;
+function finishLeg(who){const b=irlMatch;irlClearTimers();b.botCheckoutMisses=0;b.legs[who]++;drawIRL();const needed=Math.floor(b.best/2)+1;
  if(b.legs[who]>=needed){
   el('irlMatch').hidden=true;const won=who===0;if(b.darts[0]>0){if(!Array.isArray(career.matchPerformance))career.matchPerformance=[];career.matchPerformance.push({points:b.total[0],darts:b.darts[0],average:Number((b.total[0]*3/b.darts[0]).toFixed(2)),won,date:new Date().toISOString(),type:'irl'});}careerAfterMatch(won);careerSave();irlMatch=null;
   el('careerMessage').textContent=won?'Match won! Your career has been updated.':'Match lost. Your career has been updated.';showMode('career');careerRender();updateIRLSetup();return;
  }
  b.remaining=[501,501];b.legDarts=[0,0];b.starter=1-b.starter;irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';el('irlNotice').textContent=(who===0?'You':'The bot')+' won the leg! Next leg.';
- if(b.starter===1){setTimeout(()=>{if(irlMatch===b)botTurn()},450)}
+ if(b.starter===1){irlSchedule(()=>{if(irlMatch===b)botTurn()},1100)}
 }
-function botTurn(){const b=irlMatch;if(!b)return;
- const r=botVisit(),old=b.remaining[1];
- if(r.finish){b.total[1]+=r.score;const botUsed=Math.max(1,Math.min(3,Math.ceil(r.score/60)));irlRecordFirstNine(1,r.score,botUsed);b.darts[1]+=botUsed;b.doubleAttemptsByPlayer[1]++;b.doubleHitsByPlayer[1]++;b.visits[1].push(r.score+' ✓');b.remaining[1]=0;irlShowBotDarts(r.score,true);finishLeg(1);return}
- const bust=r.score>=old-1;b.remaining[1]=bust?old:old-r.score;b.total[1]+=bust?0:r.score;irlRecordFirstNine(1,bust?0:r.score,3);b.darts[1]+=3;if(irlCheckoutPossible(old)){const botAttempts=Math.random()<.55?1:Math.random()<.75?2:0;b.doubleAttemptsByPlayer[1]+=botAttempts;}b.visits[1].push(bust?'BUST':r.score);irlShowBotDarts(r.score,false);drawIRL();
- el('irlNotice').textContent=bust?b.bot.name+' busts! Your throw.':b.bot.name+' scores '+r.score+'. Your throw.';
+function irlDartName(d){return d.kind==='MISS'?'MISS':d.kind==='BULL'?'BULL':d.kind==='OUTER'?'25':(d.mult===3?'T':d.mult===2?'D':'S')+d.n}
+function irlBotCheckoutDarts(remaining){
+ // A legal finish must end on a double. Search real combinations, allowing
+ // early checkout and unused darts rather than fabricating a three-dart finish.
+ const all=IRL_DART_OPTIONS.filter(d=>d.score>0);
+ const doubles=all.filter(d=>d.mult===2);
+ const candidates=[];
+ for(const last of doubles){
+  if(last.score===remaining)candidates.push([last]);
+  for(const a of all){if(a.score+last.score===remaining)candidates.push([a,last]);
+   for(const mid of all)if(a.score+mid.score+last.score===remaining)candidates.push([a,mid,last]);
+  }
+ }
+ if(!candidates.length)return null;
+ // Favor normal checkout routes and fewer darts when plausible.
+ candidates.sort((a,b)=>{
+  const rank=d=>d.reduce((v,x)=>v+(x.mult===3?2:0)+(x.n===20?1.4:0),0)-d.length*.6;
+  return rank(b)-rank(a);
+ });
+ return candidates[Math.floor(Math.random()*Math.min(5,candidates.length))];
+}
+function irlBotCheckoutChance(avg,remaining,misses,finishing){
+ // At amateur levels, doubles are harder than scoring but prolonged stalls
+ // are increasingly unlikely. This only affects chances once on a finish.
+ const base=Math.max(.16,Math.min(.73,.27+(avg-50)*.007))*Math.max(.75,Math.min(1.3,finishing));
+ const route=remaining>100?.36:remaining>60?.62:1;
+ return Math.min(.96,base*route+Math.max(0,misses-1)*.17);
+}
+function botTurn(){
+ const b=irlMatch;if(!b||irlBotBusy)return;
+ irlBotBusy=true;
+ const old=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
+ const route=irlCheckoutPossible(old)?irlBotCheckoutDarts(old):null;
+ const finish=!!route&&Math.random()<irlBotCheckoutChance(avg,old,b.botCheckoutMisses,profile.finishing);
+ let darts,score;
+ if(finish){darts=route;score=old;}
+ else{
+  const result=botVisit();
+  // Never permit the old instant checkout shortcut: all finishes are resolved
+  // by the double-out logic above and displayed dart by dart.
+  score=result.score;
+  if(result.finish||score>=old-1)score=Math.max(0,old-2);
+  darts=irlBotDartsForScore(score,false);
+  if(darts.reduce((n,d)=>n+d.score,0)!==score){score=darts.reduce((n,d)=>n+d.score,0)}
+ }
+ el('irlSubmit').disabled=true;el('irlVisit').disabled=true;
+ el('irlNotice').textContent=b.bot.name+' is throwing...';
+ el('irlBotDarts').textContent='BOT THROW · 0 / '+darts.length;
+ irlDrawBoard([]);
+ const duration=900; // 3 darts in ~3 seconds, then score hold
+ darts.forEach((d,i)=>irlSchedule(()=>{
+  if(irlMatch!==b)return;
+  irlDrawBoard(darts.slice(0,i+1));
+  el('irlBotDarts').textContent='BOT THROW · '+(i+1)+' / '+darts.length+'  ·  '+darts.slice(0,i+1).map(irlDartName).join(' · ');
+ },650+i*duration));
+ const reveal=650+darts.length*duration;
+ irlSchedule(()=>{
+  if(irlMatch!==b)return;
+  const bust=!finish&&(score>=old-1);
+  b.remaining[1]=finish?0:bust?old:old-score;
+  b.total[1]+=bust?0:score;
+  const used=finish?darts.length:3;
+  irlRecordFirstNine(1,bust?0:score,used);b.darts[1]+=used;
+  if(finish){b.doubleAttemptsByPlayer[1]+=Math.max(1,Math.min(3,b.botCheckoutMisses?2:1));b.doubleHitsByPlayer[1]++;b.botCheckoutMisses=0;}
+  else if(irlCheckoutPossible(old)){
+   const attempts=Math.min(3,old<=50?2:old<=100?1:Math.random()<.4?1:0);
+   b.doubleAttemptsByPlayer[1]+=attempts;b.botCheckoutMisses++;
+  }
+  b.visits[1].push(bust?'BUST':score+(finish?' ✓':''));drawIRL();
+  el('irlNotice').textContent=finish?'CHECKOUT! '+b.bot.name+' finishes '+score+'!':b.bot.name+' SCORES '+score+'!';
+  el('irlBotDarts').textContent=(finish?'CHECKOUT · ':'SCORE · ')+score+'  |  '+darts.map(irlDartName).join(' · ');
+  const panel=el('irlBotScoreFlash');if(panel){panel.textContent=(finish?'CHECKOUT ':'SCORE ')+score;panel.classList.toggle('checkout',finish);panel.hidden=false;}
+  irlSchedule(()=>{
+   if(irlMatch!==b)return;
+   if(panel)panel.hidden=true;
+   irlBotBusy=false;
+   if(finish){finishLeg(1);return;}
+   el('irlSubmit').disabled=false;el('irlVisit').disabled=false;
+   el('irlNotice').textContent='Your throw!';el('irlVisit').focus();
+  },finish?1400:1100);
+ },reveal);
 }
 // IRL checkout tracking: collect actual darts rather than inferring attempts from score.
 function irlCheckoutPossible(n){return n>=2&&n<=170&&![169,168,166,165,163,162,159].includes(n)}
@@ -2108,7 +2187,7 @@ function irlAskCheckout(details,onDone){
  };
 }
 el('irlSubmit').onclick=()=>{
- const b=irlMatch;if(!b)return;const raw=el('irlVisit').value;const score=Number(raw);if(raw.trim()===''||!Number.isInteger(score)||score<0||score>180){el('irlNotice').textContent='Enter a whole-number score between 0 and 180.';return}
+ const b=irlMatch;if(!b||irlBotBusy)return;const raw=el('irlVisit').value;const score=Number(raw);if(raw.trim()===''||!Number.isInteger(score)||score<0||score>180){el('irlNotice').textContent='Enter a whole-number score between 0 and 180.';return}
  const old=b.remaining[0];
  const possibleFinish=score===old&&irlCheckoutPossible(old);
  const invalidFinish=score===old&&!irlCheckoutPossible(old);
@@ -2123,7 +2202,7 @@ el('irlSubmit').onclick=()=>{
   el('irlVisit').value='';drawIRL();
   if(checkout){finishLeg(0);return}
   el('irlNotice').textContent=bust?'Bust! Score restored.':'You scored '+score+'.';
-  setTimeout(()=>{if(irlMatch===b)botTurn()},450);
+  irlSchedule(()=>{if(irlMatch===b)botTurn()},650);
  };
  if(irlCheckoutPossible(old))irlAskCheckout({canFinish:possibleFinish},apply);
  else apply({used:3,attempts:0,finished:false});
@@ -2131,7 +2210,7 @@ el('irlSubmit').onclick=()=>{
 document.querySelectorAll('[data-irl-key]').forEach(button=>button.addEventListener('click',()=>{const input=el('irlVisit'),key=button.dataset.irlKey;let value=input.value;if(key==='clear')value='';else if(key==='back')value=value.slice(0,-1);else if(value.length<3)value+=key;input.value=value;input.focus();}));
 el('irlVisit').addEventListener('input',()=>{const input=el('irlVisit');input.value=input.value.replace(/[^0-9]/g,'').slice(0,3)});
 el('irlVisit').addEventListener('keydown',e=>{if(e.key==='Enter')el('irlSubmit').click()});
-el('irlBack').onclick=()=>{if(!confirm('Leave this match? The current leg will restart next time.'))return;irlMatch=null;el('irlMatch').hidden=true;showMode('career');careerRender()};
+el('irlBack').onclick=()=>{if(!confirm('Leave this match? The current leg will restart next time.'))return;irlClearTimers();irlMatch=null;el('irlMatch').hidden=true;showMode('career');careerRender()};
 })();
 </script>
 <style id="irlKeypadStyle">
@@ -2258,4 +2337,12 @@ html.irl-scoring-active #irlMatch{display:block!important;visibility:visible!imp
 #irlMatch #irlMatchBotLevel{background:#26232e;color:#fff;border:1px solid #92849c;border-radius:8px;padding:9px 6px;max-width:160px;font:inherit;cursor:pointer}
 @media(max-width:720px){#irlMatch #irlMatchLevelControl{width:100%;justify-content:center}#irlMatch #irlMatchBotLevel{max-width:190px}}
 </style>
-</body></html>
+<style id="irlBotThrowPresentation">
+#irlMatch .irlBoardPanel{position:relative}
+#irlMatch .irlBotScoreFlash{margin:12px auto;padding:13px 22px;width:max-content;max-width:95%;border-radius:12px;background:#222d44;color:#fff;border:2px solid #f4cb4e;font-weight:950;font-size:clamp(22px,3vw,36px);text-align:center;box-shadow:0 4px 20px #0008;animation:irlScorePop .32s ease-out}
+#irlMatch .irlBotScoreFlash.checkout{background:#175c3b;border-color:#78ffb1;color:#fff;animation:irlCheckoutPop .5s ease-out}
+#irlMatch .irlBotScoreFlash[hidden]{display:none!important}
+#irlMatch #irlSubmit:disabled{opacity:.45;cursor:wait}
+@keyframes irlScorePop{from{transform:scale(.65);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes irlCheckoutPop{0%{transform:scale(.5);opacity:0}65%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
+</style></body></html>
