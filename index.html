@@ -2086,24 +2086,34 @@ function finishLeg(who){
 }
 function irlDartName(d){return d.kind==='MISS'?'MISS':d.kind==='BULL'?'BULL':d.kind==='OUTER'?'25':(d.mult===3?'T':d.mult===2?'D':'S')+d.n}
 function irlBotCheckoutDarts(remaining){
- // A legal finish must end on a double. Search real combinations, allowing
- // early checkout and unused darts rather than fabricating a three-dart finish.
+ // Prefer a direct double whenever possible. A player on 40 aims at D20,
+ // never at a triple just because a three-dart combination adds to 40.
+ if(remaining>=2&&remaining<=40&&remaining%2===0){
+  return [{score:remaining,kind:'NUMBER',n:remaining/2,mult:2}];
+ }
+ if(remaining===50)return [{score:50,kind:'BULL',n:25,mult:2}];
  const all=IRL_DART_OPTIONS.filter(d=>d.score>0);
  const doubles=all.filter(d=>d.mult===2);
  const candidates=[];
  for(const last of doubles){
   if(last.score===remaining)candidates.push([last]);
-  for(const a of all){if(a.score+last.score===remaining)candidates.push([a,last]);
+  for(const a of all){
+   if(a.score+last.score===remaining)candidates.push([a,last]);
    for(const mid of all)if(a.score+mid.score+last.score===remaining)candidates.push([a,mid,last]);
   }
  }
  if(!candidates.length)return null;
- // Favor normal checkout routes and fewer darts when plausible.
- candidates.sort((a,b)=>{
-  const rank=d=>d.reduce((v,x)=>v+(x.mult===3?2:0)+(x.n===20?1.4:0),0)-d.length*.6;
-  return rank(b)-rank(a);
- });
- return candidates[Math.floor(Math.random()*Math.min(5,candidates.length))];
+ // Prefer fewer darts, standard high-scoring setup shots and D20/D16/D18.
+ const preferred=[20,16,18,12,10,8,4,2,1];
+ const weight=route=>{
+  const last=route[route.length-1];
+  let score=(4-route.length)*12;
+  score+=Math.max(0,9-preferred.indexOf(last.n));
+  for(const d of route.slice(0,-1))score+=d.mult===3?4:d.mult===1?2:0;
+  return score;
+ };
+ candidates.sort((a,b)=>weight(b)-weight(a));
+ return candidates[Math.floor(Math.random()*Math.min(3,candidates.length))];
 }
 // Skill-scaled accuracy: a level-5 amateur is NOT a professional finisher.
 function irlBotAccuracy(avg,profile){
@@ -2111,7 +2121,8 @@ function irlBotAccuracy(avg,profile){
  return {single:.57+skill*.28,triple:.055+skill*.38,double:(.105+skill*.30)*Math.max(.75,Math.min(1.22,profile.finishing))};
 }
 function irlBotMissDart(target){
- if(target.mult===2){
+ if(target.mult===2 || target.kind==='BULL'){
+  if(target.kind==='BULL')return Math.random()<.45?{score:25,kind:'OUTER',n:25,mult:1}:{score:0,kind:'MISS',n:0,mult:0};
   // A missed double may land in its single or outside; never turn D1 into S11.
   return Math.random()<.48?{score:target.n,kind:'NUMBER',n:target.n,mult:1}:{score:0,kind:'MISS',n:0,mult:0};
  }
@@ -2124,7 +2135,7 @@ function irlBotMissDart(target){
  return {score:n,kind:'NUMBER',n,mult:1};
 }
 function irlBotAimDart(target,accuracy){
- const chance=target.mult===2?accuracy.double:target.mult===3?accuracy.triple:accuracy.single;
+ const chance=target.kind==='BULL'?accuracy.double*.65:target.mult===2?accuracy.double:target.mult===3?accuracy.triple:accuracy.single;
  return Math.random()<chance?target:irlBotMissDart(target);
 }
 function irlBotScoringDart(avg){
@@ -2157,10 +2168,10 @@ function irlBotSimulateVisit(old,avg,profile){
    target={score:setup,kind:'NUMBER',n:setup,mult:1};
   }
   const dart=target?irlBotAimDart(target,accuracy):irlBotScoringDart(avg);
-  if(target&&target.mult===2)attempts++;
+  if(target&&(target.mult===2||target.kind==='BULL'))attempts++;
   darts.push(dart);
   if(dart.score>=left-1){
-   if(dart.score===left&&dart.mult===2){left=0;finish=true;}
+   if(dart.score===left&&(dart.mult===2||dart.kind==='BULL')){left=0;finish=true;}
    else bust=true;
    break;
   }
