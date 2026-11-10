@@ -1818,55 +1818,48 @@ function daTraining(){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install);else install();
 })();
 </script>
-<style id="careerAccountStyles">
-#careerAccountGate{display:none;max-width:510px;margin:24px auto;padding:30px;border-radius:20px;background:linear-gradient(145deg,#202338,#10121f);border:1px solid #6d638e;box-shadow:0 15px 50px #0007;color:#fff;text-align:left}
-#careerAccountGate h2{margin:0 0 10px;font-size:28px;color:#baf65b}#careerAccountGate p{color:#c4c5d3;line-height:1.5}
-#careerAccountGate label{display:block;margin:14px 0 5px;font-weight:700}#careerAccountGate input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #6e728b;border-radius:9px;background:#111523;color:white;font-size:16px}
-#careerAccountGate .accountButtons{display:flex;gap:10px;margin-top:17px;flex-wrap:wrap}#careerAccountGate button,.careerAccountLogout{padding:12px 16px;border:0;border-radius:9px;background:#baf65b;color:#111523;font-weight:800;cursor:pointer}#careerAccountGate button.secondary,.careerAccountLogout{background:#333950;color:white;border:1px solid #777e99}
-#careerAccountError{color:#ffb3b3!important;min-height:20px}#careerAccountGate .accountNote{font-size:12px}
-#careerMode.account-locked #careerSetup,#careerMode.account-locked #careerDashboard,#careerMode.account-locked #careerAutomaticFixture{display:none!important;visibility:hidden!important}
-#careerMode.account-locked #careerAccountGate{display:block!important}
-#careerAccountBar{display:none;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 18px;background:#181e30;border:1px solid #505a72;padding:12px;border-radius:12px}
-#careerMode.account-unlocked #careerAccountBar{display:flex}
+<style id="homeOptionalAccountStyle">
+#homeAccountPanel{max-width:660px;margin:20px auto;padding:18px;border:1px solid #536478;border-radius:14px;background:#141d2b;color:#fff;text-align:left}
+#homeAccountPanel h2{font-size:20px;margin:0 0 8px;color:#b8f35a}
+#homeAccountPanel p{font-size:13px;color:#b7c7d8}
+#homeAccountPanel .accountRow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+#homeAccountPanel input{flex:1;min-width:135px;padding:11px;border:1px solid #637387;border-radius:8px;background:#0b1420;color:#fff}
+#homeAccountPanel button{padding:11px 13px;border:0;border-radius:8px;background:#b8f35a;color:#101810;font-weight:800;cursor:pointer}
+#homeAccountPanel button.secondary{background:#35455b;color:#fff}
+#homeAccountStatus{min-height:18px;color:#cce8ad!important}
 </style>
-<script id="careerAccountLoginJS">
+<script id="homeOptionalAccountJS">
 (function(){
- const mode=document.getElementById('careerMode');if(!mode)return;
- const gate=document.createElement('section');gate.id='careerAccountGate';gate.innerHTML=`<h2>🎯 Darts Arena Account</h2><p>Log in to continue your career from where you left off.</p><label for="daAccountName">Username</label><input id="daAccountName" maxlength="30" autocomplete="username" placeholder="Your username"><label for="daAccountPin">Passcode (at least 4 characters)</label><input id="daAccountPin" type="password" maxlength="64" autocomplete="current-password" placeholder="Your passcode"><div class="accountButtons"><button type="button" id="daLogin">Log in</button><button type="button" class="secondary" id="daRegister">Create account</button></div><p id="careerAccountError" role="status"></p><p class="accountNote">Saved on this browser and device. This is a local profile, not an online account. For another device use Export save / Import save. Do not use a password you use elsewhere.</p>`;
- const bar=document.createElement('div');bar.id='careerAccountBar';bar.innerHTML='<span id="daLoggedIn"></span><button type="button" class="careerAccountLogout" id="daLogout">Log out</button>';
- const setup=document.getElementById('careerSetup');mode.insertBefore(gate,setup);mode.insertBefore(bar,setup);
- const $a=id=>document.getElementById(id);
- const profileKey='dartsArenaProfilesV2', legacyKey='dartsArenaCareerV1';let current=null;
- function profiles(){try{return JSON.parse(localStorage.getItem(profileKey))||{}}catch(e){return {}}}
- function normalized(){return $a('daAccountName').value.trim().toLowerCase()}
- function error(msg){$a('careerAccountError').textContent=msg}
- async function digest(value){const data=new TextEncoder().encode(value);const buf=await crypto.subtle.digest('SHA-256',data);return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('')}
- function validSave(v){return v&&Array.isArray(v.players)&&v.players.some(p=>p.id===v.playerId)}
- function setLocked(locked){mode.classList.toggle('account-locked',locked);mode.classList.toggle('account-unlocked',!locked);gate.style.display=locked?'block':'none';bar.style.display=locked?'none':'flex';if(locked){$a('careerSetup').style.display='none';$a('careerDashboard').style.display='none'}else{$a('daLoggedIn').textContent='👤 '+current}}
- function persist(){if(!current||!career)return;try{const all=profiles();if(all[current]){all[current].save=career;all[current].updated=Date.now();localStorage.setItem(profileKey,JSON.stringify(all))}}catch(e){console.warn('Career account autosave failed',e)}}
- const originalSave=careerSave;careerSave=function(){originalSave();persist()};
- async function login(register){const name=normalized(),pin=$a('daAccountPin').value;if(!/^[a-z0-9_. -]{3,30}$/.test(name)){error('Use 3–30 letters, numbers, spaces, dots or underscores.');return}if(pin.length<4){error('Enter a passcode of at least 4 characters.');return}if(!crypto?.subtle){error('This browser cannot create a local profile securely.');return}
- const all=profiles(),hash=await digest(name+'|'+pin);
- if(register){if(all[name]){error('This username already exists. Log in instead.');return}all[name]={hash,save:null,updated:Date.now()};try{localStorage.setItem(profileKey,JSON.stringify(all))}catch(e){error('Browser storage is unavailable.');return}}
- else if(!all[name]||all[name].hash!==hash){error('Username or passcode is incorrect.');return}
- current=name;career=null;careerPending=null;
- const saved=all[name].save;if(validSave(saved)){career=saved}else if(register){try{const old=JSON.parse(localStorage.getItem(legacyKey));if(validSave(old)&&confirm('Import the career already saved in this browser into your new account?')){career=old;persist()}}catch(e){}}
- $a('daAccountPin').value='';error('');setLocked(false);
- if(career){careerRender()}else{$a('careerSetup').style.display='block';$a('careerDashboard').style.display='none'}
- }
- $a('daLogin').onclick=()=>login(false);$a('daRegister').onclick=()=>login(true);
- $a('daAccountPin').addEventListener('keydown',e=>{if(e.key==='Enter')login(false)});
- $a('daLogout').onclick=()=>{careerSave();current=null;career=null;careerPending=null;setLocked(true);$a('daAccountPin').value=''};
- // The old button stored a reference to the original function, so replace its handler.
- $a('openCareer').onclick=()=>{showMode('career');if(!current)setLocked(true);else{setLocked(false);if(career)careerRender();else{$a('careerSetup').style.display='block';$a('careerDashboard').style.display='none'}}};
- // The old single-slot Continue button must not import another profile's save.
- $a('careerContinue').style.display='none';$a('careerContinue').onclick=()=>{if(career)careerRender()};
- // When a user creates a new career, it will be saved into their active profile.
- $a('careerNew').addEventListener('click',()=>{if(current)queueMicrotask(()=>{if(!career){const all=profiles();if(all[current]){all[current].save=null;localStorage.setItem(profileKey,JSON.stringify(all))}}})});
- setLocked(true);
+ const home=document.getElementById('homeMode');if(!home)return;
+ // Accounts are OPTIONAL. Career modes must never be locked behind a login.
+ const panel=document.createElement('section');panel.id='homeAccountPanel';
+ panel.innerHTML='<h2>👤 Optional career profile</h2><p>Play immediately without signing in. Use a local profile here only if you want to resume your career another day on this browser.</p><div class="accountRow"><input id="homeProfileName" placeholder="Username" autocomplete="username"><input id="homeProfilePin" type="password" placeholder="Passcode" autocomplete="current-password"></div><div class="accountRow"><button type="button" id="homeProfileLogin">Load profile</button><button type="button" id="homeProfileCreate" class="secondary">Create profile</button><button type="button" id="homeProfileLogout" class="secondary" hidden>Log out</button></div><p id="homeAccountStatus" role="status">No login required to play.</p><p>Profiles are stored locally in this browser, not synced across devices.</p>';
+ home.appendChild(panel);
+ const $=id=>document.getElementById(id),key='dartsArenaProfilesV2';let active=null;
+ const profiles=()=>{try{return JSON.parse(localStorage.getItem(key))||{}}catch(e){return {}}};
+ const valid=c=>c&&Array.isArray(c.players)&&c.players.some(p=>p.id===c.playerId);
+ async function hash(s){if(!window.crypto?.subtle)throw Error('Secure profile login is not supported here.');const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+ function status(s){$('homeAccountStatus').textContent=s}
+ function sync(){const yes=!!active;$('homeProfileLogout').hidden=!yes;$('homeProfileLogin').hidden=yes;$('homeProfileCreate').hidden=yes;if(yes)status('Signed in as '+active+'. Career modes remain available without login.')}
+ async function login(create){const name=$('homeProfileName').value.trim().toLowerCase(),pin=$('homeProfilePin').value;if(!/^[a-z0-9_. -]{3,30}$/.test(name)||pin.length<4){status('Enter a username (3–30 characters) and a passcode (4+ characters).');return}
+ try{const all=profiles(),digest=await hash(name+'|'+pin);if(create){if(all[name]){status('Profile already exists. Choose Load profile.');return}all[name]={hash:digest,save:null,updated:Date.now()};localStorage.setItem(key,JSON.stringify(all))}else if(!all[name]||all[name].hash!==digest){status('Incorrect username or passcode.');return}
+ active=name;$('homeProfilePin').value='';
+ if(valid(all[name].save)){
+  // The legacy account stored one digital career. Restore it to the normal career slot.
+  localStorage.setItem('dartsArenaCareerV1',JSON.stringify(all[name].save));
+  if(typeof normalCareer!=='undefined')normalCareer=all[name].save;
+  if(typeof irlMode!=='undefined'&&!irlMode)career=all[name].save;
+  status('Career loaded. Open Career Mode to continue.');
+ }else status('Profile ready. Start a career and it will be saved automatically.');
+ sync();}catch(e){status('Could not load profile: '+e.message)}}
+ $('homeProfileLogin').onclick=()=>login(false);$('homeProfileCreate').onclick=()=>login(true);
+ $('homeProfileLogout').onclick=()=>{active=null;sync();status('Logged out. You can still play without logging in.')};
+ $('homeProfilePin').addEventListener('keydown',e=>{if(e.key==='Enter')login(false)});
+ // Wrap the existing save function without replacing the career mode handlers.
+ const previousSave=careerSave;
+ careerSave=function(){previousSave();if(!active||!career)return;try{const all=profiles();if(all[active]){all[active].save=career;all[active].updated=Date.now();localStorage.setItem(key,JSON.stringify(all))}}catch(e){console.warn('Optional profile save failed',e)}};
 })();
 </script>
-
 <style id="irlCareerStyles">
 #irlMatch[hidden]{display:none!important}#irlMatch{position:fixed;inset:0;z-index:210;overflow:auto;background:radial-gradient(circle at 50% 5%,#34234e,#0b101a 65%);color:white;padding:20px;font-family:Arial,sans-serif}
 .irlWrap{max-width:1050px;margin:auto}.irlTop{display:flex;justify-content:space-between;align-items:center;gap:15px}.irlScores{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}.irlScore{background:#141b29;border:2px solid #43445a;padding:18px;border-radius:14px;text-align:center}.irlScore.active{border-color:#a8e45d}.irlScore strong{display:block;font-size:clamp(55px,10vw,108px);line-height:1.1}.irlScore .irlName{font-size:clamp(14px,2vw,23px);font-weight:900}.irlEntry{max-width:540px;margin:20px auto;background:#181e2b;border-radius:15px;padding:22px;text-align:center}.irlEntry input[type=number]{width:100%;font-size:44px;text-align:center;padding:10px;background:#080e16;color:#fff;border:2px solid #66758b;border-radius:10px}.irlEntry button,.irlTop button{background:#b8f35a;color:#101810;font-weight:900;border:0;border-radius:8px;padding:12px 20px;cursor:pointer}.irlEntry label{display:block;margin:15px 0}.irlHistory{display:grid;grid-template-columns:1fr 1fr;gap:15px}.irlHistory div{background:#171f2b;border-radius:10px;padding:12px;min-height:80px}.irlHint{color:#aab8ce}.irlNotice{color:#b8f35a;min-height:22px;font-weight:700}#careerMode.irlActive #careerSim,#careerMode.irlActive #careerSkip{display:none!important}
