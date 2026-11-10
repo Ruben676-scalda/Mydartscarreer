@@ -2068,13 +2068,28 @@ function irlRecordFirstNine(who,score,used){
  if(eligible){b.firstNinePoints[who]+=eligible===used?score:Math.round(score*eligible/used);b.firstNineDarts[who]+=eligible;}
  b.legDarts[who]+=used;
 }
-function finishLeg(who){const b=irlMatch;irlClearTimers();b.botCheckoutMisses=0;b.legs[who]++;drawIRL();const needed=Math.floor(b.best/2)+1;
+function finishLeg(who){
+ const b=irlMatch;if(!b)return;
+ irlClearTimers();b.botCheckoutMisses=0;b.legs[who]++;
+ const needed=Math.floor(b.best/2)+1;
  if(b.legs[who]>=needed){
-  el('irlMatch').hidden=true;const won=who===0;if(b.darts[0]>0){if(!Array.isArray(career.matchPerformance))career.matchPerformance=[];career.matchPerformance.push({points:b.total[0],darts:b.darts[0],average:Number((b.total[0]*3/b.darts[0]).toFixed(2)),won,date:new Date().toISOString(),type:'irl'});}careerAfterMatch(won);careerSave();irlMatch=null;
+  drawIRL();el('irlMatch').hidden=true;const won=who===0;
+  if(b.darts[0]>0){if(!Array.isArray(career.matchPerformance))career.matchPerformance=[];career.matchPerformance.push({points:b.total[0],darts:b.darts[0],average:Number((b.total[0]*3/b.darts[0]).toFixed(2)),won,date:new Date().toISOString(),type:'irl'});}
+  careerAfterMatch(won);careerSave();irlMatch=null;
   el('careerMessage').textContent=won?'Match won! Your career has been updated.':'Match lost. Your career has been updated.';showMode('career');careerRender();updateIRLSetup();return;
  }
- b.remaining=[501,501];b.legDarts=[0,0];b.starter=1-b.starter;irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';el('irlNotice').textContent=(who===0?'You':'The bot')+' won the leg! Next leg.';
- if(b.starter===1){irlSchedule(()=>{if(irlMatch===b)botTurn()},1100)}
+ // Reset BOTH scores and switch starting player before drawing the next leg.
+ b.remaining=[501,501];b.legDarts=[0,0];b.starter=1-b.starter;
+ el('irlVisit').value='';irlDrawBoard([]);el('irlBotDarts').textContent='BOT DARTS: —';
+ const panel=el('irlBotScoreFlash');if(panel)panel.hidden=true;
+ drawIRL();
+ el('irlNotice').textContent=(who===0?'You':'The bot')+' won the leg! Leg '+(b.legs[0]+b.legs[1]+1)+' starts at 501–501. '+(b.starter===0?'You throw first.':'Bot throws first.');
+ if(b.starter===1){
+  el('irlSubmit').disabled=true;el('irlVisit').disabled=true;
+  irlSchedule(()=>{if(irlMatch===b)botTurn()},1250);
+ }else{
+  el('irlSubmit').disabled=false;el('irlVisit').disabled=false;el('irlVisit').focus();
+ }
 }
 function irlDartName(d){return d.kind==='MISS'?'MISS':d.kind==='BULL'?'BULL':d.kind==='OUTER'?'25':(d.mult===3?'T':d.mult===2?'D':'S')+d.n}
 function irlBotCheckoutDarts(remaining){
@@ -2104,50 +2119,70 @@ function irlBotCheckoutChance(avg,remaining,misses,finishing){
  const route=remaining>100?.36:remaining>60?.62:1;
  return Math.min(.96,base*route+Math.max(0,misses-1)*.17);
 }
+// A bot that has a checkout route ALWAYS aims for that route, including the
+// final double. A miss is represented by a real non-double dart, not a random
+// scoring visit that ignores the finish. This keeps the displayed board honest.
+function irlBotMissedCheckout(route,old){
+ const darts=[];let left=old;
+ for(let i=0;i<route.length;i++){
+  const planned=route[i];
+  if(i===route.length-1){
+   // The last dart is aimed at the double but misses (usually into a single
+   // or outside the scoring area). No checkout is awarded.
+   const miss=Math.random()<.46?{kind:'MISS',score:0,n:0,mult:0}:
+    planned.kind==='BULL'?{kind:'OUTER',score:25,n:25,mult:1}:
+    {kind:'SEG',score:planned.n,n:planned.n,mult:1};
+   darts.push(miss);left-=miss.score;
+  }else{darts.push(planned);left-=planned.score;}
+ }
+ // If the route contains fewer than 3 darts, the remaining dart(s) are misses.
+ while(darts.length<3)darts.push({kind:'MISS',score:0,n:0,mult:0});
+ return darts;
+}
 function botTurn(){
  const b=irlMatch;if(!b||irlBotBusy)return;
  irlBotBusy=true;
  const old=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
  const route=irlCheckoutPossible(old)?irlBotCheckoutDarts(old):null;
  const finish=!!route&&Math.random()<irlBotCheckoutChance(avg,old,b.botCheckoutMisses,profile.finishing);
- let darts,score;
- if(finish){darts=route;score=old;}
- else{
+ let darts,score,attempts=0;
+ if(route){
+  darts=finish?route:irlBotMissedCheckout(route,old);
+  attempts=1; // Last dart is always an attempted double on a checkout route.
+  score=darts.reduce((sum,d)=>sum+d.score,0);
+ }else{
   const result=botVisit();
-  // Never permit the old instant checkout shortcut: all finishes are resolved
-  // by the double-out logic above and displayed dart by dart.
   score=result.score;
   if(result.finish||score>=old-1)score=Math.max(0,old-2);
   darts=irlBotDartsForScore(score,false);
-  if(darts.reduce((n,d)=>n+d.score,0)!==score){score=darts.reduce((n,d)=>n+d.score,0)}
+  score=darts.reduce((sum,d)=>sum+d.score,0);
  }
+ // A miss must never leave 1 or 0 in double-out. This is a bust.
+ const bust=!finish&&(score>=old-1);
  el('irlSubmit').disabled=true;el('irlVisit').disabled=true;
  el('irlNotice').textContent=b.bot.name+' is throwing...';
  el('irlBotDarts').textContent='BOT THROW · 0 / '+darts.length;
  irlDrawBoard([]);
- const duration=900; // 3 darts in ~3 seconds, then score hold
+ const duration=900;
  darts.forEach((d,i)=>irlSchedule(()=>{
   if(irlMatch!==b)return;
   irlDrawBoard(darts.slice(0,i+1));
-  el('irlBotDarts').textContent='BOT THROW · '+(i+1)+' / '+darts.length+'  ·  '+darts.slice(0,i+1).map(irlDartName).join(' · ');
+  el('irlBotDarts').textContent='BOT THROW · '+(i+1)+' / '+darts.length+' · '+darts.slice(0,i+1).map(irlDartName).join(' · ');
  },650+i*duration));
  const reveal=650+darts.length*duration;
  irlSchedule(()=>{
   if(irlMatch!==b)return;
-  const bust=!finish&&(score>=old-1);
   b.remaining[1]=finish?0:bust?old:old-score;
   b.total[1]+=bust?0:score;
   const used=finish?darts.length:3;
   irlRecordFirstNine(1,bust?0:score,used);b.darts[1]+=used;
-  if(finish){b.doubleAttemptsByPlayer[1]+=Math.max(1,Math.min(3,b.botCheckoutMisses?2:1));b.doubleHitsByPlayer[1]++;b.botCheckoutMisses=0;}
-  else if(irlCheckoutPossible(old)){
-   const attempts=Math.min(3,old<=50?2:old<=100?1:Math.random()<.4?1:0);
-   b.doubleAttemptsByPlayer[1]+=attempts;b.botCheckoutMisses++;
-  }
+  b.doubleAttemptsByPlayer[1]+=attempts;
+  if(finish){b.doubleHitsByPlayer[1]++;b.botCheckoutMisses=0;}
+  else if(route)b.botCheckoutMisses++;
   b.visits[1].push(bust?'BUST':score+(finish?' ✓':''));drawIRL();
-  el('irlNotice').textContent=finish?'CHECKOUT! '+b.bot.name+' finishes '+score+'!':b.bot.name+' SCORES '+score+'!';
-  el('irlBotDarts').textContent=(finish?'CHECKOUT · ':'SCORE · ')+score+'  |  '+darts.map(irlDartName).join(' · ');
-  const panel=el('irlBotScoreFlash');if(panel){panel.textContent=(finish?'CHECKOUT ':'SCORE ')+score;panel.classList.toggle('checkout',finish);panel.hidden=false;}
+  el('irlNotice').textContent=finish?'CHECKOUT! '+b.bot.name+' finishes '+score+'!':bust?'BOT BUST!':b.bot.name+' SCORES '+score+'!';
+  el('irlBotDarts').textContent=(finish?'CHECKOUT · ':bust?'BUST · ':'SCORE · ')+(bust?0:score)+' | '+darts.map(irlDartName).join(' · ');
+  const panel=el('irlBotScoreFlash');if(panel){panel.textContent=finish?'CHECKOUT '+score:bust?'BUST':'SCORE '+score;panel.classList.toggle('checkout',finish);panel.hidden=false;}
   irlSchedule(()=>{
    if(irlMatch!==b)return;
    if(panel)panel.hidden=true;
