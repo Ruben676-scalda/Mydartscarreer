@@ -1999,7 +1999,7 @@ function targetAvg(p){
 function sample(){return (Math.random()+Math.random()+Math.random()+Math.random()-2)}
 function botVisit(){
  const b=irlMatch,remaining=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
- if(remaining<=170){
+ if(false && remaining<=170){
   const checkout=Math.min(.70,Math.max(.025,(avg-37)/180)*profile.finishing)*(remaining>100?.42:remaining>60?.68:1);
   if(remaining!==169&&remaining!==168&&remaining!==166&&remaining!==165&&remaining!==163&&remaining!==162&&remaining!==159&&Math.random()<checkout){return {score:remaining,finish:true}};
  }
@@ -2105,53 +2105,76 @@ function irlBotCheckoutDarts(remaining){
  });
  return candidates[Math.floor(Math.random()*Math.min(5,candidates.length))];
 }
-function irlBotCheckoutChance(avg,remaining,misses,finishing){
- // At amateur levels, doubles are harder than scoring but prolonged stalls
- // are increasingly unlikely. This only affects chances once on a finish.
- const base=Math.max(.16,Math.min(.73,.27+(avg-50)*.007))*Math.max(.75,Math.min(1.3,finishing));
- const route=remaining>100?.36:remaining>60?.62:1;
- return Math.min(.96,base*route+Math.max(0,misses-1)*.17);
+// Skill-scaled accuracy: a level-5 amateur is NOT a professional finisher.
+function irlBotAccuracy(avg,profile){
+ const skill=Math.max(0,Math.min(1,(avg-25)/75));
+ return {single:.57+skill*.28,triple:.055+skill*.38,double:(.105+skill*.30)*Math.max(.75,Math.min(1.22,profile.finishing))};
 }
-// A bot that has a checkout route ALWAYS aims for that route, including the
-// final double. A miss is represented by a real non-double dart, not a random
-// scoring visit that ignores the finish. This keeps the displayed board honest.
-function irlBotMissedCheckout(route,old){
- const darts=[];let left=old;
- for(let i=0;i<route.length;i++){
-  const planned=route[i];
-  if(i===route.length-1){
-   // The last dart is aimed at the double but misses (usually into a single
-   // or outside the scoring area). No checkout is awarded.
-   const miss=Math.random()<.46?{kind:'MISS',score:0,n:0,mult:0}:
-    planned.kind==='BULL'?{kind:'OUTER',score:25,n:25,mult:1}:
-    {kind:'SEG',score:planned.n,n:planned.n,mult:1};
-   darts.push(miss);left-=miss.score;
-  }else{darts.push(planned);left-=planned.score;}
+function irlBotMissDart(target){
+ if(target.mult===2){
+  // A missed double may land in its single or outside; never turn D1 into S11.
+  return Math.random()<.48?{score:target.n,kind:'NUMBER',n:target.n,mult:1}:{score:0,kind:'MISS',n:0,mult:0};
  }
- // If the route contains fewer than 3 darts, the remaining dart(s) are misses.
- while(darts.length<3)darts.push({kind:'MISS',score:0,n:0,mult:0});
- return darts;
+ if(target.mult===3){
+  const n=Math.random()<.70?target.n:(target.n===20?(Math.random()<.5?5:1):Math.max(1,target.n-1));
+  return {score:n,kind:'NUMBER',n,mult:1};
+ }
+ if(target.kind==='BULL')return {score:25,kind:'OUTER',n:25,mult:1};
+ const n=target.n===20?(Math.random()<.5?5:1):Math.max(1,target.n+(Math.random()<.5?-1:1));
+ return {score:n,kind:'NUMBER',n,mult:1};
+}
+function irlBotAimDart(target,accuracy){
+ const chance=target.mult===2?accuracy.double:target.mult===3?accuracy.triple:accuracy.single;
+ return Math.random()<chance?target:irlBotMissDart(target);
+}
+function irlBotScoringDart(avg){
+ // Scoring attempts are independent: 180s are rare for amateurs.
+ const skill=Math.max(0,Math.min(1,(avg-25)/75));
+ const roll=Math.random();
+ if(roll<.045+skill*.35)return {score:60,kind:'NUMBER',n:20,mult:3};
+ if(roll<.40+skill*.24)return {score:20,kind:'NUMBER',n:20,mult:1};
+ if(roll<.55+skill*.16)return {score:19,kind:'NUMBER',n:19,mult:1};
+ if(roll<.67)return {score:5,kind:'NUMBER',n:5,mult:1};
+ if(roll<.79)return {score:1,kind:'NUMBER',n:1,mult:1};
+ if(roll<.91)return {score:18,kind:'NUMBER',n:18,mult:1};
+ return Math.random()<.5?{score:12,kind:'NUMBER',n:12,mult:1}:{score:0,kind:'MISS',n:0,mult:0};
+}
+function irlBotSimulateVisit(old,avg,profile){
+ const accuracy=irlBotAccuracy(avg,profile),darts=[];
+ let left=old,finish=false,bust=false,attempts=0;
+ for(let i=0;i<3;i++){
+  let target=null;
+  // Always try a legal finish when one exists, re-planning after every dart.
+  if(irlCheckoutPossible(left)){
+   const route=irlBotCheckoutDarts(left);
+   if(route&&route.length<=3-i)target=route[0];
+  }
+  // When left on 1, the only legal action is a bust; no phantom D1 checkout.
+  if(left===1){bust=true;break;}
+  if(!target&&left<=50){
+   // Set up a finish instead of inexplicably aiming at 11 on D1.
+   const setup=left%2?1:Math.max(1,Math.min(20,left-40));
+   target={score:setup,kind:'NUMBER',n:setup,mult:1};
+  }
+  const dart=target?irlBotAimDart(target,accuracy):irlBotScoringDart(avg);
+  if(target&&target.mult===2)attempts++;
+  darts.push(dart);
+  if(dart.score>=left-1){
+   if(dart.score===left&&dart.mult===2){left=0;finish=true;}
+   else bust=true;
+   break;
+  }
+  left-=dart.score;
+ }
+ const score=bust?0:old-left;
+ return {darts,score,finish,bust,attempts};
 }
 function botTurn(){
  const b=irlMatch;if(!b||irlBotBusy)return;
  irlBotBusy=true;
  const old=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
- const route=irlCheckoutPossible(old)?irlBotCheckoutDarts(old):null;
- const finish=!!route&&Math.random()<irlBotCheckoutChance(avg,old,b.botCheckoutMisses,profile.finishing);
- let darts,score,attempts=0;
- if(route){
-  darts=finish?route:irlBotMissedCheckout(route,old);
-  attempts=1; // Last dart is always an attempted double on a checkout route.
-  score=darts.reduce((sum,d)=>sum+d.score,0);
- }else{
-  const result=botVisit();
-  score=result.score;
-  if(result.finish||score>=old-1)score=Math.max(0,old-2);
-  darts=irlBotDartsForScore(score,false);
-  score=darts.reduce((sum,d)=>sum+d.score,0);
- }
- // A miss must never leave 1 or 0 in double-out. This is a bust.
- const bust=!finish&&(score>=old-1);
+ const result=irlBotSimulateVisit(old,avg,profile);
+ const {darts,score,finish,bust,attempts}=result;
  el('irlSubmit').disabled=true;el('irlVisit').disabled=true;
  el('irlNotice').textContent=b.bot.name+' is throwing...';
  el('irlBotDarts').textContent='BOT THROW · 0 / '+darts.length;
@@ -2167,11 +2190,11 @@ function botTurn(){
   if(irlMatch!==b)return;
   b.remaining[1]=finish?0:bust?old:old-score;
   b.total[1]+=bust?0:score;
-  const used=finish?darts.length:3;
+  const used=darts.length;
   irlRecordFirstNine(1,bust?0:score,used);b.darts[1]+=used;
   b.doubleAttemptsByPlayer[1]+=attempts;
   if(finish){b.doubleHitsByPlayer[1]++;b.botCheckoutMisses=0;}
-  else if(route)b.botCheckoutMisses++;
+  else if(attempts)b.botCheckoutMisses++;
   b.visits[1].push(bust?'BUST':score+(finish?' ✓':''));drawIRL();
   el('irlNotice').textContent=finish?'CHECKOUT! '+b.bot.name+' finishes '+score+'!':bust?'BOT BUST!':b.bot.name+' SCORES '+score+'!';
   el('irlBotDarts').textContent=(finish?'CHECKOUT · ':bust?'BUST · ':'SCORE · ')+(bust?0:score)+' | '+darts.map(irlDartName).join(' · ');
@@ -2190,29 +2213,25 @@ function botTurn(){
 function irlCheckoutPossible(n){return n>=2&&n<=170&&![169,168,166,165,163,162,159].includes(n)}
 function irlAskCheckout(details,onDone){
  const shade=el('irlCheckoutPrompt'),title=el('irlCheckoutPromptTitle');
- const darts=el('irlCheckoutDarts'),doubles=el('irlCheckoutDoubles');
- const finishChoices=el('irlFinishChoices'),finishYes=el('irlFinishYes'),finishNo=el('irlFinishNo');
- const confirm=el('irlCheckoutConfirm'),error=el('irlCheckoutPromptError');
- const dartsLabel=darts.closest('label');
- let finished=false;
- shade.hidden=false;error.textContent='';doubles.value='0';darts.value='3';
- function showDetails(isFinish){
-  finished=isFinish;finishChoices.hidden=true;confirm.hidden=false;
-  dartsLabel.hidden=!finished;
-  doubles.value=finished?'1':'0';
-  title.textContent=finished?'Checkout completed — confirm your darts':'How many darts did you throw at a double?';
- }
- if(details.canFinish){
-  title.textContent='Did you finish on a double?';
-  finishChoices.hidden=false;confirm.hidden=true;dartsLabel.hidden=true;
-  finishYes.onclick=()=>showDetails(true);
-  finishNo.onclick=()=>showDetails(false);
- }else showDetails(false);
- confirm.onclick=()=>{
-  const used=Number(darts.value),attempts=Number(doubles.value);
-  if(!Number.isInteger(attempts)||attempts<0||attempts>3||(finished&&(!Number.isInteger(used)||used<1||used>3||attempts<1||attempts>used))){error.textContent='Choose valid dart counts (0–3 attempts, 1–3 darts to finish).';return}
-  error.textContent='';shade.hidden=true;onDone({used:finished?used:3,attempts,finished});
+ const choices=el('irlQuickChoices'),finishChoices=el('irlFinishChoices');
+ const error=el('irlCheckoutPromptError');
+ shade.hidden=false;error.textContent='';choices.innerHTML='';
+ const close=result=>{shade.hidden=true;onDone(result)};
+ const make=(label,action)=>{const button=document.createElement('button');button.type='button';button.textContent=label;button.onclick=action;choices.appendChild(button)};
+ const askAttempts=(finished,used)=>{
+  finishChoices.hidden=true;choices.innerHTML='';
+  title.textContent=finished?'How many darts at a double?':'Darts thrown at a double?';
+  const max=finished?used:3;
+  for(let n=finished?1:0;n<=max;n++)make(n+' '+(n===1?'DART':'DARTS'),()=>close({used:finished?used:3,attempts:n,finished}));
  };
+ if(details.canFinish){
+  title.textContent='Did you finish on a double?';finishChoices.hidden=false;
+  el('irlFinishYes').onclick=()=>{
+   finishChoices.hidden=true;title.textContent='How many darts to finish?';choices.innerHTML='';
+   for(let n=1;n<=3;n++)make(n+' '+(n===1?'DART':'DARTS'),()=>askAttempts(true,n));
+  };
+  el('irlFinishNo').onclick=()=>askAttempts(false,3);
+ }else askAttempts(false,3);
 }
 el('irlSubmit').onclick=()=>{
  const b=irlMatch;if(!b||irlBotBusy)return;const raw=el('irlVisit').value;const score=Number(raw);if(raw.trim()===''||!Number.isInteger(score)||score<0||score>180){el('irlNotice').textContent='Enter a whole-number score between 0 and 180.';return}
@@ -2232,7 +2251,15 @@ el('irlSubmit').onclick=()=>{
   el('irlNotice').textContent=bust?'Bust! Score restored.':'You scored '+score+'.';
   irlSchedule(()=>{if(irlMatch===b)botTurn()},650);
  };
- if(irlCheckoutPossible(old))irlAskCheckout({canFinish:possibleFinish},apply);
+ // Ask about double attempts only when the entered visit could have reached
+ // a double target during one of the three darts. A low remaining score alone
+ // is not enough: 150 -> 90 after scoring 60 is not a double opportunity,
+ // while 92 -> 32 after scoring 60 is.
+ const remainingAfterVisit=old-score;
+ const couldReachDouble=remainingAfterVisit>=2 && remainingAfterVisit<=50 &&
+   (remainingAfterVisit%2===0 || remainingAfterVisit===25) &&
+   score>=0 && score<=180 && old<=170 && !automaticBust;
+ if(couldReachDouble||possibleFinish||old<=50)irlAskCheckout({canFinish:possibleFinish},apply);
  else apply({used:3,attempts:0,finished:false});
 };
 document.querySelectorAll('[data-irl-key]').forEach(button=>button.addEventListener('click',()=>{const input=el('irlVisit'),key=button.dataset.irlKey;let value=input.value;if(key==='clear')value='';else if(key==='back')value=value.slice(0,-1);else if(value.length<3)value+=key;input.value=value;input.focus();}));
@@ -2341,14 +2368,17 @@ html.irl-scoring-active #irlMatch{display:block!important;visibility:visible!imp
 </style>
 <div id="irlCheckoutPrompt" hidden role="dialog" aria-modal="true" aria-labelledby="irlCheckoutPromptTitle">
  <div class="irlCheckoutPromptCard"><h2 id="irlCheckoutPromptTitle">Checkout opportunity</h2><p>Enter what actually happened during your turn.</p>
- <label>Darts used to finish <select id="irlCheckoutDarts"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
- <label>Darts thrown at a double <select id="irlCheckoutDoubles"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
- <div id="irlFinishChoices" hidden><button id="irlFinishYes" type="button">✓ YES, I FINISHED</button><button id="irlFinishNo" type="button">NO, BUST</button></div><p id="irlCheckoutPromptError" aria-live="polite"></p><button id="irlCheckoutConfirm" type="button">CONFIRM &amp; CONTINUE</button></div></div>
+ <label hidden>Darts used to finish <select id="irlCheckoutDarts"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+ <label hidden>Darts thrown at a double <select id="irlCheckoutDoubles"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+ <div id="irlQuickChoices" class="irlQuickChoices"></div><div id="irlFinishChoices" hidden><button id="irlFinishYes" type="button">✓ YES, I FINISHED</button><button id="irlFinishNo" type="button">NO, BUST</button></div><p id="irlCheckoutPromptError" aria-live="polite"></p><button id="irlCheckoutConfirm" type="button" hidden>CONFIRM &amp; CONTINUE</button></div></div>
 <style id="irlCheckoutPromptStyles">
 #irlCheckoutPrompt:not([hidden]){position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#070a10d9;padding:20px}
 #irlCheckoutPrompt .irlCheckoutPromptCard{width:min(100%,420px);background:#29242f;color:#fff;padding:26px;border-radius:18px;border:1px solid #8b6c8d;box-shadow:0 20px 80px #000b}
 #irlCheckoutPrompt h2{margin:0 0 10px;font-size:22px}#irlCheckoutPrompt p{color:#d8cdd9}#irlCheckoutPrompt label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0;font-weight:700}#irlCheckoutPrompt label[hidden]{display:none}#irlCheckoutPrompt select{background:#fff;color:#17171d;border:0;border-radius:7px;padding:10px;font-size:18px}#irlCheckoutPrompt button{width:100%;padding:15px;background:#a7e34e;border:0;border-radius:9px;color:#182119;font-weight:900;cursor:pointer}#irlCheckoutPromptError{color:#ffb5ad!important}
 #irlMatch .irlCheckoutHelp{font-size:12px;color:white;margin:10px 0;opacity:.92}#irlFinishChoices:not([hidden]){display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}#irlFinishChoices button{font-size:13px;padding:14px 8px}#irlFinishNo{background:#4d4253!important;color:white!important}#irlCheckoutConfirm[hidden]{display:none!important}
+#irlCheckoutPrompt .irlQuickChoices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+#irlCheckoutPrompt .irlQuickChoices button{padding:18px 5px;font-size:15px;min-height:64px}
+#irlCheckoutPrompt .irlQuickChoices button:first-child:nth-last-child(4),#irlCheckoutPrompt .irlQuickChoices button:first-child:nth-last-child(4)~button{font-size:13px}
 </style>
 <style id="irlBoardAndStatsFix">
 #irlMatch .irlBoardPicture{width:min(100%,430px)!important;aspect-ratio:1!important;display:block!important;height:auto!important;position:relative!important}
