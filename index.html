@@ -1828,38 +1828,7 @@ function daTraining(){
 #homeAccountPanel button.secondary{background:#35455b;color:#fff}
 #homeAccountStatus{min-height:18px;color:#cce8ad!important}
 </style>
-<script id="homeOptionalAccountJS">
-(function(){
- const home=document.getElementById('homeMode');if(!home)return;
- // Accounts are OPTIONAL. Career modes must never be locked behind a login.
- const panel=document.createElement('section');panel.id='homeAccountPanel';
- panel.innerHTML='<h2>👤 Optional career profile</h2><p>Play immediately without signing in. Use a local profile here only if you want to resume your career another day on this browser.</p><div class="accountRow"><input id="homeProfileName" placeholder="Username" autocomplete="username"><input id="homeProfilePin" type="password" placeholder="Passcode" autocomplete="current-password"></div><div class="accountRow"><button type="button" id="homeProfileLogin">Load profile</button><button type="button" id="homeProfileCreate" class="secondary">Create profile</button><button type="button" id="homeProfileLogout" class="secondary" hidden>Log out</button></div><p id="homeAccountStatus" role="status">No login required to play.</p><p>Profiles are stored locally in this browser, not synced across devices.</p>';
- home.appendChild(panel);
- const $=id=>document.getElementById(id),key='dartsArenaProfilesV2';let active=null;
- const profiles=()=>{try{return JSON.parse(localStorage.getItem(key))||{}}catch(e){return {}}};
- const valid=c=>c&&Array.isArray(c.players)&&c.players.some(p=>p.id===c.playerId);
- async function hash(s){if(!window.crypto?.subtle)throw Error('Secure profile login is not supported here.');const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
- function status(s){$('homeAccountStatus').textContent=s}
- function sync(){const yes=!!active;$('homeProfileLogout').hidden=!yes;$('homeProfileLogin').hidden=yes;$('homeProfileCreate').hidden=yes;if(yes)status('Signed in as '+active+'. Career modes remain available without login.')}
- async function login(create){const name=$('homeProfileName').value.trim().toLowerCase(),pin=$('homeProfilePin').value;if(!/^[a-z0-9_. -]{3,30}$/.test(name)||pin.length<4){status('Enter a username (3–30 characters) and a passcode (4+ characters).');return}
- try{const all=profiles(),digest=await hash(name+'|'+pin);if(create){if(all[name]){status('Profile already exists. Choose Load profile.');return}all[name]={hash:digest,save:null,updated:Date.now()};localStorage.setItem(key,JSON.stringify(all))}else if(!all[name]||all[name].hash!==digest){status('Incorrect username or passcode.');return}
- active=name;$('homeProfilePin').value='';
- if(valid(all[name].save)){
-  // The legacy account stored one digital career. Restore it to the normal career slot.
-  localStorage.setItem('dartsArenaCareerV1',JSON.stringify(all[name].save));
-  if(typeof normalCareer!=='undefined')normalCareer=all[name].save;
-  if(typeof irlMode!=='undefined'&&!irlMode)career=all[name].save;
-  status('Career loaded. Open Career Mode to continue.');
- }else status('Profile ready. Start a career and it will be saved automatically.');
- sync();}catch(e){status('Could not load profile: '+e.message)}}
- $('homeProfileLogin').onclick=()=>login(false);$('homeProfileCreate').onclick=()=>login(true);
- $('homeProfileLogout').onclick=()=>{active=null;sync();status('Logged out. You can still play without logging in.')};
- $('homeProfilePin').addEventListener('keydown',e=>{if(e.key==='Enter')login(false)});
- // Wrap the existing save function without replacing the career mode handlers.
- const previousSave=careerSave;
- careerSave=function(){previousSave();if(!active||!career)return;try{const all=profiles();if(all[active]){all[active].save=career;all[active].updated=Date.now();localStorage.setItem(key,JSON.stringify(all))}}catch(e){console.warn('Optional profile save failed',e)}};
-})();
-</script>
+
 <style id="irlCareerStyles">
 #irlMatch[hidden]{display:none!important}#irlMatch{position:fixed;inset:0;z-index:210;overflow:auto;background:radial-gradient(circle at 50% 5%,#34234e,#0b101a 65%);color:white;padding:20px;font-family:Arial,sans-serif}
 .irlWrap{max-width:1050px;margin:auto}.irlTop{display:flex;justify-content:space-between;align-items:center;gap:15px}.irlScores{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}.irlScore{background:#141b29;border:2px solid #43445a;padding:18px;border-radius:14px;text-align:center}.irlScore.active{border-color:#a8e45d}.irlScore strong{display:block;font-size:clamp(55px,10vw,108px);line-height:1.1}.irlScore .irlName{font-size:clamp(14px,2vw,23px);font-weight:900}.irlEntry{max-width:540px;margin:20px auto;background:#181e2b;border-radius:15px;padding:22px;text-align:center}.irlEntry input[type=number]{width:100%;font-size:44px;text-align:center;padding:10px;background:#080e16;color:#fff;border:2px solid #66758b;border-radius:10px}.irlEntry button,.irlTop button{background:#b8f35a;color:#101810;font-weight:900;border:0;border-radius:8px;padding:12px 20px;cursor:pointer}.irlEntry label{display:block;margin:15px 0}.irlHistory{display:grid;grid-template-columns:1fr 1fr;gap:15px}.irlHistory div{background:#171f2b;border-radius:10px;padding:12px;min-height:80px}.irlHint{color:#aab8ce}.irlNotice{color:#b8f35a;min-height:22px;font-weight:700}#careerMode.irlActive #careerSim,#careerMode.irlActive #careerSkip{display:none!important}
@@ -2414,4 +2383,99 @@ html.irl-scoring-active #irlMatch{display:block!important;visibility:visible!imp
 #irlMatch #irlSubmit:disabled{opacity:.45;cursor:wait}
 @keyframes irlScorePop{from{transform:scale(.65);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes irlCheckoutPop{0%{transform:scale(.5);opacity:0}65%{transform:scale(1.12);opacity:1}100%{transform:scale(1)}}
-</style></body></html>
+</style><script id="dartsArenaSupabaseCloud">
+(function(){
+'use strict';
+const PROJECT_URL='https://seimhfzfetrweejukgtz.supabase.co';
+const PUBLISHABLE_KEY='sb_publishable_fjKSyAOK4nHt23flx8_AiA_Gki94Cyv';
+const KEYS={digital:'dartsArenaCareerV1',irl:'dartsArenaIRLCareerV1'};
+const GUEST={digital:'dartsArenaGuestBackupDigitalV1',irl:'dartsArenaGuestBackupIRLV1'};
+const home=document.getElementById('homeMode');if(!home)return;
+const panel=document.createElement('section');panel.id='homeAccountPanel';
+panel.innerHTML=`<h2>☁️ Darts Arena Cloud Account</h2>
+<p>Create an account to save your careers online and continue on another device. Signing in is optional; guest play still works.</p>
+<div class="accountRow"><input id="cloudEmail" type="email" placeholder="Email address" autocomplete="email" aria-label="Email address"><input id="cloudPassword" type="password" placeholder="Password (6+ characters)" autocomplete="current-password" aria-label="Password"></div>
+<div class="accountRow"><button type="button" id="cloudSignIn">Log in</button><button type="button" id="cloudSignUp" class="secondary">Create account</button><button type="button" id="cloudSignOut" class="secondary" hidden>Log out</button><button type="button" id="cloudImport" class="secondary" hidden>Import my guest careers</button></div>
+<p id="homeAccountStatus" role="status" aria-live="polite">Connecting to cloud saves…</p><p class="cloudHelp">Your digital and IRL careers are saved separately. Accounts use email verification when enabled. Never share your password.</p>`;
+home.appendChild(panel);
+const el=id=>document.getElementById(id);
+let client=null,user=null,ready=false,cloudSaves={digital:null,irl:null};let scheduled={};let inFlight=Promise.resolve();
+const status=msg=>{el('homeAccountStatus').textContent=msg};
+const valid=save=>save&&typeof save==='object'&&Array.isArray(save.players)&&save.players.some(p=>p.id===save.playerId);
+const read=(key)=>{try{let obj=JSON.parse(localStorage.getItem(key));return valid(obj)?obj:null}catch{return null}};
+const write=(key,obj)=>{if(obj)localStorage.setItem(key,JSON.stringify(obj));else localStorage.removeItem(key)};
+const mode=()=>document.getElementById('careerMode')?.classList.contains('irlActive')?'irl':'digital';
+function ui(){const yes=!!user;el('cloudSignIn').hidden=yes;el('cloudSignUp').hidden=yes;el('cloudSignOut').hidden=!yes;el('cloudImport').hidden=!yes;el('cloudEmail').disabled=yes;el('cloudPassword').hidden=yes;if(yes)el('cloudEmail').value=user.email||'';}
+function backupGuests(){for(const k of ['digital','irl']){const data=read(KEYS[k]);if(data&&!read(GUEST[k]))write(GUEST[k],data)}}
+function applyCache(){for(const k of ['digital','irl'])write(KEYS[k],cloudSaves[k]);}
+async function fetchCloud(){
+ const {data,error}=await client.from('darts_career_saves').select('mode,save_data').eq('user_id',user.id);
+ if(error)throw error;
+ cloudSaves={digital:null,irl:null};for(const row of data||[])if(row.mode in cloudSaves&&valid(row.save_data))cloudSaves[row.mode]=row.save_data;
+}
+async function initializeAccount(backup){
+ ready=false;
+ if(backup)backupGuests();
+ await fetchCloud();applyCache();ready=true;ui();
+ const count=Object.values(cloudSaves).filter(Boolean).length;
+ status('Signed in as '+user.email+'. '+count+' online career'+(count===1?'':'s')+' loaded.'+(Object.values(GUEST).some(k=>read(k))?' Use Import my guest careers if needed.':''));
+}
+async function loadLibrary(){if(window.supabase?.createClient)return;await new Promise((resolve,reject)=>{
+ const scr=document.createElement('script');scr.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js';scr.onload=resolve;scr.onerror=()=>reject(new Error('Could not load the Supabase client. Check your connection.'));document.head.appendChild(scr);
+ });}
+async function boot(){try{
+ await loadLibrary();client=window.supabase.createClient(PROJECT_URL,PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ const {data,error}=await client.auth.getSession();if(error)throw error;
+ if(data.session?.user){user=data.session.user;await initializeAccount(false)}
+ else{ready=true;ui();status('Guest mode. Create an account or log in to sync between devices.');}
+ }catch(e){ready=false;status('Cloud unavailable: '+e.message+'. Guest mode still works.');console.error('Darts Arena cloud setup failed',e)}}
+async function authenticate(create){if(!client){status('Cloud connection is not ready.');return;}
+ const email=el('cloudEmail').value.trim(),password=el('cloudPassword').value;
+ if(!email.includes('@')||password.length<6){status('Enter a valid email and password of at least 6 characters.');return;}
+ el('cloudSignIn').disabled=el('cloudSignUp').disabled=true;status(create?'Creating account…':'Signing in…');
+ try{
+ const result=create?await client.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}}):await client.auth.signInWithPassword({email,password});
+ if(result.error)throw result.error;
+ el('cloudPassword').value='';
+ if(!result.data.session){status('Account created! Check your email to confirm it, then log in.');return;}
+ user=result.data.session.user;await initializeAccount(true);location.reload();
+ }catch(e){status('Account error: '+e.message)}finally{el('cloudSignIn').disabled=el('cloudSignUp').disabled=false;}
+}
+el('cloudSignIn').onclick=()=>authenticate(false);el('cloudSignUp').onclick=()=>authenticate(true);
+el('cloudPassword').addEventListener('keydown',e=>{if(e.key==='Enter')authenticate(false)});
+el('cloudSignOut').onclick=async()=>{
+ if(!client)return;
+ try{await flush();const {error}=await client.auth.signOut();if(error)throw error;
+ user=null;ready=false;for(const k of ['digital','irl'])write(KEYS[k],read(GUEST[k]));location.reload();
+ }catch(e){status('Sign-out error: '+e.message)}
+};
+function scheduleSave(which,data){if(!user||!ready||!valid(data))return;
+ clearTimeout(scheduled[which]);const uid=user.id;
+ const snapshot=JSON.parse(JSON.stringify(data));
+ scheduled[which]=setTimeout(()=>{inFlight=inFlight.then(async()=>{
+ if(!user||user.id!==uid)return;
+ const {error}=await client.from('darts_career_saves').upsert({user_id:uid,mode:which,save_data:snapshot,updated_at:new Date().toISOString()},{onConflict:'user_id,mode'});
+ if(error){status('Cloud save failed: '+error.message+'. Your local save is still available.');console.error('Cloud autosave failed',error)}
+ }).catch(e=>{status('Cloud save failed: '+e.message)})},850);
+}
+async function flush(){for(const k of ['digital','irl']){if(scheduled[k]){clearTimeout(scheduled[k]);scheduled[k]=null;const data=read(KEYS[k]);if(data&&ready&&user){const uid=user.id;inFlight=inFlight.then(async()=>{const {error}=await client.from('darts_career_saves').upsert({user_id:uid,mode:k,save_data:data,updated_at:new Date().toISOString()},{onConflict:'user_id,mode'});if(error)throw error})}}}await inFlight;}
+el('cloudImport').onclick=async()=>{
+ if(!user||!ready)return;
+ const available=['digital','irl'].filter(k=>read(GUEST[k]));
+ if(!available.length){status('No guest careers found on this device.');return;}
+ const overwrite=available.filter(k=>cloudSaves[k]);
+ if(overwrite.length&&!confirm('Importing will REPLACE your online '+overwrite.join(' and ')+' career. Continue?'))return;
+ try{
+ for(const k of available){const data=read(GUEST[k]);const {error}=await client.from('darts_career_saves').upsert({user_id:user.id,mode:k,save_data:data,updated_at:new Date().toISOString()},{onConflict:'user_id,mode'});if(error)throw error;cloudSaves[k]=data}
+ applyCache();status('Guest careers uploaded to your account. Reloading…');location.reload();
+ }catch(e){status('Import failed: '+e.message)}
+};
+// Install after the existing career modules, so both digital and IRL use their
+// original local save function plus secure per-user cloud autosaving.
+const previousSave=careerSave;
+careerSave=function(){previousSave.apply(this,arguments);if(user&&ready&&career)scheduleSave(mode(),career)};
+window.addEventListener('pagehide',()=>{if(user&&ready&&career)scheduleSave(mode(),career)});
+boot();
+})();
+</script>
+</body></html>
