@@ -166,7 +166,19 @@ body:has(#game501.extraView){overflow:auto!important;height:auto!important}
 #game501.tournamentLobby #dMatchContext{display:none}
 #game501.tournamentLobby #dExtraToggle{background:#7425ae;color:white;border-color:#ae62e8}
 #game501.tournamentPlaying .tourneyPanel{display:none!important}
-</style><style id="proThrowStyle">#game501 .timingBox{border:1px solid #a5eb4c!important;box-shadow:0 0 22px #a5eb4c22!important}#game501 .timingBox h2{color:#b5ff4b!important}#dBoard .aimMark{transition:none}#game501 #dAimText{font-weight:700;color:#d6eeb5}</style></head>
+</style><style id="proThrowStyle">#game501 .timingBox{border:1px solid #a5eb4c!important;box-shadow:0 0 22px #a5eb4c22!important}#game501 .timingBox h2{color:#b5ff4b!important}#dBoard .aimMark{transition:none}#game501 #dAimText{font-weight:700;color:#d6eeb5}</style><style id="irlAnalyticsStyles">
+#irlAnalytics[hidden]{display:none!important}#irlAnalytics h2{margin:0 0 18px}
+.irlAnalyticsTiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.irlAnalyticsTiles>div{padding:16px;background:#162c3d;border:1px solid #35536b;border-radius:12px}
+.irlAnalyticsTiles small{display:block;color:#a6c4d4;font-size:11px}
+.irlAnalyticsTiles strong{display:block;font-size:25px;margin-top:5px}
+.irlAnalyticsCharts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:18px 0}
+.irlAnalyticsCharts section{background:#15283a;border-radius:12px;padding:14px;min-width:0}
+.irlAnalyticsCharts h3{font-size:15px;margin:0 0 12px}.irlAnalyticsGraph{width:100%;height:auto;display:block}
+.irlResultsTable{overflow-x:auto}.irlResultsTable table{width:100%;border-collapse:collapse}
+.irlResultsTable th,.irlResultsTable td{padding:10px;border-bottom:1px solid #3b5061;text-align:left}
+@media(max-width:700px){.irlAnalyticsTiles{grid-template-columns:repeat(2,1fr)}.irlAnalyticsCharts{grid-template-columns:1fr}}
+</style></head>
 
 <style>
 #homeMode .modeCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:650px;margin:25px auto}
@@ -343,7 +355,7 @@ body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gra
 <section id="careerMode" class="career-not-started">
 <div class="careerNav"><h1>🏆 DARTS ARENA <span style="color:#68e9ce">CAREER</span></h1><button class="btn alt" id="careerHome">⌂ Home</button></div>
 <div id="careerSetup" class="careerPanel careerSetup"><h2>Start your career</h2><p class="careerMuted">Create a player or take control of one of the 128 PDC players.</p><label>Career type<select id="careerType"><option value="custom">Create your own player</option><option value="pro">Play as a PDC professional</option></select></label><div id="careerCustomFields"><label>Player name<input id="careerName" maxlength="36" placeholder="Your name"></label><label>Country<select id="careerCountry"><option>Netherlands</option><option>England</option><option>Scotland</option><option>Wales</option><option>Belgium</option><option>Germany</option><option>Other</option></select></label><label>Nickname<input id="careerNickname" maxlength="32" placeholder="The Challenger"></label></div><div id="careerProFields" style="display:none"><label>Choose player<select id="careerPro"></select></label></div><div class="careerActions"><button id="careerCreate">Create career</button><button id="careerContinue" style="display:none">Continue saved career</button></div><p id="careerSetupMsg" class="careerMuted"></p></div>
-<div id="careerDashboard" style="display:none"><div class="careerHelp">🏟️ <b>2026 PDC Career Calendar</b> · 34 Players Championships (floor events), 15 European Tour events and major championships. Prize money is paid for your finishing round. New careers start with the PDC Order of Merit prize money snapshot of 9 November 2026. Career results change the ranking; dates are approximate within the game.</div><div class="careerFilters"><button class="btn alt" type="button" data-filter="all">All events</button><button class="btn alt" type="button" data-filter="floor">Floor</button><button class="btn alt" type="button" data-filter="euro">European Tour</button><button class="btn alt" type="button" data-filter="major">Majors</button></div><div class="careerGrid"><div class="careerTile"><small>PLAYER</small><strong id="careerPlayerLabel">–</strong><p id="careerNick" class="careerMuted"></p></div><div class="careerTile"><small>WORLD RANKING</small><strong id="careerRank">#128</strong><p id="careerSeason" class="careerMuted"></p></div><div class="careerTile"><small>CAREER EARNINGS</small><strong id="careerMoney">£0</strong><p id="careerSponsors" class="careerMuted" style="display:none"></p></div><div class="careerTile"><small>CAREER RECORD</small><strong id="careerRecord">0–0</strong><p id="careerTitles" class="careerMuted"></p></div></div><div class="careerPerformance" id="careerPerformance"><div class="careerTile"><small>RECENT FORM</small><strong id="careerFormValue">—</strong><p id="careerFormDetail" class="careerMuted">No matches played yet</p></div><div class="careerTile"><small>LAST MATCH AVERAGE</small><strong id="careerLastAverage">—</strong><p class="careerMuted">3-dart average</p></div><div class="careerTile"><small>OVERALL AVERAGE</small><strong id="careerOverallAverage">—</strong><p id="careerOverallDetail" class="careerMuted">Across recorded matches</p></div></div><div class="careerPanel"><h2>Next tournament</h2><div id="careerNextEvent" class="careerEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button id="careerTrain" style="display:none" hidden>Train</button><button id="careerSponsor" style="display:none" hidden>Sponsor</button><button id="careerSave">💾 Save</button></div><p id="careerMessage" class="careerMuted"></p></div><div class="careerPanel careerTournamentPanel"><div class="careerTournamentHeader"><div><small>CURRENT CAREER EVENT · LIVE DRAW</small><h2 id="careerTournamentTitle">Current tournament draw</h2><p id="careerTournamentSubtitle"></p></div><span id="careerTournamentStatus" class="careerTournamentBadge">UPCOMING</span></div><div id="careerTournamentProgress" class="careerTournamentProgress"></div><div id="careerTournamentBracket" class="careerTournamentBracket"></div><div id="careerTournamentFooter" class="careerTournamentFooter"></div></div><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div id="careerCalendar" class="careerScroll"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div id="careerRanking" class="careerScroll"></div></div></div><div class="careerTwo"><div class="careerPanel" style="display:none" hidden><h2>Player development</h2><div id="careerSkills"></div></div><div class="careerPanel"><h2>📰 News & career history</h2><div id="careerNews" class="careerScroll"></div></div></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input type="file" id="careerImportFile" accept=".json,application/json" style="display:none"></div></div></section></main><script>
+<div id="careerDashboard" style="display:none"><div class="careerHelp">🏟️ <b>2026 PDC Career Calendar</b> · 34 Players Championships (floor events), 15 European Tour events and major championships. Prize money is paid for your finishing round. New careers start with the PDC Order of Merit prize money snapshot of 9 November 2026. Career results change the ranking; dates are approximate within the game.</div><div class="careerFilters"><button class="btn alt" type="button" data-filter="all">All events</button><button class="btn alt" type="button" data-filter="floor">Floor</button><button class="btn alt" type="button" data-filter="euro">European Tour</button><button class="btn alt" type="button" data-filter="major">Majors</button></div><div class="careerGrid"><div class="careerTile"><small>PLAYER</small><strong id="careerPlayerLabel">–</strong><p id="careerNick" class="careerMuted"></p></div><div class="careerTile"><small>WORLD RANKING</small><strong id="careerRank">#128</strong><p id="careerSeason" class="careerMuted"></p></div><div class="careerTile"><small>CAREER EARNINGS</small><strong id="careerMoney">£0</strong><p id="careerSponsors" class="careerMuted" style="display:none"></p></div><div class="careerTile"><small>CAREER RECORD</small><strong id="careerRecord">0–0</strong><p id="careerTitles" class="careerMuted"></p></div></div><div class="careerPerformance" id="careerPerformance"><div class="careerTile"><small>RECENT FORM</small><strong id="careerFormValue">—</strong><p id="careerFormDetail" class="careerMuted">No matches played yet</p></div><div class="careerTile"><small>LAST MATCH AVERAGE</small><strong id="careerLastAverage">—</strong><p class="careerMuted">3-dart average</p></div><div class="careerTile"><small>OVERALL AVERAGE</small><strong id="careerOverallAverage">—</strong><p id="careerOverallDetail" class="careerMuted">Across recorded matches</p></div></div><div class="careerPanel"><h2>Next tournament</h2><div id="careerNextEvent" class="careerEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button id="careerTrain" style="display:none" hidden>Train</button><button id="careerSponsor" style="display:none" hidden>Sponsor</button><button id="careerSave">💾 Save</button></div><p id="careerMessage" class="careerMuted"></p></div><div class="careerPanel careerTournamentPanel"><div class="careerTournamentHeader"><div><small>CURRENT CAREER EVENT · LIVE DRAW</small><h2 id="careerTournamentTitle">Current tournament draw</h2><p id="careerTournamentSubtitle"></p></div><span id="careerTournamentStatus" class="careerTournamentBadge">UPCOMING</span></div><div id="careerTournamentProgress" class="careerTournamentProgress"></div><div id="careerTournamentBracket" class="careerTournamentBracket"></div><div id="careerTournamentFooter" class="careerTournamentFooter"></div></div><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div id="careerCalendar" class="careerScroll"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div id="careerRanking" class="careerScroll"></div></div></div><div class="careerTwo"><div class="careerPanel" style="display:none" hidden><h2>Player development</h2><div id="careerSkills"></div></div><div class="careerPanel"><h2>📰 News & career history</h2><div id="careerNews" class="careerScroll"></div></div></div><div id="irlAnalytics" class="careerPanel" hidden></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input type="file" id="careerImportFile" accept=".json,application/json" style="display:none"></div></div></section></main><script>
 // Order of Merit names/ranks reflect the published live table around Nov 5, 2026.
 // Country and age are included for the gameplay data.
 const roster=[
@@ -1095,7 +1107,7 @@ function careerSimResult(a,b){
 function careerChooseOpponents(event){const player=careerPlayer(),ranked=careerRanked(),type=careerEventType(event);const rank=ranked.findIndex(p=>p.id===player.id)+1;
  const euroRank=[...career.players].sort((a,b)=>(b.euroMoney||0)-(a.euroMoney||0)||a.seed-b.seed).findIndex(p=>p.id===player.id)+1;
  const floorRank=[...career.players].sort((a,b)=>(b.floorMoney||0)-(a.floorMoney||0)||a.seed-b.seed).findIndex(p=>p.id===player.id)+1;
- const qualified=type==='floor'||type==='uk'||type==='world'||type==='euro'&&rank<=64||type==='europeanchamp'&&euroRank<=32||type==='pcfinal'&&floorRank<=64||type==='grandslam'&&rank<=48||type==='masters'&&rank<=32||type==='series'&&rank<=32||type==='matchplay'&&rank<=32||type==='grandprix'&&rank<=32;
+ const qualified=(career.qualifierPass?.season===career.season&&career.qualifierPass?.eventIndex===career.eventIndex)||type==='floor'||type==='uk'||type==='world'||type==='euro'&&rank<=64||type==='europeanchamp'&&euroRank<=32||type==='pcfinal'&&floorRank<=64||type==='grandslam'&&rank<=48||type==='masters'&&rank<=32||type==='series'&&rank<=32||type==='matchplay'&&rank<=32||type==='grandprix'&&rank<=32;
  if(!qualified)return null;
  const pool=ranked.slice(0,Math.max(event[1],64)).filter(p=>p.id!==player.id);return pool[Math.floor(Math.random()*pool.length)]||null;
 }
@@ -1124,7 +1136,7 @@ function careerPlay(){
   $('dReset').click();
  }
  if(careerPending){careerPending=null;careerMatchCompleted=false;}
-if(!career.current)careerStartEvent();if(!career.current)return;const opp=career.players.find(p=>p.id===career.current.opponent),player=careerPlayer();careerPending=true;careerMatchCompleted=false;$('dCareerReturn').hidden=true;$('dMatchContext').textContent='CAREER MATCH · '+careerEvents[career.eventIndex][0];$('dPlayerSelect').innerHTML='';$('dOpponentSelect').innerHTML='';const option=(el,p)=>{let o=document.createElement('option');o.value=p.name;o.textContent=p.name;el.appendChild(o)};option($('dPlayerSelect'),player);option($('dOpponentSelect'),opp);$('dLegFormat').value=String(careerEvents[career.eventIndex][3]);$('dLegFormat').dispatchEvent(new Event('change'));showMode('501');$('dStart').textContent='Career match';dSetPortrait(0);dSetPortrait(1);dStart();}
+if(!career.current)careerStartEvent();if(!career.current)return;const opp=career.players.find(p=>p.id===career.current.opponent),player=careerPlayer();careerPending=true;careerMatchCompleted=false;$('dCareerReturn').hidden=true;$('dMatchContext').textContent=(career.current?.qualifier?'QUALIFIER MATCH · ':'CAREER MATCH · ')+careerEvents[career.eventIndex][0];$('dPlayerSelect').innerHTML='';$('dOpponentSelect').innerHTML='';const option=(el,p)=>{let o=document.createElement('option');o.value=p.name;o.textContent=p.name;el.appendChild(o)};option($('dPlayerSelect'),player);option($('dOpponentSelect'),opp);$('dLegFormat').value=String(careerEvents[career.eventIndex][3]);$('dLegFormat').dispatchEvent(new Event('change'));showMode('501');$('dStart').textContent='Career match';dSetPortrait(0);dSetPortrait(1);dStart();}
 function careerSimulate(){if(!career)return;if(dMatch){if(careerPending){$('careerMessage').textContent='Finish your current career match before simulating.';return;}dStopMeter();$('dReset').click();}if(!career.current)careerStartEvent();if(!career.current)return;const player=careerPlayer(),opp=career.players.find(p=>p.id===career.current.opponent);const won=careerSimResult(player.id,opp.id)===player.id;careerAfterMatch(won)}
 let careerPhotoRequest=0;
 async function careerSetDashboardPhoto(name){
@@ -1402,7 +1414,7 @@ body:has(#game501[style*="block"]){background:#08090e}
   const event=careerEvents[career.eventIndex];
   if(!event)return;
   const type=careerEventType(event),rank=careerRanked().find(p=>p.id===career.playerId)?.position||128;
-  const qualified=type==='floor'||type==='uk'||type==='world'||type==='euro'&&rank<=64||type==='europeanchamp'&&rank<=32||type==='pcfinal'&&rank<=64||type==='grandslam'&&rank<=48||['masters','series','matchplay','grandprix'].includes(type)&&rank<=32;
+  const qualified=(career.qualifierPass?.season===career.season&&career.qualifierPass?.eventIndex===career.eventIndex)||type==='floor'||type==='uk'||type==='world'||type==='euro'&&rank<=64||type==='europeanchamp'&&rank<=32||type==='pcfinal'&&rank<=64||type==='grandslam'&&rank<=48||['masters','series','matchplay','grandprix'].includes(type)&&rank<=32;
   if(!qualified){careerLog('Not qualified for '+event[0]);careerAdvance();careerRender();return;}
   const draw=initDraw(event);
   const cur={opponent:null,round:0,wins:0,played:0,history:[],visualDraw:draw.slots,drawRounds:draw.drawRounds};
@@ -1896,6 +1908,52 @@ let irlBotBusy=false;let irlBotTimers=[];
 function irlSchedule(fn,ms){const id=setTimeout(fn,ms);irlBotTimers.push(id);return id}
 function irlClearTimers(){irlBotTimers.forEach(clearTimeout);irlBotTimers=[];irlBotBusy=false}
 const el=id=>document.getElementById(id);
+// IRL career analytics and historical ranking snapshots.
+function irlEnsureAnalytics(){
+ if(!career||!irlMode)return;
+ if(!Array.isArray(career.irlRankHistory))career.irlRankHistory=[];
+ if(!Array.isArray(career.irlTournamentResults))career.irlTournamentResults=[];
+ const rank=careerRanked().find(p=>p.id===career.playerId)?.position;
+ if(Number.isFinite(rank)&&!career.irlRankHistory.length)career.irlRankHistory.push({rank,season:career.season,eventIndex:career.eventIndex});
+}
+const irlAdvanceOriginal=careerAdvance;
+careerAdvance=function(){
+ const before=career&&irlMode?{event:careerEvents[career.eventIndex]?.[0]||'Tournament',season:career.season,wins:career.current?.wins||0,played:career.current?.played||0}:null;
+ irlAdvanceOriginal();
+ if(before&&career){
+  irlEnsureAnalytics();
+  const rank=careerRanked().find(p=>p.id===career.playerId)?.position;
+  if(Number.isFinite(rank))career.irlRankHistory.push({rank,season:before.season,eventIndex:career.eventIndex});
+  career.irlTournamentResults.push({...before,rank});
+  career.irlRankHistory=career.irlRankHistory.slice(-100);
+  career.irlTournamentResults=career.irlTournamentResults.slice(-100);
+  careerSave();
+ }
+};
+function irlLineChart(values,invert=false){
+ if(!values.length)return '<p class="careerMuted">Play matches to build your chart.</p>';
+ const nums=values.map(Number).filter(Number.isFinite);
+ if(!nums.length)return '<p class="careerMuted">No data yet.</p>';
+ const w=560,h=165,pad=24,low=Math.min(...nums),high=Math.max(...nums),span=Math.max(1,high-low);
+ const pts=nums.map((v,i)=>[(pad+i*(w-pad*2)/Math.max(1,nums.length-1)).toFixed(1),(pad+(invert?(v-low):(high-v))*(h-pad*2)/span).toFixed(1)]);
+ const path=pts.map((pt,i)=>(i?'L':'M')+pt.join(' ')).join(' ');
+ return '<svg class="irlAnalyticsGraph" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Career progress chart"><line x1="'+pad+'" y1="'+(h-pad)+'" x2="'+(w-pad)+'" y2="'+(h-pad)+'" stroke="#64748b" opacity=".6"/><path d="'+path+'" fill="none" stroke="#77edb7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+pts.map(pt=>'<circle cx="'+pt[0]+'" cy="'+pt[1]+'" r="3.5" fill="#b9f45a"/>').join('')+'<text x="'+pad+'" y="15" fill="#cbd5e1" font-size="12">'+(invert?'Best #'+low:'Best '+high.toFixed(1))+'</text><text x="'+(w-pad)+'" y="15" fill="#cbd5e1" font-size="12" text-anchor="end">'+(invert?'Latest #'+nums.at(-1):'Latest '+nums.at(-1).toFixed(1))+'</text></svg>';
+}
+function irlRenderAnalytics(){
+ const host=el('irlAnalytics');if(!host)return;
+ host.hidden=!irlMode||!career;
+ if(host.hidden)return;
+ irlEnsureAnalytics();
+ const matches=(Array.isArray(career.matchPerformance)?career.matchPerformance:[]).filter(x=>x.type==='irl'&&Number.isFinite(Number(x.average)));
+ const recent=matches.slice(-20),avgs=recent.map(x=>Number(x.average));
+ const overall=matches.length?(matches.reduce((n,x)=>n+Number(x.average),0)/matches.length).toFixed(2):'—';
+ const best=matches.length?Math.max(...matches.map(x=>Number(x.average))).toFixed(2):'—';
+ const wins=matches.filter(x=>x.won).length;
+ const events=career.irlTournamentResults.slice(-8);
+ host.innerHTML='<h2>📈 IRL Career Statistics</h2><div class="irlAnalyticsTiles"><div><small>MATCHES</small><strong>'+matches.length+'</strong></div><div><small>OVERALL AVERAGE</small><strong>'+overall+'</strong></div><div><small>BEST MATCH AVG</small><strong>'+best+'</strong></div><div><small>WIN RATE</small><strong>'+(matches.length?(wins*100/matches.length).toFixed(0)+'%':'—')+'</strong></div></div><div class="irlAnalyticsCharts"><section><h3>Last 20 match averages</h3>'+irlLineChart(avgs)+'</section><section><h3>Ranking progression</h3>'+irlLineChart(career.irlRankHistory.map(x=>x.rank),true)+'</section></div><h3>Recent tournament results</h3>'+(events.length?'<div class="irlResultsTable"><table><thead><tr><th>Tournament</th><th>Wins</th><th>Matches</th><th>Ranking</th></tr></thead><tbody>'+events.slice().reverse().map(e=>'<tr><td>'+careerSafe(e.event)+'</td><td>'+e.wins+'</td><td>'+e.played+'</td><td>#'+e.rank+'</td></tr>').join('')+'</tbody></table></div>':'<p class="careerMuted">Complete a tournament to see results.</p>');
+}
+const irlRenderOriginal=careerRender;
+careerRender=function(){irlRenderOriginal();irlRenderAnalytics()};
 const originalSave=careerSave;
 careerSave=function(){if(!career)return;try{localStorage.setItem(irlMode?IRL_KEY:CAREER_KEY,JSON.stringify(career))}catch(e){console.warn('Career save unavailable',e)}};
 function openCareerVariant(irl){
@@ -2020,17 +2078,19 @@ function startIRLMatch(){
  const bot=career.players.find(p=>p.id===career.current.opponent),player=careerPlayer();
  if(!bot||!player)return;
  const ev=careerEvents[career.eventIndex];
- irlMatch={bot,player,best:Math.max(1,Number(ev[3])||5),remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,botCheckoutMisses:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
+ const isWorldSets=/world championship|world darts championship|pdc world championship/i.test(ev[0]);
+ const setBest=isWorldSets?(career.current.round>=5?13:career.current.round>=3?11:career.current.round>=1?7:5):0;
+ irlMatch={bot,player,best:isWorldSets?5:Math.max(1,Number(ev[3])||5),setBest,sets:[0,0],remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,botCheckoutMisses:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
  // One match-day form roll, influenced by consistency; remains stable for the match.
  const profile=aiInit(bot);irlMatch.botDay=(Math.random()+Math.random()+Math.random()-1.5)*(15-profile.consistency*9);
- el('irlEventTitle').textContent=ev[0]+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||5);
+ el('irlEventTitle').textContent=ev[0]+(career.current.qualifier?' · QUALIFIER':'')+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||5);
  el('irlMatchBotLevel').value=String(irlSavedLevel(career.botLevel));
  el('irlPlayerName').textContent=player.name;el('irlBotName').textContent=bot.name;
  el('game501').style.display='none';el('irlMatch').hidden=false;document.documentElement.classList.add('irl-scoring-active');el('irlVisit').value='';el('irlNotice').textContent='Your throw!';irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';drawIRL();el('irlVisit').focus();
 }
 function drawIRL(){const b=irlMatch;if(!b)return;
  for(let i=0;i<2;i++){
-  const prefix=i?'irlBot':'irlPlayer';el(prefix+'Remaining').textContent=b.remaining[i];el(prefix+'Legs').textContent=b.legs[i]+' legs';
+  const prefix=i?'irlBot':'irlPlayer';el(prefix+'Remaining').textContent=b.remaining[i];el(prefix+'Legs').textContent=b.setBest?b.sets[i]+' sets · '+b.legs[i]+' legs':b.legs[i]+' legs';
   el(prefix+'Avg').textContent='Average: '+(b.darts[i]?((b.total[i]/b.darts[i])*3).toFixed(2):'—');
   el(prefix+'Visits').textContent=b.visits[i].slice(-10).reverse().join(' · ')||'—';
   const scores=b.visits[i].map(v=>parseInt(v,10)).filter(Number.isFinite);const last=scores.length?scores[scores.length-1]:'—';
@@ -2040,7 +2100,7 @@ function drawIRL(){const b=irlMatch;if(!b)return;
   const doublePct=attempts?(hits*100/attempts).toFixed(1)+'%':'—';
   el(prefix+'Extra').innerHTML=`<div><span>FIRST 9 AVG</span><b>${first9}</b></div><div><span>DOUBLES %</span><b>${doublePct}</b></div><div><span>DOUBLES HIT / ATT</span><b>${hits} / ${attempts}</b></div><div><span>LAST SCORE</span><b>${last}</b></div><div><span>DARTS THROWN</span><b>${b.darts[i]}</b></div><div><span>HIGHEST VISIT</span><b>${best}</b></div><div><span>100+ / 140+ / 180</span><b>${high} / ${big} / ${max}</b></div>`;
  }
- el('irlLegLabel').textContent='Best of '+b.best+' legs · First to '+(Math.floor(b.best/2)+1);
+ el('irlLegLabel').textContent=b.setBest?'Best of '+b.setBest+' sets · Best of 5 legs per set':'Best of '+b.best+' legs · First to '+(Math.floor(b.best/2)+1);
 }
 // Record the first nine darts separately for each leg; only actual scoring darts count.
 function irlRecordFirstNine(who,score,used){
@@ -2053,7 +2113,17 @@ function finishLeg(who){
  const b=irlMatch;if(!b)return;
  irlClearTimers();b.botCheckoutMisses=0;b.legs[who]++;
  const needed=Math.floor(b.best/2)+1;
+ let matchComplete=false;
+ let setFinished=false;
  if(b.legs[who]>=needed){
+  if(b.setBest){
+   setFinished=true;
+   b.sets[who]++;
+   matchComplete=b.sets[who]>=Math.floor(b.setBest/2)+1;
+   if(!matchComplete)b.legs=[0,0];
+  }else matchComplete=true;
+ }
+ if(matchComplete){
   drawIRL();el('irlMatch').hidden=true;const won=who===0;
   if(b.darts[0]>0){if(!Array.isArray(career.matchPerformance))career.matchPerformance=[];career.matchPerformance.push({points:b.total[0],darts:b.darts[0],average:Number((b.total[0]*3/b.darts[0]).toFixed(2)),won,date:new Date().toISOString(),type:'irl'});}
   careerAfterMatch(won);careerSave();irlMatch=null;
@@ -2064,7 +2134,7 @@ function finishLeg(who){
  el('irlVisit').value='';irlDrawBoard([]);el('irlBotDarts').textContent='BOT DARTS: —';
  const panel=el('irlBotScoreFlash');if(panel)panel.hidden=true;
  drawIRL();
- el('irlNotice').textContent=(who===0?'You':'The bot')+' won the leg! Leg '+(b.legs[0]+b.legs[1]+1)+' starts at 501–501. '+(b.starter===0?'You throw first.':'Bot throws first.');
+ el('irlNotice').textContent=(who===0?'You':'The bot')+(setFinished?' won the set! ':' won the leg! ')+'Next leg starts at 501–501. '+(b.starter===0?'You throw first.':'Bot throws first.');
  if(b.starter===1){
   el('irlSubmit').disabled=true;el('irlVisit').disabled=true;
   irlSchedule(()=>{if(irlMatch===b)botTurn()},1250);
@@ -2555,6 +2625,152 @@ boot();
   const news=document.getElementById('careerNews');
   if(news)news.innerHTML=(career.news||[]).map(n=>'<p class="'+(n.includes('▲ RANKING UP')?'rankNewsUp':n.includes('▼ RANKING DOWN')?'rankNewsDown':'')+'" style="border-bottom:1px solid #35506c;padding-bottom:9px">'+careerSafe(n)+'</p>').join('');
   return result;
+ };
+})();
+</script>
+
+<style id="careerQualifierCSS">
+#careerQualifierBanner{background:linear-gradient(120deg,#073a2e,#174b42);border:1px solid #43cf97;border-radius:12px;padding:15px;margin:10px 0 14px;color:#ecfff5}
+#careerQualifierBanner strong{color:#baff69;display:block;font-size:17px;margin-bottom:5px}
+#careerQualifierBanner p{margin:7px 0;color:#d4f6e8;line-height:1.5}
+#careerQualifierBanner .qualPills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+#careerQualifierBanner .qualPills span{display:inline-block;border:1px solid #5da28b;border-radius:9px;padding:6px 9px;background:#134838;color:#fff;font-weight:750;font-size:12px}
+#careerQualifierBanner .qualPills span.active{background:#ffdc4f;color:#122d23;border-color:#ffdc4f}
+#careerQualifierDraw{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:13px;overflow-x:auto;min-height:240px;padding:13px;background:#132a33;border-radius:9px}
+#careerQualifierDraw .qualCol{display:flex;flex-direction:column;gap:9px;min-width:150px}
+#careerQualifierDraw .qualCol h4{color:#bdeba9;margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.07em}
+#careerQualifierDraw .qualMatch{border:1px solid #3c6b70;border-radius:8px;overflow:hidden;background:#0b2029}
+#careerQualifierDraw .qualMatch.active{border:2px solid #ffdc4f}
+#careerQualifierDraw .qualName{padding:9px;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#d4e6e5;border-bottom:1px solid #35515b}
+#careerQualifierDraw .qualName.me{color:#baff69;font-weight:900}
+#careerQualifierDraw .qualName:last-child{border-bottom:0}
+#careerQualifierDraw .qualName.empty{color:#778d98}
+#careerQualifierDraw .qualMatch.later{opacity:.8}
+#careerQualifierCaption{color:#b1c7c6;padding:10px 4px 0;font-size:12px}
+@media(max-width:650px){#careerQualifierDraw{grid-template-columns:repeat(3,165px);overflow-x:auto}}
+</style>
+<script id="careerQualifierLogic">
+(function(){
+ // A game-scaled model of real PDC pathways: 2026 European Tour (32 direct + 16 qualifiers)
+ // and Grand Slam (event achievements + an eight-place Tour Card Holder qualifier).
+ // Qualification here is an 8-player knockout group for one available place.
+ const originalStart=careerStartEvent,originalAfter=careerAfterMatch,originalRender=careerRender;
+ const hasPass=()=>!!career&&career.qualifierPass?.season===career.season&&career.qualifierPass?.eventIndex===career.eventIndex;
+ function qualificationRule(event){
+  if(!career||!event)return null;
+  const type=careerEventType(event), rank=careerRanked().find(p=>p.id===career.playerId)?.position||128;
+  if(type==='euro')return {name:'European Tour · Tour Card Holder Qualifier',direct:rank<=32,cutoff:32,level:'European Tour',rounds:3};
+  if(type==='grandslam')return {name:'Grand Slam · Tour Card Holder Qualifier',direct:rank<=48,cutoff:48,level:'Grand Slam',rounds:3};
+  return null;
+ }
+ function shuffled(a){const out=[...a];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
+ function progress(c,round){
+  const last=c.drawRounds[round];
+  last.forEach((pair,i)=>{
+   if(pair.includes(career.playerId))return;
+   if(!pair[0]&&!pair[1])return;
+   const winner=!pair[0]?pair[1]:!pair[1]?pair[0]:careerSimResult(pair[0],pair[1]);
+   if(round+1<c.drawRounds.length)c.drawRounds[round+1][Math.floor(i/2)][i%2]=winner;
+  });
+ }
+ function next(c){
+  const index=c.visualDraw.indexOf(career.playerId),r=c.round;
+  const opponents=c.drawRounds[r]?.[Math.floor(index/2**(r+1))];
+  c.opponent=opponents?.find(id=>id&&id!==career.playerId)||null;
+ }
+ function startQualifier(event,rule){
+  const available=careerRanked().filter(p=>p.id!==career.playerId).filter(p=>p.position>rule.cutoff);
+  const other=shuffled(available).slice(0,7).map(p=>p.id);
+  // A new independent bracket on each event, never the same fixed first-round opponent.
+  const slots=shuffled([career.playerId,...other]);
+  const rounds=Array.from({length:3},(_,r)=>Array.from({length:4/2**r},()=>[null,null]));
+  rounds[0]=Array.from({length:4},(_,i)=>[slots[i*2],slots[i*2+1]]);
+  const current={qualifier:true,qualifierName:rule.name,opponent:null,round:0,wins:0,played:0,history:[],visualDraw:slots,drawRounds:rounds};
+  career.current=current;
+  progress(current,0);next(current);
+  if(!current.opponent){career.current=null;return originalStart();}
+  if(!career.rankStartPositions)career.rankStartPositions=Object.fromEntries(careerRanked().map(p=>[p.id,p.position]));
+  careerLog('🎯 QUALIFIER START · '+rule.name+' · win 3 matches for a main-draw place');
+  careerSave();careerRender();
+ }
+ careerStartEvent=function(){
+  if(!career||careerPending)return originalStart.apply(this,arguments);
+  if(career.current)return;
+  const event=careerEvents[career.eventIndex],rule=qualificationRule(event);
+  if(rule&&!rule.direct&&!hasPass())return startQualifier(event,rule);
+  return originalStart.apply(this,arguments);
+ };
+ careerAfterMatch=function(won){
+  if(!career?.current?.qualifier)return originalAfter.apply(this,arguments);
+  const c=career.current,event=careerEvents[career.eventIndex],opp=career.players.find(p=>p.id===c.opponent),round=c.round;
+  c.played++;c.history.push({round,opponent:opp?.name||'Opponent',won:!!won,qualifier:true});
+  career.record[won?'wins':'losses']++;
+  if(!Array.isArray(career.recentResults))career.recentResults=[];
+  career.recentResults.push(!!won);career.recentResults=career.recentResults.slice(-20);
+  careerUpdateForm(career.playerId,!!won);if(opp)careerUpdateForm(opp.id,!won);
+  aiRecord(careerPlayer(),!!won,(won?2:-2)+(Math.random()-.5)*5);
+  if(opp)aiRecord(opp,!won,(won?-2:2)+(Math.random()-.5)*5);
+  if(!won){
+   careerLog('❌ QUALIFIER EXIT · '+event[0]+' · lost to '+(opp?.name||'opponent')+' in qualifying round '+(round+1));
+   // No ranking prize money for a loss in the qualifier.
+   careerAdvance();return;
+  }
+  careerLog('✅ QUALIFIER WIN · '+(opp?.name||'Opponent')+' defeated · round '+(round+1)+'/3');
+  c.wins++;
+  const idx=Math.floor(c.visualDraw.indexOf(career.playerId)/2**(round+1));
+  if(round===2){
+   careerLog('🏟️ QUALIFIED · '+event[0]+' · main draw place secured!');
+   career.qualifierPass={season:career.season,eventIndex:career.eventIndex};
+   career.current=null;
+   originalStart(); // Main-draw tournament is a separate stage.
+   careerSave();careerRender();
+   return;
+  }
+  c.drawRounds[round+1][Math.floor(idx/2)][idx%2]=career.playerId;
+  c.round++;
+  progress(c,c.round);next(c);
+  careerSave();careerRender();
+ };
+ function qualifierHTML(c){
+  const rounds=['Round 1','Round 2','Qualification final'];
+  const safe=careerSafe;
+  return '<div id="careerQualifierDraw">'+c.drawRounds.map((matches,r)=>'<div class="qualCol"><h4>'+rounds[r]+'</h4>'+matches.map((pair,i)=>{
+   const active=c.round===r&&pair.includes(career.playerId);
+   return '<div class="qualMatch '+(active?'active':'')+' '+(r>c.round?'later':'')+'">'+pair.map(id=>'<div class="qualName '+(id===career.playerId?'me':'')+' '+(!id?'empty':'')+'">'+(id===career.playerId?'★ ':'')+safe(career.players.find(p=>p.id===id)?.name||'TBD')+'</div>').join('')+'</div>';
+  }).join('')+'</div>').join('')+'</div><div id="careerQualifierCaption">Three knockout wins secure your place in the main tournament. No prize money is awarded in qualifying.</div>';
+ }
+ careerRender=function(){
+  const res=originalRender.apply(this,arguments);
+  if(!career)return res;
+  const event=careerEvents[career.eventIndex],rule=qualificationRule(event),c=career.current,qual=!!c?.qualifier;
+  const nextBox=document.getElementById('careerNextEvent'),fixture=document.getElementById('careerAutomaticFixture'),play=document.getElementById('careerPlay'),sim=document.getElementById('careerSim');
+  const panel=document.querySelector('#careerDashboard .careerTournamentPanel');
+  let banner=document.getElementById('careerQualifierBanner');
+  if(panel&&!banner){banner=document.createElement('div');banner.id='careerQualifierBanner';panel.insertBefore(banner,document.getElementById('careerTournamentBracket'));}
+  if(banner)banner.hidden=!qual;
+  if(qual){
+   const opp=career.players.find(p=>p.id===c.opponent);
+   if(nextBox)nextBox.innerHTML='<strong>🎯 '+careerSafe(rule?.name||c.qualifierName)+'</strong><p>Qualification round '+(c.round+1)+' of 3 · Best of 7 legs · 8-player knockout group</p><p>Opponent: <b>'+careerSafe(opp?.name||'TBA')+'</b></p><p>Win all 3 matches to reach '+careerSafe(event[0])+'.</p>';
+   if(fixture){fixture.innerHTML='<div><small>QUALIFIER · '+careerSafe(event[0])+'</small><strong>'+careerSafe(careerPlayer().name)+' vs '+careerSafe(opp?.name||'TBA')+'</strong><small>Qualifying round '+(c.round+1)+'/3 · one main-draw place</small></div><button type="button" id="careerFixturePlay">PLAY QUALIFIER</button>';fixture.querySelector('button').onclick=()=>document.getElementById('careerPlay').click();}
+   if(play)play.textContent='🎯 Play qualifier match';if(sim)sim.textContent='⏩ Simulate qualifier';
+   if(banner){banner.innerHTML='<strong>🎯 QUALIFYING STAGE · '+careerSafe(event[0])+'</strong><p>You are not directly qualified. Win three matches in this qualifying group to enter the main event. Lose once and you are out.</p><div class="qualPills">'+[1,2,3].map(n=>'<span class="'+(n===c.round+1?'active':'')+'">Round '+n+(n<=c.wins?' ✓':'')+'</span>').join('')+'</div>';}
+   const bracket=document.getElementById('careerTournamentBracket');if(bracket)bracket.innerHTML=qualifierHTML(c);
+   const title=document.getElementById('careerTournamentTitle');if(title)title.textContent=event[0]+' · Qualifier';
+   const sub=document.getElementById('careerTournamentSubtitle');if(sub)sub.textContent='8-player knockout group · 3 wins for qualification · best of 7 legs';
+   const status=document.getElementById('careerTournamentStatus');if(status)status.textContent='QUALIFYING';
+   const footer=document.getElementById('careerTournamentFooter');if(footer)footer.innerHTML='<span>🎯 Qualification round '+(c.round+1)+' of 3</span><span>🏟️ Main event after 3 wins</span>';
+   const progressBar=document.getElementById('careerTournamentProgress');if(progressBar)progressBar.innerHTML=[0,1,2].map(i=>'<span class="'+(i<c.wins?'passed':i===c.round?'current':'')+'"></span>').join('');
+  } else {
+   if(play)play.textContent=document.getElementById('careerMode')?.classList.contains('irlActive')?'🎯 Play real-life match':'🎯 Play next match';if(sim)sim.textContent='⏩ Simulate match';
+   if(rule&&nextBox&&!hasPass()&&!rule.direct)nextBox.innerHTML+='<p>🎯 Qualification required: Tour Card Holder Qualifier (3 knockout wins).</p>';
+   if(rule&&nextBox&&rule.direct)nextBox.innerHTML+='<p>✅ Directly qualified for the main draw.</p>';
+   if(rule&&nextBox&&hasPass())nextBox.innerHTML+='<p>✅ Qualified through the Tour Card Holder Qualifier.</p>';
+  }
+  if(rule){
+   const cal=document.getElementById('careerCalendar');
+   if(cal)cal.querySelectorAll('.careerEvent').forEach(row=>{if(row.textContent.includes(event[0])&&row.textContent.startsWith('▶'))row.title=rule.direct?'Direct qualification':'Qualifying tournament required';});
+  }
+  return res;
  };
 })();
 </script>
