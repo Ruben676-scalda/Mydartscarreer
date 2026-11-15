@@ -1340,14 +1340,32 @@ body:has(#game501[style*="block"]){background:#08090e}
 // The bracket is part of the current scheduled career event, not a separate game mode.
 (function(){
  function tournamentSlots(event){
+  // New independent draw each event: a seeded ranking list must not lock the
+  // player into the same first-round opponent in every tournament.
   const size=2**Math.ceil(Math.log2(event[1]));
   const sorted=careerRanked().map(p=>p.id);
   const chosen=sorted.slice(0,Math.min(event[1],sorted.length));
   if(!chosen.includes(career.playerId))chosen[chosen.length-1]=career.playerId;
-  // Seeded placement distributes the highest-ranked players across the draw.
-  let positions=[0];for(let n=2;n<=size;n*=2){positions=positions.flatMap(x=>[x,n-1-x]);}
-  const slots=Array(size).fill(null);
-  chosen.forEach((id,i)=>slots[positions[i]]=id);
+  const unique=[...new Set(chosen)];
+  function shuffle(list){
+   for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]];}
+   return list;
+  }
+  const recent=(career.firstRoundOpponents||[]).slice(-5);
+  let slots,firstOpponent=null;
+  // Re-roll the whole tournament draw when the user's first pairing repeats
+  // a recent opponent; other players are randomized too.
+  for(let attempt=0;attempt<60;attempt++){
+   slots=Array(size).fill(null);
+   const locations=shuffle(Array.from({length:size},(_,i)=>i));
+   const entrants=shuffle(unique.slice());
+   entrants.forEach((id,i)=>slots[locations[i]]=id);
+   const mine=slots.indexOf(career.playerId);
+   firstOpponent=slots[mine^1];
+   if(firstOpponent&&!recent.includes(firstOpponent))break;
+   // Byes are legitimate in non-power-of-two fields, but avoid them when possible.
+   if(attempt===59)break;
+  }
   return slots;
  }
  function winner(a,b){if(!a)return b;if(!b)return a;return careerSimResult(a,b)}
@@ -1401,6 +1419,7 @@ body:has(#game501[style*="block"]){background:#08090e}
   const opponent=career.players.find(p=>p.id===c.opponent);
   const r=c.round,index=Math.floor(c.visualDraw.indexOf(career.playerId)/2**(r+1));
   c.played++;c.history.push({round:r,opponent:opponent?.name||'Opponent',won:!!won});
+  if(r===0&&c.opponent){if(!Array.isArray(career.firstRoundOpponents))career.firstRoundOpponents=[];career.firstRoundOpponents.push(c.opponent);career.firstRoundOpponents=career.firstRoundOpponents.slice(-8);}
   career.record[won?'wins':'losses']++;
   careerUpdateForm(career.playerId,!!won);careerUpdateForm(c.opponent,!won);
   if(!won){
@@ -2476,6 +2495,67 @@ const previousSave=careerSave;
 careerSave=function(){previousSave.apply(this,arguments);if(user&&ready&&career)scheduleSave(mode(),career)};
 window.addEventListener('pagehide',()=>{if(user&&ready&&career)scheduleSave(mode(),career)});
 boot();
+})();
+</script>
+
+<style id="careerRankingMovementCSS">
+#careerRanking .rankMove{font-weight:900;white-space:nowrap;font-size:12px;display:inline-block;min-width:51px}
+#careerRanking .rankMove.up{color:#56f0a3}
+#careerRanking .rankMove.down{color:#ff7279}
+#careerRanking .rankMove.same{color:#aab7be}
+#careerRanking .careerTable th:first-child,#careerRanking .careerTable td:first-child{white-space:nowrap}
+#careerNews .rankNewsUp{color:#62f5ad;font-weight:800}
+#careerNews .rankNewsDown{color:#ff8585;font-weight:800}
+</style>
+<script id="careerRankingMovementAndNewsJS">
+(function(){
+ const getPositions=()=>career&&Array.isArray(career.players)?Object.fromEntries(careerRanked().map(p=>[p.id,p.position])):{};
+ const beforeAdvance=careerAdvance;
+ const beforeStart=careerStartEvent;
+ careerStartEvent=function(){
+  if(career&&!career.rankStartPositions)career.rankStartPositions=getPositions();
+  return beforeStart.apply(this,arguments);
+ };
+ careerAdvance=function(){
+  if(!career)return beforeAdvance.apply(this,arguments);
+  const previous={...(career.rankStartPositions||getPositions())};
+  const eventName=careerEvents[career.eventIndex]?.[0]||'Tournament';
+  const result=beforeAdvance.apply(this,arguments);
+  if(!career)return result;
+  const now=getPositions();
+  const movement=career.players.map(p=>({p,delta:(previous[p.id]??now[p.id])-now[p.id],pos:now[p.id]}))
+   .filter(x=>x.delta!==0).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta));
+  career.rankMovements=Object.fromEntries(career.players.map(p=>[p.id,(previous[p.id]??now[p.id])-now[p.id]]));
+  career.rankStartPositions=now;
+  if(movement.length){
+   const risers=movement.filter(x=>x.delta>0).slice(0,3);
+   const fallers=movement.filter(x=>x.delta<0).slice(0,3);
+   for(const x of risers)careerLog('▲ RANKING UP · '+x.p.name+' +'+x.delta+' to #'+x.pos+' after '+eventName);
+   for(const x of fallers)careerLog('▼ RANKING DOWN · '+x.p.name+' '+x.delta+' to #'+x.pos+' after '+eventName);
+  }
+  careerSave();
+  careerRender();
+  return result;
+ };
+ const beforeRender=careerRender;
+ careerRender=function(){
+  const result=beforeRender.apply(this,arguments);
+  if(!career)return result;
+  const root=document.getElementById('careerRanking');
+  if(root){
+   const moves=career.rankMovements||{};
+   const ranked=careerRanked();
+   root.innerHTML='<table class="careerTable"><thead><tr><th>Rank / Change</th><th>Player</th><th>Ranking £</th></tr></thead><tbody>'+
+    ranked.map(p=>{
+     const change=Number(moves[p.id]||0);
+     const move=change>0?'<span class="rankMove up" title="Up '+change+' places">▲ +'+change+'</span>':change<0?'<span class="rankMove down" title="Down '+Math.abs(change)+' places">▼ '+Math.abs(change)+'</span>':'<span class="rankMove same">—</span>';
+     return '<tr'+(p.id===career.playerId?' style="background:#23506a"':'')+'><td>#'+p.position+' '+move+'</td><td>'+careerSafe(p.name)+'</td><td>'+careerMoneyFmt(p.money)+'</td></tr>';
+    }).join('')+'</tbody></table>';
+  }
+  const news=document.getElementById('careerNews');
+  if(news)news.innerHTML=(career.news||[]).map(n=>'<p class="'+(n.includes('▲ RANKING UP')?'rankNewsUp':n.includes('▼ RANKING DOWN')?'rankNewsDown':'')+'" style="border-bottom:1px solid #35506c;padding-bottom:9px">'+careerSafe(n)+'</p>').join('');
+  return result;
+ };
 })();
 </script>
 </body></html>
