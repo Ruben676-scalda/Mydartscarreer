@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Darts Arena | The Home of Darts</title>
+<!DOCTYPE html>
+
+<html lang="nl"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><title>Darts Arena | The Home of Darts</title>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px;background:linear-gradient(135deg,#090f2e,#24105b 40%,#063b55);font-family:Arial,sans-serif;color:#f7f8fb}
 .app{width:min(820px,100%);background:linear-gradient(145deg,#1c2450,#102b43);border:2px solid #7c4dff;border-radius:24px;padding:24px;box-shadow:0 0 35px #7c4dff55;text-align:center}
@@ -179,7 +181,6 @@ body:has(#game501.extraView){overflow:auto!important;height:auto!important}
 .irlResultsTable th,.irlResultsTable td{padding:10px;border-bottom:1px solid #3b5061;text-align:left}
 @media(max-width:700px){.irlAnalyticsTiles{grid-template-columns:repeat(2,1fr)}.irlAnalyticsCharts{grid-template-columns:1fr}}
 </style></head>
-
 <style>
 #homeMode .modeCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:650px;margin:25px auto}
 .modeCard{background:linear-gradient(145deg,#253e77,#14536a);color:#f8fbff;border:2px solid #4288b8;border-radius:18px;padding:24px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;min-height:170px}
@@ -278,95 +279,91 @@ body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gra
 @media(max-width:650px){.dcStatsPanel{padding:10px}.dcStatsTable td{padding:8px 4px;font-size:13px}.dcStatsTable th{font-size:12px}.dcStatsTable td.dcPrimary{font-size:17px}}
 </style>
 <body>
-<div class="broadcastMasthead" aria-label="Darts Arena">
-  <div class="broadcastBrand"><span class="brandDart">➤</span><span>DARTS <em>ARENA</em></span></div>
-  <div class="broadcastMastheadRight"><span class="liveDot"></span> THE HOME OF DARTS <span class="mastheadDivider"></span> CAREER · TOURNAMENTS · RANKINGS</div>
+<div aria-label="Darts Arena" class="broadcastMasthead">
+<div class="broadcastBrand"><span class="brandDart">➤</span><span>DARTS <em>ARENA</em></span></div>
+<div class="broadcastMastheadRight"><span class="liveDot"></span> THE HOME OF DARTS <span class="mastheadDivider"></span> CAREER · TOURNAMENTS · RANKINGS</div>
 </div>
 <main class="app">
 <section id="homeMode">
-  <div class="broadcastHero">
-  <div class="broadcastHeroContent"><div class="heroEyebrow"><span></span> YOUR ROAD TO THE TOP</div>
-  <h1>DARTS<br><em>ARENA</em></h1><p>THE STAGE IS YOURS.</p>
-  <div class="heroRule"></div><span class="heroCaption">BUILD YOUR LEGACY. WIN THE BIGGEST TITLES.</span></div>
-  <div class="heroDartboard" aria-hidden="true"><div class="dartRing dartRingOuter"><div class="dartRing dartRingInner"><div class="dartBull"></div></div></div></div>
+<div class="broadcastHero">
+<div class="broadcastHeroContent"><div class="heroEyebrow"><span></span> YOUR ROAD TO THE TOP</div>
+<h1>DARTS<br/><em>ARENA</em></h1><p>THE STAGE IS YOURS.</p>
+<div class="heroRule"></div><span class="heroCaption">BUILD YOUR LEGACY. WIN THE BIGGEST TITLES.</span></div>
+<div aria-hidden="true" class="heroDartboard"><div class="dartRing dartRingOuter"><div class="dartRing dartRingInner"><div class="dartBull"></div></div></div></div>
 </div>
 <div class="sectionKicker"><span>01 / GAME MODES</span><span>SELECT YOUR EXPERIENCE</span></div>
-  <div class="modeCards">
-    <button class="modeCard" id="openQuiz"><span class="modeEmoji">🔎</span><b>Wie is de Darter?</b><small>Raad de geheime darter met hints</small></button>
-    <button class="modeCard" id="open501"><span class="modeEmoji">🎯</span><b>Darts 501</b><small>Speel een wedstrijd met timingworpen</small></button>
-    <button class="modeCard" id="openCareer"><span class="modeEmoji">🏆</span><b>Career Mode</b><small>Begin je eigen PDC-carrière of kies een prof</small></button>
-  </div>
-  <p class="note">Alle 128 darters staan beschikbaar als speler én tegenstander in de 501-modus.</p>
+<div class="modeCards">
+<button class="modeCard" id="openQuiz"><span class="modeEmoji">🔎</span><b>Wie is de Darter?</b><small>Raad de geheime darter met hints</small></button>
+<button class="modeCard" id="open501"><span class="modeEmoji">🎯</span><b>Darts 501</b><small>Speel een wedstrijd met timingworpen</small></button>
+<button class="modeCard" id="openCareer"><span class="modeEmoji">🏆</span><b>Career Mode</b><small>Begin je eigen PDC-carrière of kies een prof</small></button>
+</div>
+<p class="note">Alle 128 darters staan beschikbaar als speler én tegenstander in de 501-modus.</p>
 </section>
 <div id="quizMode" style="display:none">
-  <div class="navBack"><button class="btn alt" id="backQuiz">← Terug naar gamemodes</button></div>
-
+<div class="navBack"><button class="btn alt" id="backQuiz">← Terug naar gamemodes</button></div>
 <h1>🎯 Wie is de Darter?</h1><p class="sub">Raad de geheime speler met hints!</p>
 <div class="stats"><div class="pill">Pogingen: <span id="tries">0</span></div><div class="pill">Gewonnen: <span id="wins">0</span></div><div class="pill">Spelers: <span>128</span></div></div>
 <section class="panel">
 <div class="target">🔎 Wie is de geheime darter?</div>
 <p class="desc">Typ een deel van een naam en selecteer de darter uit de suggesties. De bijnamen staan ook bij de spelers. De hints vergelijken jouw gok met de geheime darter. Ranking-uitleg: #38 staat HOGER dan #40, omdat #1 de beste plek is. Leeftijd vertelt of de geheime darter ouder of jonger is; bij land staat duidelijk of het hetzelfde land is.</p>
-<div class="entry"><input id="guess" placeholder="Zoek bijvoorbeeld: Gerw..." autocomplete="off" aria-label="Zoek darter"><button id="submit">Check gok</button></div>
+<div class="entry"><input aria-label="Zoek darter" autocomplete="off" id="guess" placeholder="Zoek bijvoorbeeld: Gerw..."/><button id="submit">Check gok</button></div>
 <div class="suggestions" id="suggestions"></div>
-<div class="message" id="message" aria-live="polite">Begin met typen om een speler te zoeken.</div>
+<div aria-live="polite" class="message" id="message">Begin met typen om een speler te zoeken.</div>
 <div class="hints" id="hints"></div>
 <div class="buttons"><button class="btn" id="new">🎲 Nieuwe geheime darter</button><button class="btn alt" id="giveup">🏳️ Geef antwoord</button></div>
 </section>
 <p class="note">De game bevat 128 spelers op basis van een gepubliceerde ranking van november 2026. Leeftijden ontbreken bij sommige spelers. Career Mode gebruikt een gesimuleerde ranglijst. Demo-project voor school.</p>
-
 </div>
 <section id="game501" style="display:none;text-align:left">
- <header class="arenaNav"><div class="arenaBrand">🎯 DARTS<span>ARENA</span></div><button class="btn alt" id="back501">⌂ Home</button><span class="arenaTab" id="dMatchContext">EXHIBITION MATCH</span><button class="btn alt" id="dCareerReturn" type="button" hidden>🏆 Back to Career</button><button class="btn alt" type="button" id="dExtraToggle">🏆 Toernooi & statistieken</button><button class="btn alt" id="goQuiz501">🎮 Wie is de Darter?</button></header>
- <div class="arenaHeading"><h1>DARTS 501</h1><p>Timing worpen &nbsp; • &nbsp; Jij tegen de computer &nbsp; • &nbsp; <span id="dFormatHeading">Best of 5 legs</span></p></div>
- <div class="checkoutStrip" id="checkoutStrip" hidden aria-live="polite"><b id="checkoutTitle">FINISH ROUTE</b><span class="checkoutRoute" id="checkoutRoute"></span><small id="checkoutHint"></small></div>
- <div class="arenaTop">
-  <div class="dPlayer active" id="dPlayer0"><div class="dPortrait" id="dPortrait0">🎯</div><div class="playerText"><label>Jij</label><strong id="dScore0">501</strong><small id="dMeta0">0 pijlen totaal</small></div></div>
-  <div class="arenaMiddle"><div class="middleBox"><span>LEGS</span><div><b id="dLegs0">0</b> - <b id="dLegs1">0</b></div></div><div class="middleBox"><span>BEURT</span><strong id="dTurnBanner" class="dTurnBanner">Start wedstrijd</strong></div><div class="middleBox"><span>PIJL</span><strong id="dDartNumber">–</strong></div></div>
-  <div class="dPlayer" id="dPlayer1"><div class="dPortrait" id="dPortrait1">🎯</div><div class="playerText"><label>Computer</label><strong id="dScore1">501</strong><small id="dMeta1">0 pijlen totaal</small></div></div>
- </div>
- <div class="arenaGame">
-  <aside class="arenaSide leftSide"><div class="arenaBox"><h2>Laatste worpen</h2><div class="dHistory" id="dHistory">Nog geen worpen.</div><div class="lastHitBox">LAATSTE PIJL <strong id="dLastHit">–</strong></div></div><div class="arenaBox"><h2>Wedstrijd</h2><label class="dLabel" for="dLegFormat">Aantal legs (best of)</label><select id="dLegFormat" class="dLegFormat"><option value="1">1 leg</option><option value="3">Best of 3 legs</option><option value="5" selected>Best of 5 legs</option><option value="7">Best of 7 legs</option><option value="9">Best of 9 legs</option><option value="11">Best of 11 legs</option><option value="15">Best of 15 legs</option><option value="21">Best of 21 legs</option></select><p class="dHelp" id="dLegExplanation">Wie als eerste 3 legs wint, wint de wedstrijd.</p><div class="statLine">Ronde <b id="dRound">–</b></div><div class="dMessage" id="dMessage">Kies je spelers en start de wedstrijd.</div><div class="dButtons"><button class="btn" id="dStart">Start wedstrijd</button><button class="btn alt" id="dNext" disabled>Volgende leg</button><button class="btn alt" id="dReset">Reset</button></div></div></aside>
-  <div class="arenaBoard"><div class="dAiStage" id="dAiStage" aria-live="polite"><span id="dAiStageName">AI wacht op zijn beurt</span><div class="dAiThrower">🎯<span class="dAiArm">➤</span></div><span id="dAiStageResult">De tegenstander gooit straks zichtbaar.</span></div><div class="dBoard" id="dBoard"></div></div>
-  <aside class="arenaSide rightSide"><div class="arenaBox chooseBox"><h2>Spelers & instellingen</h2><label class="dLabel" for="aiAnimationToggle"><input type="checkbox" id="aiAnimationToggle" checked> Animatie tegenstander</label><label class="dLabel" for="replayToggle"><input type="checkbox" id="replayToggle" checked> 3D-animatie van jouw pijlen</label><label class="dLabel" for="dPlayerSelect">Jij (128 darters)</label><select id="dPlayerSelect"></select><label class="dLabel" for="dOpponentSelect">Tegenstander (128 darters)</label><select id="dOpponentSelect"></select></div><div class="arenaBox callerBox"><h2>🎙️ Mastercaller</h2><div class="callerControl"><div><strong id="callerStatus">Caller staat aan</strong><small>English · echte geluidsopnames</small></div><button type="button" id="callerToggle" aria-pressed="true">AAN</button></div><p class="dHelp">Roept scores, 180's, checkouts en gewonnen legs of wedstrijden om. Gebruik MP3-opnames in de map caller/. Geen computerstem.</p></div><div class="arenaBox timingBox"><h2>Pro Throw System</h2><p class="dHelp"><strong>1.</strong> Klik op het bord om te richten. <strong>2.</strong> Druk op GOOI wanneer de meter in het groen staat. Het groene richtpunt beweegt een beetje: precisie blijft belangrijk.</p><p class="dHelp" id="dAimText">Start de wedstrijd en klik op het dartbord.</p><div class="dDifficulty">EENVOUDIG TE LEREN · LASTIG TE BEHEERSEN</div><div id="dMeterWrap" style="display:none"><div class="dMeter"><div class="dMeterGradient"></div><div id="dNeedle"></div></div><div class="dMeterLabels"><span>Te vroeg</span><b>PERFECT!</b><span>Te laat</span></div></div><div class="dButtons throwButtons"><button class="btn" id="dThrow" disabled>🎯 GOOI PIJL</button><button class="btn alt" id="dRestartMeter" disabled>⟳ Opnieuw mikken</button></div><div class="dMessage" id="dResult">Je worp verschijnt hier.</div></div></aside>
- </div>
-
- 
+<header class="arenaNav"><div class="arenaBrand">🎯 DARTS<span>ARENA</span></div><button class="btn alt" id="back501">⌂ Home</button><span class="arenaTab" id="dMatchContext">EXHIBITION MATCH</span><button class="btn alt" hidden="" id="dCareerReturn" type="button">🏆 Back to Career</button><button class="btn alt" id="dExtraToggle" type="button">🏆 Toernooi &amp; statistieken</button><button class="btn alt" id="goQuiz501">🎮 Wie is de Darter?</button></header>
+<div class="arenaHeading"><h1>DARTS 501</h1><p>Timing worpen   •   Jij tegen de computer   •   <span id="dFormatHeading">Best of 5 legs</span></p></div>
+<div aria-live="polite" class="checkoutStrip" hidden="" id="checkoutStrip"><b id="checkoutTitle">FINISH ROUTE</b><span class="checkoutRoute" id="checkoutRoute"></span><small id="checkoutHint"></small></div>
+<div class="arenaTop">
+<div class="dPlayer active" id="dPlayer0"><div class="dPortrait" id="dPortrait0">🎯</div><div class="playerText"><label>Jij</label><strong id="dScore0">501</strong><small id="dMeta0">0 pijlen totaal</small></div></div>
+<div class="arenaMiddle"><div class="middleBox"><span>LEGS</span><div><b id="dLegs0">0</b> - <b id="dLegs1">0</b></div></div><div class="middleBox"><span>BEURT</span><strong class="dTurnBanner" id="dTurnBanner">Start wedstrijd</strong></div><div class="middleBox"><span>PIJL</span><strong id="dDartNumber">–</strong></div></div>
+<div class="dPlayer" id="dPlayer1"><div class="dPortrait" id="dPortrait1">🎯</div><div class="playerText"><label>Computer</label><strong id="dScore1">501</strong><small id="dMeta1">0 pijlen totaal</small></div></div>
+</div>
+<div class="arenaGame">
+<aside class="arenaSide leftSide"><div class="arenaBox"><h2>Laatste worpen</h2><div class="dHistory" id="dHistory">Nog geen worpen.</div><div class="lastHitBox">LAATSTE PIJL <strong id="dLastHit">–</strong></div></div><div class="arenaBox"><h2>Wedstrijd</h2><label class="dLabel" for="dLegFormat">Aantal legs (best of)</label><select class="dLegFormat" id="dLegFormat"><option value="1">1 leg</option><option value="3">Best of 3 legs</option><option selected="" value="5">Best of 5 legs</option><option value="7">Best of 7 legs</option><option value="9">Best of 9 legs</option><option value="11">Best of 11 legs</option><option value="15">Best of 15 legs</option><option value="21">Best of 21 legs</option></select><p class="dHelp" id="dLegExplanation">Wie als eerste 3 legs wint, wint de wedstrijd.</p><div class="statLine">Ronde <b id="dRound">–</b></div><div class="dMessage" id="dMessage">Kies je spelers en start de wedstrijd.</div><div class="dButtons"><button class="btn" id="dStart">Start wedstrijd</button><button class="btn alt" disabled="" id="dNext">Volgende leg</button><button class="btn alt" id="dReset">Reset</button></div></div></aside>
+<div class="arenaBoard"><div aria-live="polite" class="dAiStage" id="dAiStage"><span id="dAiStageName">AI wacht op zijn beurt</span><div class="dAiThrower">🎯<span class="dAiArm">➤</span></div><span id="dAiStageResult">De tegenstander gooit straks zichtbaar.</span></div><div class="dBoard" id="dBoard"></div></div>
+<aside class="arenaSide rightSide"><div class="arenaBox chooseBox"><h2>Spelers &amp; instellingen</h2><label class="dLabel" for="aiAnimationToggle"><input checked="" id="aiAnimationToggle" type="checkbox"/> Animatie tegenstander</label><label class="dLabel" for="replayToggle"><input checked="" id="replayToggle" type="checkbox"/> 3D-animatie van jouw pijlen</label><label class="dLabel" for="dPlayerSelect">Jij (128 darters)</label><select id="dPlayerSelect"></select><label class="dLabel" for="dOpponentSelect">Tegenstander (128 darters)</label><select id="dOpponentSelect"></select></div><div class="arenaBox callerBox"><h2>🎙️ Mastercaller</h2><div class="callerControl"><div><strong id="callerStatus">Caller staat aan</strong><small>English · echte geluidsopnames</small></div><button aria-pressed="true" id="callerToggle" type="button">AAN</button></div><p class="dHelp">Roept scores, 180's, checkouts en gewonnen legs of wedstrijden om. Gebruik MP3-opnames in de map caller/. Geen computerstem.</p></div><div class="arenaBox timingBox"><h2>Pro Throw System</h2><p class="dHelp"><strong>1.</strong> Klik op het bord om te richten. <strong>2.</strong> Druk op GOOI wanneer de meter in het groen staat. Het groene richtpunt beweegt een beetje: precisie blijft belangrijk.</p><p class="dHelp" id="dAimText">Start de wedstrijd en klik op het dartbord.</p><div class="dDifficulty">EENVOUDIG TE LEREN · LASTIG TE BEHEERSEN</div><div id="dMeterWrap" style="display:none"><div class="dMeter"><div class="dMeterGradient"></div><div id="dNeedle"></div></div><div class="dMeterLabels"><span>Te vroeg</span><b>PERFECT!</b><span>Te laat</span></div></div><div class="dButtons throwButtons"><button class="btn" disabled="" id="dThrow">🎯 GOOI PIJL</button><button class="btn alt" disabled="" id="dRestartMeter">⟳ Opnieuw mikken</button></div><div class="dMessage" id="dResult">Je worp verschijnt hier.</div></div></aside>
+</div>
 <section class="tourneyPanel" id="tourneyPanel">
- <h2>🏆 Toernooimodus</h2>
- <p class="tourneyInfo">Speel een knock-outtoernooi met jouw darter tegen andere darters. De computer speelt de overige wedstrijden automatisch.</p>
- <div class="tourneyControls">
- <label>Jouw darter<select id="tourneyPlayer"></select></label>
- <label>Deelnemers<select id="tourneySize"><option value="4">4 spelers</option><option value="8" selected>8 spelers</option><option value="16">16 spelers</option><option value="32">32 spelers</option></select></label>
- <label>Legs per wedstrijd<select id="tourneyLegs"><option value="1">1 leg</option><option value="3">Best of 3</option><option value="5" selected>Best of 5</option><option value="7">Best of 7</option><option value="9">Best of 9</option></select></label>
- <button type="button" id="tourneyCreate">Maak toernooi</button>
- <button type="button" id="tourneyNext" disabled>Speel volgende wedstrijd</button>
- <button type="button" id="tourneyCancel">Stop toernooi</button>
- </div>
- <p class="tourneyInfo" id="tourneyStatus">Maak een toernooi om het speelschema te bekijken.</p>
- <div class="tourneyBracket" id="tourneyBracket"></div>
+<h2>🏆 Toernooimodus</h2>
+<p class="tourneyInfo">Speel een knock-outtoernooi met jouw darter tegen andere darters. De computer speelt de overige wedstrijden automatisch.</p>
+<div class="tourneyControls">
+<label>Jouw darter<select id="tourneyPlayer"></select></label>
+<label>Deelnemers<select id="tourneySize"><option value="4">4 spelers</option><option selected="" value="8">8 spelers</option><option value="16">16 spelers</option><option value="32">32 spelers</option></select></label>
+<label>Legs per wedstrijd<select id="tourneyLegs"><option value="1">1 leg</option><option value="3">Best of 3</option><option selected="" value="5">Best of 5</option><option value="7">Best of 7</option><option value="9">Best of 9</option></select></label>
+<button id="tourneyCreate" type="button">Maak toernooi</button>
+<button disabled="" id="tourneyNext" type="button">Speel volgende wedstrijd</button>
+<button id="tourneyCancel" type="button">Stop toernooi</button>
+</div>
+<p class="tourneyInfo" id="tourneyStatus">Maak een toernooi om het speelschema te bekijken.</p>
+<div class="tourneyBracket" id="tourneyBracket"></div>
 </section>
 <section class="dcStats"><div class="dcStatsPanel">
- <div class="dcStatsHeader"><h2>📊 Wedstrijdstatistieken</h2><small>LIVE · volledige wedstrijd · beide spelers</small></div>
- <table class="dcStatsTable"><thead><tr><th>Statistiek</th><th id="dcName0">Speler 1</th><th id="dcName1">Speler 2</th></tr></thead><tbody>
- <tr class="dcHighlight"><td>3-dart gemiddelde</td><td class="dcPrimary" id="dcAvg0">–</td><td class="dcPrimary" id="dcAvg1">–</td></tr>
- <tr><td>First 9 gemiddelde</td><td id="dcFirst0">–</td><td id="dcFirst1">–</td></tr>
- <tr><td>Checkout %</td><td id="dcCo0">–</td><td id="dcCo1">–</td></tr>
- <tr><td>Hoogste beurt</td><td id="dcHigh0">0</td><td id="dcHigh1">0</td></tr>
- <tr><td>Hoogste finish</td><td id="dcFinish0">–</td><td id="dcFinish1">–</td></tr>
- <tr><td>Beste leg</td><td id="dcBest0">–</td><td id="dcBest1">–</td></tr>
- <tr><td>100–139</td><td id="dc1000">0</td><td id="dc1001">0</td></tr>
- <tr><td>140–179</td><td id="dc1400">0</td><td id="dc1401">0</td></tr>
- <tr><td>180's</td><td id="dc1800">0</td><td id="dc1801">0</td></tr>
- <tr><td>Gegooide pijlen</td><td id="dcDarts0">0</td><td id="dcDarts1">0</td></tr>
- </tbody></table>
- <div class="dcStatsFoot">Gemiddelden worden live berekend uit de worpen. Het gemiddelde = 3 × gescoorde punten ÷ daadwerkelijk gegooide pijlen. Bij een bust telt de hele beurt als 0 punten. First 9 geldt voor de eerste 9 pijlen per leg.</div>
- </div></section>
- <p class="arenaFooter">501 • 3 pijlen per beurt • Double-out • Bust = score terug naar begin van de beurt</p>
+<div class="dcStatsHeader"><h2>📊 Wedstrijdstatistieken</h2><small>LIVE · volledige wedstrijd · beide spelers</small></div>
+<table class="dcStatsTable"><thead><tr><th>Statistiek</th><th id="dcName0">Speler 1</th><th id="dcName1">Speler 2</th></tr></thead><tbody>
+<tr class="dcHighlight"><td>3-dart gemiddelde</td><td class="dcPrimary" id="dcAvg0">–</td><td class="dcPrimary" id="dcAvg1">–</td></tr>
+<tr><td>First 9 gemiddelde</td><td id="dcFirst0">–</td><td id="dcFirst1">–</td></tr>
+<tr><td>Checkout %</td><td id="dcCo0">–</td><td id="dcCo1">–</td></tr>
+<tr><td>Hoogste beurt</td><td id="dcHigh0">0</td><td id="dcHigh1">0</td></tr>
+<tr><td>Hoogste finish</td><td id="dcFinish0">–</td><td id="dcFinish1">–</td></tr>
+<tr><td>Beste leg</td><td id="dcBest0">–</td><td id="dcBest1">–</td></tr>
+<tr><td>100–139</td><td id="dc1000">0</td><td id="dc1001">0</td></tr>
+<tr><td>140–179</td><td id="dc1400">0</td><td id="dc1401">0</td></tr>
+<tr><td>180's</td><td id="dc1800">0</td><td id="dc1801">0</td></tr>
+<tr><td>Gegooide pijlen</td><td id="dcDarts0">0</td><td id="dcDarts1">0</td></tr>
+</tbody></table>
+<div class="dcStatsFoot">Gemiddelden worden live berekend uit de worpen. Het gemiddelde = 3 × gescoorde punten ÷ daadwerkelijk gegooide pijlen. Bij een bust telt de hele beurt als 0 punten. First 9 geldt voor de eerste 9 pijlen per leg.</div>
+</div></section>
+<p class="arenaFooter">501 • 3 pijlen per beurt • Double-out • Bust = score terug naar begin van de beurt</p>
 </section>
-<section id="careerMode" class="career-not-started">
+<section class="career-not-started" id="careerMode">
 <div class="careerNav"><h1>🏆 DARTS ARENA <span style="color:#68e9ce">CAREER</span></h1><button class="btn alt" id="careerHome">⌂ Home</button></div>
-<div id="careerSetup" class="careerPanel careerSetup"><h2>Start your career</h2><p class="careerMuted">Create a player or take control of one of the 128 PDC players.</p><label>Career type<select id="careerType"><option value="custom">Create your own player</option><option value="pro">Play as a PDC professional</option></select></label><div id="careerCustomFields"><label>Player name<input id="careerName" maxlength="36" placeholder="Your name"></label><label>Country<select id="careerCountry"><option>Netherlands</option><option>England</option><option>Scotland</option><option>Wales</option><option>Belgium</option><option>Germany</option><option>Other</option></select></label><label>Nickname<input id="careerNickname" maxlength="32" placeholder="The Challenger"></label></div><div id="careerProFields" style="display:none"><label>Choose player<select id="careerPro"></select></label></div><div class="careerActions"><button id="careerCreate">Create career</button><button id="careerContinue" style="display:none">Continue saved career</button></div><p id="careerSetupMsg" class="careerMuted"></p></div>
-<div id="careerDashboard" style="display:none"><div class="careerHelp">🏟️ <b>2026 PDC Career Calendar</b> · 34 Players Championships (floor events), 15 European Tour events and major championships. Prize money is paid for your finishing round. New careers start with the PDC Order of Merit prize money snapshot of 9 November 2026. Career results change the ranking; dates are approximate within the game.</div><div class="careerFilters"><button class="btn alt" type="button" data-filter="all">All events</button><button class="btn alt" type="button" data-filter="floor">Floor</button><button class="btn alt" type="button" data-filter="euro">European Tour</button><button class="btn alt" type="button" data-filter="major">Majors</button></div><div class="careerGrid"><div class="careerTile"><small>PLAYER</small><strong id="careerPlayerLabel">–</strong><p id="careerNick" class="careerMuted"></p></div><div class="careerTile"><small>WORLD RANKING</small><strong id="careerRank">#128</strong><p id="careerSeason" class="careerMuted"></p></div><div class="careerTile"><small>CAREER EARNINGS</small><strong id="careerMoney">£0</strong><p id="careerSponsors" class="careerMuted" style="display:none"></p></div><div class="careerTile"><small>CAREER RECORD</small><strong id="careerRecord">0–0</strong><p id="careerTitles" class="careerMuted"></p></div></div><div class="careerPerformance" id="careerPerformance"><div class="careerTile"><small>RECENT FORM</small><strong id="careerFormValue">—</strong><p id="careerFormDetail" class="careerMuted">No matches played yet</p></div><div class="careerTile"><small>LAST MATCH AVERAGE</small><strong id="careerLastAverage">—</strong><p class="careerMuted">3-dart average</p></div><div class="careerTile"><small>OVERALL AVERAGE</small><strong id="careerOverallAverage">—</strong><p id="careerOverallDetail" class="careerMuted">Across recorded matches</p></div></div><div class="careerPanel"><h2>Next tournament</h2><div id="careerNextEvent" class="careerEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button id="careerTrain" style="display:none" hidden>Train</button><button id="careerSponsor" style="display:none" hidden>Sponsor</button><button id="careerSave">💾 Save</button></div><p id="careerMessage" class="careerMuted"></p></div><div class="careerPanel careerTournamentPanel"><div class="careerTournamentHeader"><div><small>CURRENT CAREER EVENT · LIVE DRAW</small><h2 id="careerTournamentTitle">Current tournament draw</h2><p id="careerTournamentSubtitle"></p></div><span id="careerTournamentStatus" class="careerTournamentBadge">UPCOMING</span></div><div id="careerTournamentProgress" class="careerTournamentProgress"></div><div id="careerTournamentBracket" class="careerTournamentBracket"></div><div id="careerTournamentFooter" class="careerTournamentFooter"></div></div><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div id="careerCalendar" class="careerScroll"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div id="careerRanking" class="careerScroll"></div></div></div><div class="careerTwo"><div class="careerPanel" style="display:none" hidden><h2>Player development</h2><div id="careerSkills"></div></div><div class="careerPanel"><h2>📰 News & career history</h2><div id="careerNews" class="careerScroll"></div></div></div><div id="irlAnalytics" class="careerPanel" hidden></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input type="file" id="careerImportFile" accept=".json,application/json" style="display:none"></div></div></section></main><script>
+<div class="careerPanel careerSetup" id="careerSetup"><h2>Start your career</h2><p class="careerMuted">Create a player or take control of one of the 128 PDC players.</p><label>Career type<select id="careerType"><option value="custom">Create your own player</option><option value="pro">Play as a PDC professional</option></select></label><div id="careerCustomFields"><label>Player name<input id="careerName" maxlength="36" placeholder="Your name"/></label><label>Country<select id="careerCountry"><option>Netherlands</option><option>England</option><option>Scotland</option><option>Wales</option><option>Belgium</option><option>Germany</option><option>Other</option></select></label><label>Nickname<input id="careerNickname" maxlength="32" placeholder="The Challenger"/></label></div><div id="careerProFields" style="display:none"><label>Choose player<select id="careerPro"></select></label></div><div class="careerActions"><button id="careerCreate">Create career</button><button id="careerContinue" style="display:none">Continue saved career</button></div><p class="careerMuted" id="careerSetupMsg"></p></div>
+<div id="careerDashboard" style="display:none"><div class="careerScreen"><aside class="careerSidebar"><div class="careerSideLogo">DARTS <em>ARENA</em><small>CAREER MODE</small></div><button class="careerSideNav active" data-go="careerProfileBanner" type="button"><span>⌂</span> Dashboard</button><button class="careerSideNav" data-go="careerNextEvent" type="button"><span>🏆</span> Career</button><button class="careerSideNav" data-go="careerCalendar" type="button"><span>▦</span> Tournaments</button><button class="careerSideNav" data-go="careerRanking" type="button"><span>▥</span> Ranking</button><button class="careerSideNav" data-go="irlAnalytics" type="button"><span>⌁</span> Statistics</button><button class="careerSideNav" data-go="careerNews" type="button"><span>▤</span> News</button><button class="careerSideNav" data-go="careerExport" type="button"><span>⚙</span> Settings</button><button class="careerBack" type="button">← Home</button></aside><div class="careerWorkspace"><div class="careerWorkspaceHeader"><h1>Darts Arena — <em>IRL Career Mode</em></h1><span class="workspaceTag">PDC CAREER HUB</span></div><div class="careerProfileBanner careerSectionAnchor" id="careerProfileBanner"><div class="careerAvatar" id="careerNewAvatar">🎯</div><div><div class="careerProfileName" id="careerNewName">Your player</div><div class="careerProfileSubtitle" id="careerNewSubtitle">Professional darts career</div></div><div class="careerProfileStats"><div><small>PDC Order of Merit</small><strong id="careerNewRank">—</strong></div><div><small>Career earnings</small><strong id="careerNewMoney">—</strong></div></div></div><div class="careerContentGrid"><div class="careerPrimaryColumn"><div class="careerPerformance" id="careerPerformance"><div class="careerTile"><small>RECENT FORM</small><strong id="careerFormValue">—</strong><p class="careerMuted" id="careerFormDetail">No matches played yet</p></div><div class="careerTile"><small>LAST MATCH AVERAGE</small><strong id="careerLastAverage">—</strong><p class="careerMuted">3-dart average</p></div><div class="careerTile"><small>OVERALL AVERAGE</small><strong id="careerOverallAverage">—</strong><p class="careerMuted" id="careerOverallDetail">Across recorded matches</p></div></div><div class="careerPanel" hidden="" id="irlAnalytics"></div><div class="careerPanel"><h2>Next tournament</h2><div class="careerEvent" id="careerNextEvent"></div><div class="careerActions"><button id="careerPlay">🎯 Play next match</button><button id="careerSim">⏩ Simulate match</button><button id="careerSkip">⏭ Skip event</button><button hidden="" id="careerTrain" style="display:none">Train</button><button hidden="" id="careerSponsor" style="display:none">Sponsor</button><button id="careerSave">💾 Save</button></div><p class="careerMuted" id="careerMessage"></p></div><div class="careerPanel"><h2>Career management</h2><div class="careerActions"><button id="careerExport">Export save</button><button id="careerImport">Import save</button><button id="careerNew">Start new career</button></div><input accept=".json,application/json" id="careerImportFile" style="display:none" type="file"/></div></div><div class="careerSecondaryColumn"><div class="careerTwo"><div class="careerPanel"><h2>📅 Season calendar</h2><div class="careerScroll" id="careerCalendar"></div></div><div class="careerPanel"><h2>🌍 Order of Merit · Top 128</h2><div class="careerScroll" id="careerRanking"></div></div></div><div class="careerTwo"><div class="careerPanel" hidden="" style="display:none"><h2>Player development</h2><div id="careerSkills"></div></div><div class="careerPanel"><h2>📰 News &amp; career history</h2><div class="careerScroll" id="careerNews"></div></div></div></div></div></div></div></div></section></main><script>
 // Order of Merit names/ranks reflect the published live table around Nov 5, 2026.
 // Country and age are included for the gameplay data.
 const roster=[
@@ -1175,14 +1172,14 @@ $('dReset').onclick=(...args)=>{
 };
 $('dCareerReturn').onclick=()=>{dStopMeter();careerMatchCompleted=false;restoreStandaloneRoster();showMode('career');careerRender()};
 
-</script><div id="dCelebration" aria-live="polite"><span id="dCelebrationText">180!</span></div><div id="d3dOverlay" aria-live="polite"><div id="d3dHud">DARTS ARENA · 3D REPLAY</div><div id="d3dResult"></div><div id="d3dFallback"></div></div><style>
+</script><div aria-live="polite" id="dCelebration"><span id="dCelebrationText">180!</span></div><div aria-live="polite" id="d3dOverlay"><div id="d3dHud">DARTS ARENA · 3D REPLAY</div><div id="d3dResult"></div><div id="d3dFallback"></div></div><style>
 #dVisitOverlay{position:fixed;z-index:94;top:19%;left:50%;transform:translate(-50%,-16px) scale(.92);min-width:240px;max-width:90vw;text-align:center;background:linear-gradient(135deg,#102744,#081428);border:3px solid #ffe05b;border-radius:18px;padding:15px 35px;box-shadow:0 12px 50px #000c;pointer-events:none;opacity:0;transition:opacity .17s,transform .17s}
 #dVisitOverlay.show{opacity:1;transform:translate(-50%,0) scale(1)}
 #dVisitOverlay .visitName{font-size:clamp(14px,2vw,22px);font-weight:800;color:#d7e9ff}
 #dVisitOverlay .visitScore{font-size:clamp(56px,9vw,110px);font-weight:1000;line-height:1.05;color:#ffe05b;text-shadow:0 4px 12px #000}
 #dVisitOverlay .visitSub{font-size:14px;color:#d1e3f6}
 @media(max-width:700px){#dVisitOverlay{top:14%;padding:10px 22px}}
-</style><div id="dVisitOverlay" aria-live="polite"><div class="visitName" id="dVisitName"></div><div class="visitScore" id="dVisitScore"></div><div class="visitSub">SCORE · 3 DART VISIT</div></div>
+</style><div aria-live="polite" id="dVisitOverlay"><div class="visitName" id="dVisitName"></div><div class="visitScore" id="dVisitScore"></div><div class="visitSub">SCORE · 3 DART VISIT</div></div>
 <script>
 let dVisitShowing=false,dVisitTimer=null;
 function dShowVisit(who,score){if(who===0)daTrackVisit(score);
@@ -1204,7 +1201,7 @@ function dShowVisit(who,score){if(who===0)daTrackVisit(score);
 .dWinnerActions{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}.dWinnerActions button{padding:11px 18px;border:0;border-radius:7px;background:#bcf071;color:#101010;font-weight:900;cursor:pointer}.dWinnerActions button.secondary{background:#342e43;color:#fff;border:1px solid #73627f}
 @media(max-width:640px){.dWinnerCard{padding:16px 10px}.dWinnerComparison{grid-template-columns:minmax(0,1fr) minmax(95px,.85fr) minmax(0,1fr);gap:4px}.dWinnerPortraits{min-height:220px}.dWinnerPortrait{height:230px}.dWinnerStat{padding:4px 0 6px}.dWinnerStat .value{font-size:clamp(20px,5vw,30px)}.dWinnerStat .label{font-size:10px}}
 </style>
-<div id="dWinnerScreen" role="dialog" aria-modal="true" aria-label="Wedstrijduitslag" hidden><div class="dWinnerCard"><div class="dWinnerTitle">MATCH WINNER</div><div class="dWinnerSub" id="dWinnerName"></div><div class="dWinnerScore" id="dWinnerScore"></div><div class="dWinnerComparison"><div class="dWinnerColumn left" id="dWinnerLeft"></div><div class="dWinnerPortraits"><div class="dWinnerPortrait" id="dWinnerPortrait0"></div><div class="dWinnerPortrait" id="dWinnerPortrait1"></div></div><div class="dWinnerColumn right" id="dWinnerRight"></div></div><div class="dWinnerActions"><button id="dWinnerClose" type="button">Close results</button><button id="dWinnerCareer" type="button" class="secondary" hidden>Back to Career</button><button id="dWinnerHome" type="button" class="secondary">Home</button></div></div></div>
+<div aria-label="Wedstrijduitslag" aria-modal="true" hidden="" id="dWinnerScreen" role="dialog"><div class="dWinnerCard"><div class="dWinnerTitle">MATCH WINNER</div><div class="dWinnerSub" id="dWinnerName"></div><div class="dWinnerScore" id="dWinnerScore"></div><div class="dWinnerComparison"><div class="dWinnerColumn left" id="dWinnerLeft"></div><div class="dWinnerPortraits"><div class="dWinnerPortrait" id="dWinnerPortrait0"></div><div class="dWinnerPortrait" id="dWinnerPortrait1"></div></div><div class="dWinnerColumn right" id="dWinnerRight"></div></div><div class="dWinnerActions"><button id="dWinnerClose" type="button">Close results</button><button class="secondary" hidden="" id="dWinnerCareer" type="button">Back to Career</button><button class="secondary" id="dWinnerHome" type="button">Home</button></div></div></div>
 <script>
 function dHideWinner(){document.getElementById('dWinnerScreen').hidden=true}
 function dShowWinner(who){
@@ -1358,7 +1355,6 @@ body:has(#game501[style*="block"]){background:#08090e}
  careerRender=function(){oldRender();render()};if(career)careerRender();
 })();
 </script>
-
 <script id="careerRealEventFlow">
 // The bracket is part of the current scheduled career event, not a separate game mode.
 (function(){
@@ -1592,7 +1588,7 @@ body:has(#careerMode[style*="block"]) > main.app{width:min(1400px,calc(100% - 0p
 #daReplayFlash{position:fixed;z-index:145;left:50%;top:12%;transform:translateX(-50%) scale(.85);background:linear-gradient(115deg,#2b1939,#17141b);border:2px solid #b9f276;border-radius:12px;padding:16px 34px;color:#fff;font:bold clamp(24px,5vw,54px) Arial;text-align:center;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;box-shadow:0 12px 45px #0009}
 #daReplayFlash.show{opacity:1;transform:translateX(-50%) scale(1)}#daReplayFlash small{display:block;font-size:12px;color:#b9f276;letter-spacing:3px;margin-bottom:4px}
 </style>
-<div id="daReplayFlash" aria-live="polite"><small>ARENA HIGHLIGHT</small><span id="daReplayLabel"></span></div>
+<div aria-live="polite" id="daReplayFlash"><small>ARENA HIGHLIGHT</small><span id="daReplayLabel"></span></div>
 <script id="daProDepthLogic">
 // Career development is saved in the existing career save object; standalone 501 stays playable.
 let daMomentum=0,daVisit180=0,daHighlightTimer=null;
@@ -1870,29 +1866,28 @@ function daTraining(){
 #homeAccountPanel button.secondary{background:#35455b;color:#fff}
 #homeAccountStatus{min-height:18px;color:#cce8ad!important}
 </style>
-
 <style id="irlCareerStyles">
 #irlMatch[hidden]{display:none!important}#irlMatch{position:fixed;inset:0;z-index:210;overflow:auto;background:radial-gradient(circle at 50% 5%,#34234e,#0b101a 65%);color:white;padding:20px;font-family:Arial,sans-serif}
 .irlWrap{max-width:1050px;margin:auto}.irlTop{display:flex;justify-content:space-between;align-items:center;gap:15px}.irlScores{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}.irlScore{background:#141b29;border:2px solid #43445a;padding:18px;border-radius:14px;text-align:center}.irlScore.active{border-color:#a8e45d}.irlScore strong{display:block;font-size:clamp(55px,10vw,108px);line-height:1.1}.irlScore .irlName{font-size:clamp(14px,2vw,23px);font-weight:900}.irlEntry{max-width:540px;margin:20px auto;background:#181e2b;border-radius:15px;padding:22px;text-align:center}.irlEntry input[type=number]{width:100%;font-size:44px;text-align:center;padding:10px;background:#080e16;color:#fff;border:2px solid #66758b;border-radius:10px}.irlEntry button,.irlTop button{background:#b8f35a;color:#101810;font-weight:900;border:0;border-radius:8px;padding:12px 20px;cursor:pointer}.irlEntry label{display:block;margin:15px 0}.irlHistory{display:grid;grid-template-columns:1fr 1fr;gap:15px}.irlHistory div{background:#171f2b;border-radius:10px;padding:12px;min-height:80px}.irlHint{color:#aab8ce}.irlNotice{color:#b8f35a;min-height:22px;font-weight:700}#careerMode.irlActive #careerSim,#careerMode.irlActive #careerSkip{display:none!important}
 @media(max-width:620px){#irlMatch{padding:10px}.irlScores{gap:7px}.irlScore{padding:9px}.irlHistory{font-size:12px}}
 </style>
-<div id="irlMatch" hidden>
- <div class="irlWrap irlBroadcast">
-  <header class="irlTop"><button id="irlBack" type="button">← BACK TO CAREER</button><div class="irlMatchHeader"><span id="irlEventTitle">Tournament match</span><strong id="irlLegLabel">BEST OF 5 LEGS</strong></div><span class="irlLive">● LIVE SCORING</span></header>
-  <div class="irlBroadcastGrid">
-   <section class="irlControlPanel">
-    <div class="irlScores">
-     <div class="irlScore active" id="irlPlayerBox"><div class="irlName" id="irlPlayerName">YOU</div><strong id="irlPlayerRemaining">501</strong><div class="irlLegCounter" id="irlPlayerLegs">0 legs</div><small id="irlPlayerAvg">Average: —</small><div class="irlExtraStats" id="irlPlayerExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlPlayerVisits">—</p></div></div>
-     <div class="irlScore" id="irlBotBox"><div class="irlName" id="irlBotName">BOT</div><strong id="irlBotRemaining">501</strong><div class="irlLegCounter" id="irlBotLegs">0 legs</div><small id="irlBotAvg">Average: —</small><div class="irlExtraStats" id="irlBotExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlBotVisits">—</p></div></div>
-    </div>
-    <div class="irlEntry"><div class="irlHint">YOUR TURN · ENTER 3-DART SCORE</div><div class="irlInputRow"><input type="text" id="irlVisit" maxlength="3" pattern="[0-9]*" autocomplete="off" inputmode="numeric" placeholder="0–180" aria-label="Your three-dart score"><button id="irlSubmit" class="irlScoreConfirm" type="button">ENTER ↵</button></div>
-     <div class="irlKeypad" aria-label="Score keypad"><button type="button" data-irl-key="1">1</button><button type="button" data-irl-key="2">2</button><button type="button" data-irl-key="3">3</button><button type="button" data-irl-key="4">4</button><button type="button" data-irl-key="5">5</button><button type="button" data-irl-key="6">6</button><button type="button" data-irl-key="7">7</button><button type="button" data-irl-key="8">8</button><button type="button" data-irl-key="9">9</button><button type="button" data-irl-key="clear" class="irlKeyUtility">CLEAR</button><button type="button" data-irl-key="0">0</button><button type="button" data-irl-key="back" class="irlKeyUtility">⌫</button></div>
-     <p class="irlCheckoutHelp">Finish your remaining score? Enter the exact score and confirm. We will ask about your double automatically.</p><p id="irlNotice" class="irlNotice" aria-live="polite">Enter your score after throwing three darts.</p>
-    </div>
-   </section>
-   <aside class="irlBoardPanel"><div class="irlBoardHeading"><span>DARTS ARENA</span><strong>IRL MATCH CENTRE</strong></div><div class="irlBoardPicture" id="irlRealBoard" aria-label="Standard dartboard showing the bot’s last three darts"></div><div class="irlBotDarts" id="irlBotDarts">BOT DARTS: —</div><div id="irlBotScoreFlash" class="irlBotScoreFlash" hidden>SCORE 100</div><div class="irlBoardFooter">THROW ON YOUR REAL BOARD <span>→</span> ENTER YOUR SCORE ON THE LEFT</div><div class="irlBoardTip">No digital throwing or animations in IRL Career Mode.</div></aside>
-  </div>
- </div>
+<div hidden="" id="irlMatch">
+<div class="irlWrap irlBroadcast">
+<header class="irlTop"><button id="irlBack" type="button">← BACK TO CAREER</button><div class="irlMatchHeader"><span id="irlEventTitle">Tournament match</span><strong id="irlLegLabel">BEST OF 5 LEGS</strong></div><span class="irlLive">● LIVE SCORING</span></header>
+<div class="irlBroadcastGrid">
+<section class="irlControlPanel">
+<div class="irlScores">
+<div class="irlScore active" id="irlPlayerBox"><div class="irlName" id="irlPlayerName">YOU</div><strong id="irlPlayerRemaining">501</strong><div class="irlLegCounter" id="irlPlayerLegs">0 legs</div><small id="irlPlayerAvg">Average: —</small><div class="irlExtraStats" id="irlPlayerExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlPlayerVisits">—</p></div></div>
+<div class="irlScore" id="irlBotBox"><div class="irlName" id="irlBotName">BOT</div><strong id="irlBotRemaining">501</strong><div class="irlLegCounter" id="irlBotLegs">0 legs</div><small id="irlBotAvg">Average: —</small><div class="irlExtraStats" id="irlBotExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlBotVisits">—</p></div></div>
+</div>
+<div class="irlEntry"><div class="irlHint">YOUR TURN · ENTER 3-DART SCORE</div><div class="irlInputRow"><input aria-label="Your three-dart score" autocomplete="off" id="irlVisit" inputmode="numeric" maxlength="3" pattern="[0-9]*" placeholder="0–180" type="text"/><button class="irlScoreConfirm" id="irlSubmit" type="button">ENTER ↵</button></div>
+<div aria-label="Score keypad" class="irlKeypad"><button data-irl-key="1" type="button">1</button><button data-irl-key="2" type="button">2</button><button data-irl-key="3" type="button">3</button><button data-irl-key="4" type="button">4</button><button data-irl-key="5" type="button">5</button><button data-irl-key="6" type="button">6</button><button data-irl-key="7" type="button">7</button><button data-irl-key="8" type="button">8</button><button data-irl-key="9" type="button">9</button><button class="irlKeyUtility" data-irl-key="clear" type="button">CLEAR</button><button data-irl-key="0" type="button">0</button><button class="irlKeyUtility" data-irl-key="back" type="button">⌫</button></div>
+<p class="irlCheckoutHelp">Finish your remaining score? Enter the exact score and confirm. We will ask about your double automatically.</p><p aria-live="polite" class="irlNotice" id="irlNotice">Enter your score after throwing three darts.</p>
+</div>
+</section>
+<aside class="irlBoardPanel"><div class="irlBoardHeading"><span>DARTS ARENA</span><strong>IRL MATCH CENTRE</strong></div><div aria-label="Standard dartboard showing the bot’s last three darts" class="irlBoardPicture" id="irlRealBoard"></div><div class="irlBotDarts" id="irlBotDarts">BOT DARTS: —</div><div class="irlBotScoreFlash" hidden="" id="irlBotScoreFlash">SCORE 100</div><div class="irlBoardFooter">THROW ON YOUR REAL BOARD <span>→</span> ENTER YOUR SCORE ON THE LEFT</div><div class="irlBoardTip">No digital throwing or animations in IRL Career Mode.</div></aside>
+</div>
+</div>
 </div>
 <script id="irlCareerLogic">
 (function(){
@@ -2364,7 +2359,6 @@ el('irlBack').onclick=()=>{if(!confirm('Leave this match? The current leg will r
 <style id="irlKeypadStyle">
 #irlMatch .irlWrap{max-width:950px}#irlMatch .irlEntry{max-width:420px;margin:14px auto;padding:18px 20px}#irlMatch #irlVisit{font-size:48px;font-weight:900;letter-spacing:3px;height:76px;box-sizing:border-box;appearance:textfield}#irlMatch #irlVisit::-webkit-inner-spin-button,#irlMatch #irlVisit::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}#irlMatch .irlKeypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}#irlMatch .irlKeypad button{min-height:57px;background:#2b3447;color:white;font-size:25px;font-weight:900;border:1px solid #53617a;border-radius:9px;touch-action:manipulation}#irlMatch .irlKeypad button:active{background:#557a41;transform:scale(.98)}#irlMatch .irlKeypad .irlKeyUtility{font-size:15px;background:#3c344b}#irlMatch .irlCheckout{display:flex;align-items:center;justify-content:center;gap:9px;margin:12px 0;color:#e9f2f8}#irlMatch .irlCheckout input{width:20px;height:20px;accent-color:#b8f35a}#irlMatch .irlScoreConfirm{width:100%;min-height:55px;font-size:18px}#irlMatch .irlScores{margin:10px 0}#irlMatch .irlScore strong{font-size:clamp(42px,8vw,78px)}@media(min-width:900px){#irlMatch .irlWrap{max-width:1080px}#irlMatch .irlScores{grid-template-columns:1fr 1fr}}
 </style>
-
 <style id="irlScorepadVisibilityFix">
 /* IRL match is a dedicated scoring screen, never the digital dartboard. */
 html.irl-scoring-active #game501,html.irl-scoring-active #d3dOverlay,html.irl-scoring-active #dAiStage,html.irl-scoring-active #dMeterWrap{display:none!important}
@@ -2459,11 +2453,11 @@ html.irl-scoring-active #irlMatch{display:block!important;visibility:visible!imp
 #irlMatch .irlBoardFooter{text-align:center;font-weight:900;color:#f58b65;font-size:12px;letter-spacing:.04em}#irlMatch .irlBoardFooter span{color:#fff;padding:0 6px}#irlMatch .irlBoardTip{font-size:12px;color:#aaa;text-align:center}
 @media(max-width:760px){#irlMatch .irlBroadcastGrid{grid-template-columns:1fr}#irlMatch .irlBoardPanel{display:none}#irlMatch .irlScore{min-height:210px}#irlMatch .irlTop{padding:10px}#irlMatch .irlLive{display:none}#irlMatch .irlEntry{padding:14px!important}#irlMatch .irlKeypad button{min-height:51px!important}}
 </style>
-<div id="irlCheckoutPrompt" hidden role="dialog" aria-modal="true" aria-labelledby="irlCheckoutPromptTitle">
- <div class="irlCheckoutPromptCard"><h2 id="irlCheckoutPromptTitle">Checkout opportunity</h2><p>Enter what actually happened during your turn.</p>
- <label hidden>Darts used to finish <select id="irlCheckoutDarts"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
- <label hidden>Darts thrown at a double <select id="irlCheckoutDoubles"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
- <div id="irlQuickChoices" class="irlQuickChoices"></div><div id="irlFinishChoices" hidden><button id="irlFinishYes" type="button">✓ YES, I FINISHED</button><button id="irlFinishNo" type="button">NO, BUST</button></div><p id="irlCheckoutPromptError" aria-live="polite"></p><button id="irlCheckoutConfirm" type="button" hidden>CONFIRM &amp; CONTINUE</button></div></div>
+<div aria-labelledby="irlCheckoutPromptTitle" aria-modal="true" hidden="" id="irlCheckoutPrompt" role="dialog">
+<div class="irlCheckoutPromptCard"><h2 id="irlCheckoutPromptTitle">Checkout opportunity</h2><p>Enter what actually happened during your turn.</p>
+<label hidden="">Darts used to finish <select id="irlCheckoutDarts"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+<label hidden="">Darts thrown at a double <select id="irlCheckoutDoubles"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+<div class="irlQuickChoices" id="irlQuickChoices"></div><div hidden="" id="irlFinishChoices"><button id="irlFinishYes" type="button">✓ YES, I FINISHED</button><button id="irlFinishNo" type="button">NO, BUST</button></div><p aria-live="polite" id="irlCheckoutPromptError"></p><button hidden="" id="irlCheckoutConfirm" type="button">CONFIRM &amp; CONTINUE</button></div></div>
 <style id="irlCheckoutPromptStyles">
 #irlCheckoutPrompt:not([hidden]){position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#070a10d9;padding:20px}
 #irlCheckoutPrompt .irlCheckoutPromptCard{width:min(100%,420px);background:#29242f;color:#fff;padding:26px;border-radius:18px;border:1px solid #8b6c8d;box-shadow:0 20px 80px #000b}
@@ -2591,7 +2585,6 @@ window.addEventListener('pagehide',()=>{if(user&&ready&&career)scheduleSave(mode
 boot();
 })();
 </script>
-
 <style id="careerRankingMovementCSS">
 #careerRanking .rankMove{font-weight:900;white-space:nowrap;font-size:12px;display:inline-block;min-width:51px}
 #careerRanking .rankMove.up{color:#56f0a3}
@@ -2652,7 +2645,6 @@ boot();
  };
 })();
 </script>
-
 <style id="careerQualifierCSS">
 #careerQualifierBanner{background:linear-gradient(120deg,#073a2e,#174b42);border:1px solid #43cf97;border-radius:12px;padding:15px;margin:10px 0 14px;color:#ecfff5}
 #careerQualifierBanner strong{color:#baff69;display:block;font-size:17px;margin-bottom:5px}
@@ -2798,7 +2790,6 @@ boot();
  };
 })();
 </script>
-
 <style id="pdcBroadcastRedesign">
 /* Broadcast-first visual redesign. Layout only: original game scripts, IDs and state are untouched. */
 :root{--pdc-bg:#090a0d;--pdc-panel:#151416;--pdc-panel2:#1d1a1b;--pdc-border:#463733;--pdc-red:#b61c25;--pdc-red2:#e2383d;--pdc-gold:#d8ac69;--pdc-cream:#f4eee5;--pdc-muted:#b9a9a0}
@@ -2840,7 +2831,6 @@ body .app{width:min(1500px,calc(100% - 40px))!important;max-width:1500px!importa
 @media(max-width:650px){.broadcastMasthead{padding:14px 18px;min-height:65px}.broadcastMastheadRight{display:none}body .app{width:calc(100% - 24px)!important;margin-top:12px!important}.broadcastHero{min-height:280px;padding:25px}.broadcastHero h1{letter-spacing:-3px!important}.broadcastHero p{letter-spacing:2px}.heroDartboard{width:300px;height:300px;right:-150px;opacity:.28}#homeMode .modeCards{grid-template-columns:1fr!important}#homeMode .modeCard{min-height:140px!important}.sectionKicker{font-size:10px}.app .careerGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(prefers-reduced-motion:reduce){#homeMode .modeCard{transition:none!important}}
 </style>
-
 <style id="careerScreenshotLayout">
 /* Full structural career dashboard, inspired by the supplied reference. */
 #careerMode{max-width:none!important;margin:0!important}
@@ -2908,56 +2898,17 @@ body:has(#careerMode[style*="block"]) .app,body:has(#careerMode:not([style*="non
 @media(max-width:920px){#careerDashboard .careerScreen{grid-template-columns:68px minmax(0,1fr)}#careerDashboard .careerSideLogo{font-size:12px;padding:12px 6px;text-align:center}#careerDashboard .careerSideLogo small{display:none}#careerDashboard .careerSideNav{font-size:0!important;text-align:center;padding:15px 0}#careerDashboard .careerSideNav span{font-size:22px;width:auto}#careerDashboard .careerBack{font-size:10px;padding:9px 3px;margin:20px 4px 0}#careerDashboard .careerContentGrid{grid-template-columns:1fr}#careerDashboard .careerSecondaryColumn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){body .app{width:100%!important;margin:0!important}#careerDashboard .careerScreen{display:block}#careerDashboard .careerSidebar{position:sticky;top:0;z-index:20;flex-direction:row;align-items:center;overflow-x:auto;padding:6px;gap:2px}#careerDashboard .careerSideLogo{display:none}#careerDashboard .careerSideNav{flex:0 0 43px;padding:10px 0}#careerDashboard .careerBack{margin:0 4px;white-space:nowrap}#careerDashboard .careerWorkspace{padding:12px}#careerDashboard .careerWorkspaceHeader{display:block}#careerDashboard .careerWorkspaceHeader h1{font-size:22px!important}#careerDashboard .careerProfileBanner{gap:9px;padding:12px;flex-wrap:wrap}#careerDashboard .careerAvatar{width:48px;height:48px;flex-basis:48px}#careerDashboard .careerProfileStats{width:100%;margin:8px 0 0;justify-content:space-between}#careerDashboard .careerProfileStats>div{padding-left:9px}#careerDashboard .careerGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#careerDashboard .careerSecondaryColumn{display:flex}#careerDashboard .careerPerformance{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 </style>
-
-<script id="careerScreenshotLayoutJS">
-(function(){
- function setup(){
-  const root=document.getElementById('careerDashboard');
-  if(!root||root.querySelector('.careerScreen'))return;
-  const help=root.querySelector('.careerHelp');
-  const filters=root.querySelector('.careerFilters');
-  const tiles=root.querySelector('.careerGrid');
-  const perf=root.querySelector('#careerPerformance');
-  const next=root.querySelector('#careerNextEvent')?.closest('.careerPanel');
-  const tournament=root.querySelector('.careerTournamentPanel');
-  const calendar=root.querySelector('#careerCalendar')?.closest('.careerPanel');
-  const ranking=root.querySelector('#careerRanking')?.closest('.careerPanel');
-  const news=root.querySelector('#careerNews')?.closest('.careerPanel');
-  const analytics=root.querySelector('#irlAnalytics');
-  const management=root.querySelector('#careerExport')?.closest('.careerPanel');
-  const skills=root.querySelector('#careerSkills')?.closest('.careerPanel');
-  const shell=document.createElement('div');shell.className='careerScreen';
-  shell.innerHTML='<aside class="careerSidebar"><div class="careerSideLogo">DARTS <em>ARENA</em><small>CAREER MODE</small></div><button type="button" class="careerSideNav active" data-go="careerProfileBanner"><span>⌂</span> Dashboard</button><button type="button" class="careerSideNav" data-go="careerNextEvent"><span>🏆</span> Career</button><button type="button" class="careerSideNav" data-go="careerCalendar"><span>▦</span> Tournaments</button><button type="button" class="careerSideNav" data-go="careerRanking"><span>▥</span> Ranking</button><button type="button" class="careerSideNav" data-go="irlAnalytics"><span>⌁</span> Statistics</button><button type="button" class="careerSideNav" data-go="careerNews"><span>▤</span> News</button><button type="button" class="careerSideNav" data-go="careerExport"><span>⚙</span> Settings</button><button type="button" class="careerBack">← Home</button></aside><div class="careerWorkspace"><div class="careerWorkspaceHeader"><h1>Darts Arena — <em>Career Mode</em></h1><span class="workspaceTag">PDC CAREER HUB</span></div><div class="careerProfileBanner careerSectionAnchor" id="careerProfileBanner"><div class="careerAvatar" id="careerNewAvatar">🎯</div><div><div class="careerProfileName" id="careerNewName">Your player</div><div class="careerProfileSubtitle" id="careerNewSubtitle">Professional darts career</div></div><div class="careerProfileStats"><div><small>PDC Order of Merit</small><strong id="careerNewRank">—</strong></div><div><small>Career earnings</small><strong id="careerNewMoney">—</strong></div></div></div><div class="careerContentGrid"><div class="careerPrimaryColumn"></div><div class="careerSecondaryColumn"></div></div></div>';
-  const left=shell.querySelector('.careerPrimaryColumn'),right=shell.querySelector('.careerSecondaryColumn');
-  const put=(parent,node)=>{if(node)parent.appendChild(node)};
-  put(left,tiles);put(left,perf);put(left,analytics);put(left,next);put(left,tournament);put(left,filters);put(left,calendar);put(left,help);put(left,management);
-  put(right,ranking);put(right,news);put(right,skills);
-  root.appendChild(shell);
-  const originalHome=document.getElementById('careerHome');
-  shell.querySelector('.careerBack').addEventListener('click',()=>originalHome?.click());
-  shell.querySelectorAll('.careerSideNav').forEach(btn=>btn.addEventListener('click',()=>{
-   shell.querySelectorAll('.careerSideNav').forEach(b=>b.classList.toggle('active',b===btn));
-   const target=document.getElementById(btn.dataset.go);
-   target?.scrollIntoView({behavior:'smooth',block:'start'});
-  }));
-  function sync(){
-   const label=document.getElementById('careerPlayerLabel');
-   if(!label)return;
-   document.getElementById('careerNewName').textContent=label.textContent||'Your player';
-   document.getElementById('careerNewSubtitle').textContent=document.getElementById('careerNick')?.textContent||'PDC player';
-   document.getElementById('careerNewRank').textContent=document.getElementById('careerRank')?.textContent||'—';
-   document.getElementById('careerNewMoney').textContent=document.getElementById('careerMoney')?.textContent||'—';
-   const avatar=document.getElementById('careerNewAvatar');
-   const existing=document.querySelector('#careerDashboard .careerPlayerPhoto img, #careerDashboard #careerDashboardPhoto img, #careerDashboard .careerDashboardPhoto img');
-   if(existing&&existing.src){if(!avatar.querySelector('img'))avatar.innerHTML='<img alt="Player portrait">';avatar.querySelector('img').src=existing.src}
-   const title=shell.querySelector('.careerWorkspaceHeader h1 em');
-   if(title)title.textContent=typeof irlMode!=='undefined'&&irlMode?'IRL Career Mode':'Digital Career Mode';
-  }
-  const observer=new MutationObserver(()=>{if(root.style.display!=='none')sync()});
-  [document.getElementById('careerPlayerLabel'),document.getElementById('careerRank'),document.getElementById('careerMoney'),document.getElementById('careerNick')].filter(Boolean).forEach(n=>observer.observe(n,{childList:true,characterData:true,subtree:true}));
-  sync();
- }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
-})();
-</script>
-</body></html>
+<script id="careerStaticLayoutSync">(function(){
+function init(){
+const root=document.getElementById('careerDashboard');if(!root)return;
+const mapping=[['careerPlayerLabel','careerNewName'],['careerNick','careerNewSubtitle'],['careerRank','careerNewRank'],['careerMoney','careerNewMoney']];
+function sync(){for(const [from,to] of mapping){const a=document.getElementById(from),b=document.getElementById(to);if(a&&b)b.textContent=a.textContent||'—';}
+const h=root.querySelector('.careerWorkspaceHeader h1 em');if(h)h.textContent=typeof irlMode!=='undefined'&&irlMode?'IRL Career Mode':'Digital Career Mode';
+const avatar=document.getElementById('careerNewAvatar');const source=document.querySelector('#careerDashboard .careerTile img');if(avatar&&source&&source.src){let img=avatar.querySelector('img');if(!img){avatar.textContent='';img=document.createElement('img');img.alt='Player portrait';avatar.append(img)}if(img.src!==source.src)img.src=source.src;}}
+for(const [from] of mapping){const a=document.getElementById(from);if(a)new MutationObserver(sync).observe(a,{childList:true,characterData:true,subtree:true})}
+root.querySelectorAll('.careerSideNav').forEach(b=>b.addEventListener('click',()=>{root.querySelectorAll('.careerSideNav').forEach(x=>x.classList.toggle('active',x===b));document.getElementById(b.dataset.go)?.scrollIntoView({behavior:'smooth',block:'start'})}));
+root.querySelector('.careerBack')?.addEventListener('click',()=>document.getElementById('careerHome')?.click());
+sync();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();</script></body></html>
