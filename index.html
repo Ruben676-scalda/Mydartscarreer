@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Wie is de Darter? 🎯</title>
+<html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Darts Arena | The Home of Darts</title>
 <style>
 *{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:16px;background:linear-gradient(135deg,#090f2e,#24105b 40%,#063b55);font-family:Arial,sans-serif;color:#f7f8fb}
 .app{width:min(820px,100%);background:linear-gradient(145deg,#1c2450,#102b43);border:2px solid #7c4dff;border-radius:24px;padding:24px;box-shadow:0 0 35px #7c4dff55;text-align:center}
@@ -277,9 +277,20 @@ body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gra
 .dcStatsFoot{color:#aebfda;font-size:12px;margin-top:10px}
 @media(max-width:650px){.dcStatsPanel{padding:10px}.dcStatsTable td{padding:8px 4px;font-size:13px}.dcStatsTable th{font-size:12px}.dcStatsTable td.dcPrimary{font-size:17px}}
 </style>
-<body><main class="app">
+<body>
+<div class="broadcastMasthead" aria-label="Darts Arena">
+  <div class="broadcastBrand"><span class="brandDart">➤</span><span>DARTS <em>ARENA</em></span></div>
+  <div class="broadcastMastheadRight"><span class="liveDot"></span> THE HOME OF DARTS <span class="mastheadDivider"></span> CAREER · TOURNAMENTS · RANKINGS</div>
+</div>
+<main class="app">
 <section id="homeMode">
-  <h1>🎯 DARTS ARENA</h1><p class="sub">Kies jouw gamemode</p>
+  <div class="broadcastHero">
+  <div class="broadcastHeroContent"><div class="heroEyebrow"><span></span> YOUR ROAD TO THE TOP</div>
+  <h1>DARTS<br><em>ARENA</em></h1><p>THE STAGE IS YOURS.</p>
+  <div class="heroRule"></div><span class="heroCaption">BUILD YOUR LEGACY. WIN THE BIGGEST TITLES.</span></div>
+  <div class="heroDartboard" aria-hidden="true"><div class="dartRing dartRingOuter"><div class="dartRing dartRingInner"><div class="dartBull"></div></div></div></div>
+</div>
+<div class="sectionKicker"><span>01 / GAME MODES</span><span>SELECT YOUR EXPERIENCE</span></div>
   <div class="modeCards">
     <button class="modeCard" id="openQuiz"><span class="modeEmoji">🔎</span><b>Wie is de Darter?</b><small>Raad de geheime darter met hints</small></button>
     <button class="modeCard" id="open501"><span class="modeEmoji">🎯</span><b>Darts 501</b><small>Speel een wedstrijd met timingworpen</small></button>
@@ -2036,11 +2047,24 @@ document.addEventListener('click',function(e){
 },true);
 
 el('careerNew').onclick=()=>{if(!confirm('Start a new career? Your current save will be replaced.'))return;career=null;careerPending=null;if(irlMode)irlCareer=null;else normalCareer=null;el('careerSetup').style.display='block';el('careerDashboard').style.display='none';el('careerContinue').style.display='inline-block';updateIRLSetup()};
+// Player differences are relative to the selected IRL level, never absolute pro averages.
+function irlPlayerStrength(p){
+ const ranked=careerRanked(),position=ranked.findIndex(x=>x.id===p.id);
+ const rankRatio=position<0?.5:1-position/Math.max(1,ranked.length-1);
+ const skill=Math.max(20,Math.min(112,Number(p.skill)||55));
+ const skillRatio=(skill-20)/92;
+ return Math.max(0,Math.min(1,rankRatio*.65+skillRatio*.35));
+}
 function targetAvg(p){
- const level=irlSavedLevel(career?.botLevel),base=IRL_LEVELS[level-1].average;
- const skill=Math.max(20,Math.min(112,Number(p.skill)||55)),form=Math.max(-5,Math.min(5,Number(p.form)||0));
+ const level=irlSavedLevel(career?.botLevel),setting=IRL_LEVELS[level-1];
+ const strength=irlPlayerStrength(p);
+ // At level 5, even the strongest PDC stars target ~55 rather than 100.
+ const playerBonus=(strength-.5)*Math.min(12,setting.average*.22);
+ const form=Math.max(-5,Math.min(5,Number(p.form)||0));
  const recent=aiRecent(p),day=irlMatch?.bot===p?irlMatch.botDay:0;
- return Math.max(15,Math.min(120,base+(skill-70)*.16+form*.45+recent*.55+day));
+ const target=setting.average+playerBonus+form*.22+recent*.23+day*.45;
+ // Keep all players in the difficulty's realistic range, including top seeds.
+ return Math.max(setting.min,Math.min(setting.max,target));
 }
 function sample(){return (Math.random()+Math.random()+Math.random()+Math.random()-2)}
 function botVisit(){
@@ -2242,7 +2266,7 @@ function botTurn(){
  const b=irlMatch;if(!b||irlBotBusy)return;
  irlBotBusy=true;
  const old=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
- const result=irlBotSimulateVisit(old,avg,profile);
+ const result=irlBotSimulateVisit(old,avg,{...profile,finishing:profile.finishing*(.88+irlPlayerStrength(b.bot)*.24)});
  const {darts,score,finish,bust,attempts}=result;
  el('irlSubmit').disabled=true;el('irlVisit').disabled=true;
  el('irlNotice').textContent=b.bot.name+' is throwing...';
@@ -2774,4 +2798,46 @@ boot();
  };
 })();
 </script>
+
+<style id="pdcBroadcastRedesign">
+/* Broadcast-first visual redesign. Layout only: original game scripts, IDs and state are untouched. */
+:root{--pdc-bg:#090a0d;--pdc-panel:#151416;--pdc-panel2:#1d1a1b;--pdc-border:#463733;--pdc-red:#b61c25;--pdc-red2:#e2383d;--pdc-gold:#d8ac69;--pdc-cream:#f4eee5;--pdc-muted:#b9a9a0}
+html{background:#090a0d}
+body{display:block!important;min-height:100vh!important;margin:0!important;padding:0!important;background:radial-gradient(ellipse at 50% -15%,#41201e 0%,#161012 38%,#090a0d 76%)!important;color:var(--pdc-cream)!important;font-family:"Arial Narrow",Arial,Helvetica,sans-serif!important}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#fff1 4px 4px);opacity:.1}
+.broadcastMasthead{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px clamp(18px,4vw,64px);border-bottom:2px solid #8d2528;background:linear-gradient(100deg,#090809,#241414 58%,#0b0b0e);box-shadow:0 10px 35px #0008;position:relative;z-index:3}
+.broadcastBrand{font-family:Georgia,serif;font-weight:900;font-style:italic;font-size:clamp(22px,2.3vw,34px);letter-spacing:-1.4px;color:#fff;white-space:nowrap;text-shadow:0 2px 12px #000}
+.broadcastBrand em{color:var(--pdc-gold);font-style:italic}.brandDart{color:#e33a38;display:inline-block;transform:rotate(-28deg);margin-right:12px;font-family:Arial}
+.broadcastMastheadRight{font-size:11px;font-weight:800;letter-spacing:2px;color:#dfbca1;display:flex;align-items:center;gap:12px}.liveDot{height:8px;width:8px;border-radius:50%;background:#e93439;box-shadow:0 0 14px #e93439}.mastheadDivider{width:1px;height:18px;background:#80625a}
+body .app{width:min(1500px,calc(100% - 40px))!important;max-width:1500px!important;margin:24px auto 60px!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;text-align:left!important}
+#homeMode{display:block}#homeMode>.sub{display:none}
+.broadcastHero{min-height:385px;position:relative;overflow:hidden;display:flex;align-items:center;padding:40px clamp(28px,6vw,90px);border:1px solid #6e3832;background:radial-gradient(circle at 72% 50%,#7a2522 0%,#2b1114 36%,#0c0b0d 78%);box-shadow:0 20px 55px #0009,inset 0 0 75px #0009}
+.broadcastHero:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,transparent 0 60px,#ffffff06 62px 64px),linear-gradient(90deg,#0d0a0d 0%,transparent 65%);z-index:1}
+.broadcastHero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,#a81920,#e2ad6e,#8f171c)}
+.broadcastHeroContent{position:relative;z-index:2}.broadcastHero h1{font-family:Georgia,serif!important;font-size:clamp(58px,9vw,124px)!important;font-weight:900!important;letter-spacing:-5px!important;line-height:.9!important;color:#fff!important;text-shadow:0 7px 28px #000!important;margin:18px 0!important}.broadcastHero h1 em{font-style:italic;color:var(--pdc-gold)}.broadcastHero p{font-size:clamp(17px,2.2vw,27px);letter-spacing:5px;font-weight:800;margin:18px 0;color:#f6e5d3}.heroEyebrow,.heroCaption{font-size:12px;font-weight:800;letter-spacing:3px;color:#e8c1a6}.heroEyebrow span{display:inline-block;width:27px;height:3px;background:#d82d32;vertical-align:middle;margin-right:9px}.heroRule{height:2px;width:190px;background:linear-gradient(90deg,#dd3438,#e8b16c,transparent);margin:22px 0}
+.heroDartboard{position:absolute;width:450px;height:450px;right:7%;top:50%;transform:translateY(-50%) rotate(-15deg);border-radius:50%;background:repeating-conic-gradient(from -9deg,#e9d8b6 0 18deg,#191919 18deg 36deg);border:15px solid #100e0e;box-shadow:0 0 0 8px #422b27,0 0 0 13px #171313,0 25px 75px #000d;opacity:.88}.dartRingOuter{position:absolute;inset:15%;border:20px solid #b62628;border-radius:50%;box-shadow:inset 0 0 0 3px #131313,0 0 0 3px #161616}.dartRingInner{position:absolute;inset:23%;border:13px solid #257e4b;border-radius:50%;box-shadow:0 0 0 2px #111}.dartBull{position:absolute;inset:36%;border-radius:50%;background:#b92328;border:5px solid #277d4b}
+.sectionKicker{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #6b3835;margin:29px 0 18px;padding-bottom:11px;font-size:12px;font-weight:900;letter-spacing:2px;color:var(--pdc-gold)}
+#homeMode .modeCards{max-width:none!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important;margin:0!important}
+#homeMode .modeCard{min-height:205px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;text-align:left!important;padding:28px!important;border-radius:4px!important;border:1px solid #6c4038!important;border-top:3px solid #c12d31!important;background:linear-gradient(140deg,#292021,#100f11 78%)!important;box-shadow:0 12px 25px #0007!important;transition:transform .18s,border-color .18s,background .18s!important}
+#homeMode .modeCard:hover{transform:translateY(-5px)!important;border-color:#e5b276!important;background:linear-gradient(135deg,#402023,#161315)!important}
+#homeMode .modeCard .modeEmoji{font-size:27px!important;filter:grayscale(1) sepia(.3)!important}
+#homeMode .modeCard b{font-family:Georgia,serif!important;font-size:clamp(20px,2vw,27px)!important;color:#fff!important}
+#homeMode .modeCard small{font-size:13px!important;color:#cbbdb1!important;line-height:1.5!important}
+#homeMode .note{margin-top:18px;color:#aa9990!important}
+.app h1,.app h2,.app h3{letter-spacing:.2px}.app h1{color:#f4e9df!important;text-shadow:none!important}.app h2,.app h3{color:#e6bc81!important}
+.app .careerPanel,.app .careerTile,.app .panel,.app .dcPanel,.app .careerEvent,.app .careerNewsCard,.app .careerTournamentCard{border-radius:5px!important;background:linear-gradient(140deg,#211b1d,#121214)!important;border:1px solid #60423d!important;box-shadow:0 8px 25px #0005!important}
+.app .careerPanel h2{color:#e6bc81!important}.app .careerTile strong{color:#f5e8d4!important}
+.app .btn,.app button:not(.modeCard):not(.close),.app input[type=submit]{border-radius:4px!important}
+.app .btn:not(.alt),.app button.primary,.app .careerPrimary{background:linear-gradient(#c42b30,#8d171d)!important;color:#fff!important;border:1px solid #d84945!important;box-shadow:none!important}
+.app .btn.alt,.app button.alt{background:#231b1d!important;color:#e7d9cd!important;border:1px solid #78534c!important}
+.app input,.app select,.app textarea{border-radius:4px!important;background-color:#161517!important;color:#f8eee4!important;border-color:#76524a!important}
+.app .careerNav{background:linear-gradient(90deg,#261a1c,#111113)!important;border-bottom:2px solid #a82a2e!important;padding:15px 18px!important;margin-bottom:18px!important}.app .careerNav h1{font-family:Georgia,serif!important;font-size:clamp(20px,3vw,33px)!important}
+.app .careerGrid{gap:12px!important}
+.app .careerMuted,.app .sub{color:#c4ada2!important}
+.app .irlAnalyticsTiles>div,.app .irlAnalyticsCharts section{background:#241c1d!important;border:1px solid #5b403b!important;border-radius:5px!important}
+.app .irlAnalyticsGraph path{stroke:#d3a46c!important}.app .irlAnalyticsGraph circle{fill:#e44a46!important}
+@media(max-width:900px){.heroDartboard{right:-135px;opacity:.5}.broadcastHero{min-height:320px}.broadcastMastheadRight{font-size:10px;letter-spacing:1px}#homeMode .modeCards{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:650px){.broadcastMasthead{padding:14px 18px;min-height:65px}.broadcastMastheadRight{display:none}body .app{width:calc(100% - 24px)!important;margin-top:12px!important}.broadcastHero{min-height:280px;padding:25px}.broadcastHero h1{letter-spacing:-3px!important}.broadcastHero p{letter-spacing:2px}.heroDartboard{width:300px;height:300px;right:-150px;opacity:.28}#homeMode .modeCards{grid-template-columns:1fr!important}#homeMode .modeCard{min-height:140px!important}.sectionKicker{font-size:10px}.app .careerGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(prefers-reduced-motion:reduce){#homeMode .modeCard{transition:none!important}}
+</style>
 </body></html>
