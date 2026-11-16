@@ -414,7 +414,13 @@ body:has(#game501[style*="block"]){display:block;padding:0;background:radial-gra
             <section class="daPanel"><div class="daPanelHead"><h2>Laatste 5 wedstrijden</h2></div><div id="careerRecentMatches" class="daRecentMatches"></div></section>
           </div>
 
-          <section class="daPanel careerTournamentPanel"><div class="daPanelHead"><h2>Current career event · live draw</h2></div><div id="careerQualifierBanner" style="display:none"></div><div id="careerTournamentBracket" class="careerTournamentBracket"></div></section>
+          <section class="daPanel careerTournamentPanel" id="daTournamentView">
+  <div class="careerTournamentHeader"><div><small>CURRENT CAREER EVENT · LIVE DRAW</small><h2 id="careerTournamentTitle">Current tournament</h2><p id="careerTournamentSubtitle">Preparing the draw</p></div><span id="careerTournamentStatus" class="careerTournamentBadge">UPCOMING</span></div>
+  <div id="careerTournamentProgress" class="careerTournamentProgress"></div>
+  <div id="careerQualifierBanner" style="display:none"></div>
+  <div id="careerTournamentBracket" class="careerTournamentBracket"><p class="careerMuted">Loading the scheduled tournament draw…</p></div>
+  <div id="careerTournamentFooter" class="careerTournamentFooter"></div>
+</section>
         </div>
         <div class="daSecondary">
           <section class="daPanel daRightPanel"><div class="daPanelHead"><h2>Order of Merit</h2><button class="daTextLink" type="button" data-go="careerRanking">Volledige ranking →</button></div><div id="careerRanking"></div></section>
@@ -2982,10 +2988,241 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script id="daCareerExactJs">
 (function(){
  function scoreRoundName(wins, played){ if(!played) return '—'; const entrants=Math.max(2, 2**Math.ceil(Math.log2(played+1))); const last=played===1?entrants:Math.max(1, Math.round(entrants/(2**wins))); if(wins>=Math.log2(entrants)) return 'Winner'; const map={128:'Round 1',64:'Last 64',32:'Last 32',16:'Last 16',8:'Quarter-final',4:'Semi-final',2:'Final'}; return map[last]||('Round '+wins); }
- function renderExact(){ if(!window.career) return; const player=careerPlayer(); const matches=(Array.isArray(career.matchPerformance)?career.matchPerformance:[]).filter(x=>!window.irlMode || x.type==='irl'); const recent=matches.slice(-5).reverse(); const overall=matches.length?(matches.reduce((n,x)=>n+Number(x.average||0),0)/matches.length):0; const best=matches.length?Math.max(...matches.map(x=>Number(x.average||0))):0; const wins=matches.filter(x=>x.won).length; const rankObj=careerRanked().find(p=>p.id===career.playerId); const move=(career.rankMovements||{})[career.playerId]||0; const recentEvents=(career.irlTournamentResults||[]).slice(-4).reverse(); document.getElementById('daModeTitle').textContent=window.irlMode?'IRL Career Mode':'Career Mode'; document.getElementById('daAccountName').textContent=player.name; document.getElementById('careerNewName').textContent=player.name; document.getElementById('careerNewCountry').textContent=player.country||'Nederland'; document.getElementById('careerNewRank').textContent='#'+(rankObj?rankObj.position:'—'); document.getElementById('careerMoney').textContent=careerMoneyFmt(career.earnings); document.getElementById('careerNewMoney')&& (document.getElementById('careerNewMoney').textContent=careerMoneyFmt(career.earnings)); document.getElementById('daCareerAverage').textContent=matches.length?overall.toFixed(2).replace('.',','):'—'; document.getElementById('daRankDelta').textContent=move>0?('▲ +'+move):move<0?('▼ '+Math.abs(move)):'—'; document.getElementById('daRankDelta').className=move>0?'daRankMove up':move<0?'daRankMove down':'daRankMove'; document.getElementById('daMatchesPlayed').textContent=matches.length; document.getElementById('daWinPct').textContent=matches.length?((wins*100/matches.length).toFixed(1).replace('.',',')+'%'):'—'; document.getElementById('daBestAvg').textContent=best?best.toFixed(2).replace('.',','):'—'; document.getElementById('daBestFinish').textContent=career.bestFinish||'—'; const sum=document.getElementById('careerSummaryStats'); if(sum){ sum.innerHTML=''; const items=[['Totaal prijzengeld',careerMoneyFmt(career.earnings)],['Gewonnen toernooien',career.titles||0],['Finales',recentEvents.filter(e=>e.played>=6).length],['Halve finales',recentEvents.filter(e=>e.played>=5).length],['Kwartfinales',recentEvents.filter(e=>e.played>=4).length]]; items.forEach(([a,b])=>{const row=document.createElement('div');row.className='daSummaryItem'; row.innerHTML='<span>'+a+'</span><b>'+b+'</b>'; sum.appendChild(row)}); } const recentMatches=document.getElementById('careerRecentMatches'); if(recentMatches){ recentMatches.innerHTML = recent.length ? recent.map(m=>'<div class="daMatchRow"><div>vs. '+careerSafe(m.opponent||'Opponent')+'</div><span class="daMatchBadge '+(m.won?'win':'loss')+'">'+(m.won?'W':'L')+'</span><div>'+Number(m.average||0).toFixed(2).replace('.',',')+'</div></div>').join('') : '<p class="careerMuted">Nog geen gespeelde wedstrijden.</p>'; } const calendar=document.getElementById('careerCalendar'); if(calendar){ const events=(career.irlTournamentResults||[]).slice(-4).reverse(); calendar.innerHTML='<div class="daSeasonRow daHead"><span>Toernooi</span><span>Resultaat</span><span>Prijzengeld</span></div>' + (events.length? events.map(e=>'<div class="daSeasonRow"><span>'+careerSafe(e.event)+'</span><span>'+scoreRoundName(e.wins,e.played)+'</span><span>—</span></div>').join('') : '<p class="careerMuted">Nog geen toernooiresultaten.</p>'); } const ranking=document.getElementById('careerRanking'); if(ranking){ const ranked=careerRanked(); const me=ranked.findIndex(p=>p.id===career.playerId); let slice=ranked.slice(0,3); let around=[]; if(me>3){ const from=Math.max(3, me-1), to=Math.min(ranked.length, me+2); around=ranked.slice(from,to);} const row=(p)=>{ const delta=(career.rankMovements||{})[p.id]||0; const move=delta>0?'<span class="daRankMove up">▲ +'+delta+'</span>':delta<0?'<span class="daRankMove down">▼ '+Math.abs(delta)+'</span>':''; return '<div class="daRankRow '+(p.id===career.playerId?'me':'')+'"><div class="daRankNum">'+p.position+'</div><div class="daRankName">'+careerSafe(p.name)+' '+move+'</div><div class="daRankMoney">'+careerMoneyFmt(p.money)+'</div></div>'; }; ranking.innerHTML='<div class="daOrderList">'+slice.map(row).join('')+(around.length?'<div class="daRankDivider">. . .</div>'+around.map(row).join(''):'')+'</div>'; } const next=document.getElementById('careerNextEvent'); if(next){ const event=careerEvents[career.eventIndex]||['Tournament',128,0,11]; const qual=/euro/i.test(event[4]||'') ? '<span class="daQualifierPill">Qualifier</span>' : ''; next.innerHTML='<div class="daEventTitle">'+careerSafe(event[0])+'</div><div class="daEventMeta">'+(event[5]||'')+'</div><div class="daEventMeta">'+event[1]+' players · Best of '+event[3]+' legs</div>'+qual; } const avatarText=(player.name||'P').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase(); const avatar=document.getElementById('careerNewAvatar'); if(avatar&&!avatar.querySelector('img')) avatar.textContent=avatarText; const acc=document.getElementById('daAccountAvatar'); if(acc) acc.textContent=avatarText.charAt(0); const hb=document.getElementById('careerHomeDash'); if(hb && !hb.dataset.bound){ hb.dataset.bound='1'; hb.addEventListener('click',()=>{ const h=document.getElementById('careerHome'); if(h) h.click(); }); }
+ function renderExact(){ if(!career) return; const player=careerPlayer(); const matches=(Array.isArray(career.matchPerformance)?career.matchPerformance:[]).filter(x=>!document.getElementById('careerMode')?.classList.contains('irlActive') || x.type==='irl'); const recent=matches.slice(-5).reverse(); const overall=matches.length?(matches.reduce((n,x)=>n+Number(x.average||0),0)/matches.length):0; const best=matches.length?Math.max(...matches.map(x=>Number(x.average||0))):0; const wins=matches.filter(x=>x.won).length; const rankObj=careerRanked().find(p=>p.id===career.playerId); const move=(career.rankMovements||{})[career.playerId]||0; const recentEvents=(career.irlTournamentResults||[]).slice(-4).reverse(); document.getElementById('daModeTitle').textContent=document.getElementById('careerMode')?.classList.contains('irlActive')?'IRL Career Mode':'Career Mode'; document.getElementById('daAccountName').textContent=player.name; document.getElementById('careerNewName').textContent=player.name; document.getElementById('careerNewCountry').textContent=player.country||'Nederland'; document.getElementById('careerNewRank').textContent='#'+(rankObj?rankObj.position:'—'); document.getElementById('careerMoney').textContent=careerMoneyFmt(career.earnings); document.getElementById('careerNewMoney')&& (document.getElementById('careerNewMoney').textContent=careerMoneyFmt(career.earnings)); document.getElementById('daCareerAverage').textContent=matches.length?overall.toFixed(2).replace('.',','):'—'; document.getElementById('daRankDelta').textContent=move>0?('▲ +'+move):move<0?('▼ '+Math.abs(move)):'—'; document.getElementById('daRankDelta').className=move>0?'daRankMove up':move<0?'daRankMove down':'daRankMove'; document.getElementById('daMatchesPlayed').textContent=matches.length; document.getElementById('daWinPct').textContent=matches.length?((wins*100/matches.length).toFixed(1).replace('.',',')+'%'):'—'; document.getElementById('daBestAvg').textContent=best?best.toFixed(2).replace('.',','):'—'; document.getElementById('daBestFinish').textContent=career.bestFinish||'—'; const sum=document.getElementById('careerSummaryStats'); if(sum){ sum.innerHTML=''; const items=[['Totaal prijzengeld',careerMoneyFmt(career.earnings)],['Gewonnen toernooien',career.titles||0],['Finales',recentEvents.filter(e=>e.played>=6).length],['Halve finales',recentEvents.filter(e=>e.played>=5).length],['Kwartfinales',recentEvents.filter(e=>e.played>=4).length]]; items.forEach(([a,b])=>{const row=document.createElement('div');row.className='daSummaryItem'; row.innerHTML='<span>'+a+'</span><b>'+b+'</b>'; sum.appendChild(row)}); } const recentMatches=document.getElementById('careerRecentMatches'); if(recentMatches){ recentMatches.innerHTML = recent.length ? recent.map(m=>'<div class="daMatchRow"><div>vs. '+careerSafe(m.opponent||'Opponent')+'</div><span class="daMatchBadge '+(m.won?'win':'loss')+'">'+(m.won?'W':'L')+'</span><div>'+Number(m.average||0).toFixed(2).replace('.',',')+'</div></div>').join('') : '<p class="careerMuted">Nog geen gespeelde wedstrijden.</p>'; } const calendar=document.getElementById('careerCalendar'); if(calendar){ const events=(career.irlTournamentResults||[]).slice(-4).reverse(); calendar.innerHTML='<div class="daSeasonRow daHead"><span>Toernooi</span><span>Resultaat</span><span>Prijzengeld</span></div>' + (events.length? events.map(e=>'<div class="daSeasonRow"><span>'+careerSafe(e.event)+'</span><span>'+scoreRoundName(e.wins,e.played)+'</span><span>—</span></div>').join('') : '<p class="careerMuted">Nog geen toernooiresultaten.</p>'); } const ranking=document.getElementById('careerRanking'); if(ranking){ const ranked=careerRanked(); const me=ranked.findIndex(p=>p.id===career.playerId); let slice=ranked.slice(0,3); let around=[]; if(me>3){ const from=Math.max(3, me-1), to=Math.min(ranked.length, me+2); around=ranked.slice(from,to);} const row=(p)=>{ const delta=(career.rankMovements||{})[p.id]||0; const move=delta>0?'<span class="daRankMove up">▲ +'+delta+'</span>':delta<0?'<span class="daRankMove down">▼ '+Math.abs(delta)+'</span>':''; return '<div class="daRankRow '+(p.id===career.playerId?'me':'')+'"><div class="daRankNum">'+p.position+'</div><div class="daRankName">'+careerSafe(p.name)+' '+move+'</div><div class="daRankMoney">'+careerMoneyFmt(p.money)+'</div></div>'; }; ranking.innerHTML='<div class="daOrderList">'+slice.map(row).join('')+(around.length?'<div class="daRankDivider">. . .</div>'+around.map(row).join(''):'')+'</div>'; } const next=document.getElementById('careerNextEvent'); if(next){ const event=careerEvents[career.eventIndex]||['Tournament',128,0,11]; const qual=/euro/i.test(event[4]||'') ? '<span class="daQualifierPill">Qualifier</span>' : ''; next.innerHTML='<div class="daEventTitle">'+careerSafe(event[0])+'</div><div class="daEventMeta">'+(event[5]||'')+'</div><div class="daEventMeta">'+event[1]+' players · Best of '+event[3]+' legs</div>'+qual; } const avatarText=(player.name||'P').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase(); const avatar=document.getElementById('careerNewAvatar'); if(avatar&&!avatar.querySelector('img')) avatar.textContent=avatarText; const acc=document.getElementById('daAccountAvatar'); if(acc) acc.textContent=avatarText.charAt(0); const hb=document.getElementById('careerHomeDash'); if(hb && !hb.dataset.bound){ hb.dataset.bound='1'; hb.addEventListener('click',()=>{ const h=document.getElementById('careerHome'); if(h) h.click(); }); }
  document.querySelectorAll('.daNavBtn,.daTextLink').forEach(btn=>{ if(btn.dataset.bound) return; btn.dataset.bound='1'; btn.addEventListener('click',()=>{ const target=document.getElementById(btn.getAttribute('data-go')); if(target) target.scrollIntoView({behavior:'smooth',block:'start'}); }); }); }
  const old=careerRender; careerRender=function(){ const r=old.apply(this,arguments); try{renderExact()}catch(e){console.error(e)} return r; };
  if(document.readyState!=='loading'){ setTimeout(()=>{try{renderExact()}catch(e){}},0);} else document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{try{renderExact()}catch(e){}},0));
 })();
 </script>
-</body></html>
+<style id="daFunctionalViewsCSS">
+/* Fix old global flex/order overrides that rearranged the dashboard. */
+#careerDashboard:not([style*="display: none"]){display:block!important}
+#careerDashboard[style*="display: none"]{display:none!important}
+#careerDashboard .daCareerExact{display:grid!important;overflow:visible!important}
+#careerDashboard .daCareerMain{min-width:0!important}
+#careerDashboard .daCareerGrid{align-items:start}
+#careerDashboard .daPrimary,#careerDashboard .daSecondary{display:flex;flex-direction:column;min-width:0}
+#careerDashboard .daPrimary>* ,#careerDashboard .daSecondary>*{order:0!important}
+#careerDashboard #irlDashboardLevel{margin-top:14px!important}
+#careerDashboard .careerTournamentPanel{order:0!important;display:none!important;background:linear-gradient(155deg,#17232d,#0d1722)!important;border:1px solid #304557!important;border-radius:16px!important}
+#careerDashboard .careerTournamentPanel .careerTournamentHeader{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid #283a47}
+#careerDashboard .careerTournamentPanel .careerTournamentHeader h2{margin:7px 0 4px!important;font-size:24px!important;text-transform:none!important;color:#fff!important}
+#careerDashboard .careerTournamentPanel .careerTournamentHeader small{color:#65f1a0!important}
+#careerDashboard .careerTournamentPanel .careerTournamentHeader p{color:#b9cbd5}
+#careerDashboard .careerTournamentPanel .careerTournamentBadge{background:#22593e!important;color:#b9ffd6!important;border:1px solid #387859!important;border-radius:8px}
+#careerDashboard .careerTournamentPanel .careerTournamentProgress span.passed{background:#64ee90!important}
+#careerDashboard .careerTournamentPanel .careerTournamentProgress span.current{background:#b8e4ff!important}
+#careerDashboard .careerTournamentPanel #careerTournamentBracket{height:480px;min-height:0!important;max-height:520px;overflow:auto!important;background:#101d28!important;border:1px solid #314659!important;border-radius:10px;scrollbar-color:#657589 #142532;color:#dce6f2;padding:24px!important}
+#careerDashboard .careerTournamentPanel .careerWorldBracket{min-width:1040px}
+#careerDashboard .careerTournamentPanel .careerBracketWing{height:var(--bracket-height);max-height:none}
+#careerDashboard .careerTournamentPanel .careerBracketRound h4{background:#213947;color:#d9f5e5;border-radius:3px}
+#careerDashboard .careerTournamentPanel .careerBracketMatch{background:#e4f1ea;border-color:#5dae83;color:#0e3020}
+#careerDashboard .careerTournamentPanel .careerBracketMatch.active{background:#b9ffb6!important;outline:2px solid #78ec9e!important}
+#careerDashboard .careerTournamentPanel .careerBracketCenter strong{background:#2a6954;color:#e9fff4}
+#careerDashboard .careerTournamentPanel .careerBracketCenter .bracketFinalists div{background:#edf3ef;color:#173626}
+#careerDashboard .careerTournamentPanel .careerBracketTools button{background:#65f393;color:#092314;border:0;border-radius:8px}
+#careerDashboard .careerTournamentPanel #careerTournamentFooter{color:#c5d8e0}
+#careerDashboard .careerTournamentPanel #careerTournamentFooter strong{color:#8affae}
+#careerDashboard .careerTournamentPanel #careerAutomaticFixture{background:#143a2e!important;border-color:#46785a!important}
+#careerDashboard .careerTournamentPanel #careerAutomaticFixture button{background:#66f38b!important;color:#082114!important;border:0!important}
+#careerDashboard .daCareerSidebar{position:sticky;top:0;align-self:start;height:100vh;min-height:720px;overflow-y:auto;z-index:5}
+#careerDashboard .daNavBtn{min-height:48px}
+#careerDashboard .daNavBtn:focus-visible,#careerDashboard .daTextLink:focus-visible{outline:2px solid #74fa9a;outline-offset:2px}
+#careerDashboard .daNavBtn.active{background:linear-gradient(90deg,#206d46,#1d2e34)!important;border-left:4px solid #70f59b!important}
+#careerDashboard .daCareerMain{min-height:770px}
+#careerDashboard .daAccountPill{border-color:#6640a4}
+#careerDashboard #irlAnalytics .irlAnalyticsGraph{min-height:120px}
+#careerDashboard .daOrderList{gap:3px}
+#careerDashboard .daRankRow{grid-template-columns:42px minmax(0,1fr) max-content;gap:8px;padding:9px 9px;border-bottom:1px solid #2b3948;background:transparent;border-radius:3px;font-size:13px;min-width:0}
+#careerDashboard .daRankRow.me{background:#31552f;border:1px solid #467942}
+#careerDashboard .daRankRow .daRankMoney{text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
+#careerDashboard .daRankRow .daRankName{min-width:0;overflow:hidden;text-overflow:ellipsis}
+#careerDashboard .daRankRow .daRankMove{font-size:11px}
+#careerDashboard .daRankDivider{font-size:18px;line-height:22px}
+#careerDashboard .daRankHeaders{display:grid;grid-template-columns:42px minmax(0,1fr) max-content;gap:8px;padding:10px 9px;font-size:12px;color:#b6c7d9;font-weight:800;border-bottom:1px solid #3b4b5c}
+#careerDashboard .daRankHeaders span:last-child{text-align:right}
+#careerDashboard .daRankTools{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+#careerDashboard .daRankTools input{background:#101b28!important;color:#f1f8fa!important;border:1px solid #3b5164!important;border-radius:8px!important;padding:10px 12px;flex:1;min-width:180px;max-width:380px}
+#careerDashboard .daRankTools button{border-radius:8px;background:#23394b;border:1px solid #435a70;color:#e9f7fe;padding:10px 13px;cursor:pointer}
+#careerDashboard .daTournamentList{max-height:350px;overflow:auto}
+#careerDashboard .daTournamentList.expanded{max-height:none}
+#careerDashboard .daSeasonRow{display:grid;grid-template-columns:minmax(120px,1.8fr) 90px 90px;align-items:center;gap:8px}
+#careerDashboard .daSeasonRow span:nth-child(2){white-space:nowrap}
+#careerDashboard .daSectionTitle{font-size:15px;color:#c7d5df;margin:0 0 10px}
+#careerDashboard .daNewsList.expanded{max-height:none}
+#careerDashboard .daNewsList p.rankNewsUp{color:#70f9ad}
+#careerDashboard .daNewsList p.rankNewsDown{color:#ff8181}
+#careerDashboard .daEmpty{color:#abbccd;padding:18px 8px;font-size:14px}
+/* A true view switcher: only relevant panels remain in the chosen area. */
+#careerDashboard .daCareerExact[data-view="dashboard"] .careerTournamentPanel{display:none!important}
+#careerDashboard .daCareerExact[data-view="career"] .daPrimary>.daStatRow,
+#careerDashboard .daCareerExact[data-view="career"] .daPrimary>.daMiddleRow,
+#careerDashboard .daCareerExact[data-view="career"] .daPrimary>.daBottomRow,
+#careerDashboard .daCareerExact[data-view="career"] .daSecondary>.daPanel:not(.daEventPanel){display:none!important}
+#careerDashboard .daCareerExact[data-view="career"] .careerTournamentPanel{display:block!important}
+#careerDashboard .daCareerExact[data-view="tournaments"] .daPrimary>.daProfileHero,
+#careerDashboard .daCareerExact[data-view="tournaments"] .daPrimary>.daStatRow,
+#careerDashboard .daCareerExact[data-view="tournaments"] .daPrimary>.daMiddleRow,
+#careerDashboard .daCareerExact[data-view="tournaments"] .daSecondary>.daPanel:not(.daEventPanel){display:none!important}
+#careerDashboard .daCareerExact[data-view="tournaments"] .careerTournamentPanel{display:block!important}
+#careerDashboard .daCareerExact[data-view="tournaments"] .daTournamentList{max-height:400px}
+#careerDashboard .daCareerExact[data-view="ranking"] .daPrimary,
+#careerDashboard .daCareerExact[data-view="ranking"] .daSecondary>.daPanel:not(.daRankingPanel){display:none!important}
+#careerDashboard .daCareerExact[data-view="ranking"] .daCareerGrid{grid-template-columns:minmax(0,1fr)}
+#careerDashboard .daCareerExact[data-view="ranking"] .daRankRow{grid-template-columns:80px minmax(0,1fr) 160px;font-size:15px;min-height:41px}
+#careerDashboard .daCareerExact[data-view="ranking"] .daRankHeaders{grid-template-columns:80px minmax(0,1fr) 160px}
+#careerDashboard .daCareerExact[data-view="ranking"] .daRightPanel{width:100%;}
+#careerDashboard .daCareerExact[data-view="statistics"] .daPrimary>.daProfileHero,
+#careerDashboard .daCareerExact[data-view="statistics"] .daPrimary>.daBottomRow,
+#careerDashboard .daCareerExact[data-view="statistics"] .daPrimary>.careerTournamentPanel,
+#careerDashboard .daCareerExact[data-view="statistics"] .daSecondary{display:none!important}
+#careerDashboard .daCareerExact[data-view="statistics"] .daCareerGrid{grid-template-columns:minmax(0,1fr)}
+#careerDashboard .daCareerExact[data-view="statistics"] #irlAnalytics .irlAnalyticsCharts{grid-template-columns:1fr 1fr!important}
+#careerDashboard .daCareerExact[data-view="statistics"] #irlAnalytics .irlAnalyticsCharts section{display:block!important}
+#careerDashboard .daCareerExact[data-view="statistics"] #irlAnalytics .irlAnalyticsCharts h3{display:block!important;color:#eaf5fb!important}
+#careerDashboard .daCareerExact[data-view="statistics"] #irlAnalytics .irlResultsTable{display:block!important}
+#careerDashboard .daCareerExact[data-view="statistics"] #irlAnalytics .irlAnalyticsTiles{display:grid!important}
+#careerDashboard .daCareerExact[data-view="news"] .daPrimary,
+#careerDashboard .daCareerExact[data-view="news"] .daSecondary>.daPanel:not(.daNewsPanel){display:none!important}
+#careerDashboard .daCareerExact[data-view="news"] .daCareerGrid{grid-template-columns:minmax(0,1fr)}
+#careerDashboard .daCareerExact[data-view="settings"] .daPrimary,
+#careerDashboard .daCareerExact[data-view="settings"] .daSecondary>.daPanel:not(.daSettingsPanel){display:none!important}
+#careerDashboard .daCareerExact[data-view="settings"] .daCareerGrid{grid-template-columns:minmax(0,1fr)}
+#careerDashboard .daCareerExact[data-view="settings"] #irlDashboardLevel{display:block!important}
+#careerDashboard .daCareerExact[data-view="records"] .daPrimary>.daProfileHero,
+#careerDashboard .daCareerExact[data-view="records"] .daPrimary>.daMiddleRow,
+#careerDashboard .daCareerExact[data-view="records"] .daPrimary>.daBottomRow,
+#careerDashboard .daCareerExact[data-view="records"] .daSecondary{display:none!important}
+#careerDashboard .daCareerExact[data-view="records"] .daCareerGrid{grid-template-columns:1fr}
+#careerDashboard .daCareerExact[data-view="records"] .daCareerStatsExtra{display:block!important}
+@media(max-width:940px){#careerDashboard .daCareerSidebar{height:auto;min-height:0;position:sticky;top:0}#careerDashboard .daCareerGrid{grid-template-columns:1fr!important}#careerDashboard .daMiddleRow,#careerDashboard .daBottomRow{grid-template-columns:1fr!important}#careerDashboard .daSecondary{order:0}#careerDashboard .daStatRow{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:640px){#careerDashboard .daCareerExact{display:block!important}#careerDashboard .daCareerSidebar{display:flex;flex-direction:row;overflow:auto;white-space:nowrap;min-height:0}#careerDashboard .daNavBtn{flex:none}#careerDashboard .daRankRow{grid-template-columns:35px minmax(0,1fr) 95px}#careerDashboard .daCareerExact[data-view="ranking"] .daRankRow,#careerDashboard .daCareerExact[data-view="ranking"] .daRankHeaders{grid-template-columns:45px minmax(0,1fr) 110px}#careerDashboard .daProfileHero{grid-template-columns:1fr 1fr}#careerDashboard .daProfileHero .daProfileLeft{grid-column:1/-1}#careerDashboard .daHeroMetric strong{font-size:28px}#careerDashboard .daCareerTopbar{min-height:70px}#careerDashboard .daTopTitle{font-size:23px}}
+</style>
+<script id="daFunctionalViewsJS">
+(function(){
+ const get=id=>document.getElementById(id);
+ let currentView='dashboard', rankQuery='';
+ function safe(v){return typeof careerSafe==='function'?careerSafe(String(v??'')):String(v??'').replace(/[<>&]/g,'')}
+ function setView(view){
+  currentView=view;
+  const root=document.querySelector('#careerDashboard .daCareerExact');if(!root)return;
+  root.dataset.view=view;
+  root.querySelectorAll('.daNavBtn').forEach(b=>{const active=(b.dataset.view===view);b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false')});
+  const titles={dashboard:'Dashboard',career:'Carrière',tournaments:'Toernooien',ranking:'PDC Order of Merit',statistics:'Statistieken',records:'Records',news:'Nieuws',settings:'Instellingen'};
+  const heading=root.querySelector('.daTopTitle');
+  if(heading)heading.innerHTML='Darts Arena – <span id="daModeTitle">'+titles[view]+'</span>';
+  if(view==='ranking')renderRanking();
+  if(view==='tournaments')renderCalendar();
+  if(view==='news')renderNews();
+  if(view==='statistics'&&typeof irlRenderAnalytics==='function')irlRenderAnalytics();
+  if(view==='records')renderRecords();
+  if(view==='tournaments'||view==='career'){
+   // Older career code only drew the bracket if these heading IDs existed.
+   if(!get('careerTournamentBracket')?.querySelector('.careerWorldBracket') && typeof careerRender==='function'){
+    try{careerRender()}catch(e){console.warn('Tournament draw could not be refreshed',e)}
+   }
+   const bracket=get('careerTournamentBracket');if(bracket){bracket.scrollTop=0;bracket.scrollLeft=0}
+  }
+  root.scrollIntoView({behavior:'instant',block:'start'});
+ }
+ function moveText(id){const n=Number(career?.rankMovements?.[id]||0);return n>0?'<span class="daRankMove up">▲ +'+n+'</span>':n<0?'<span class="daRankMove down">▼ '+Math.abs(n)+'</span>':''}
+ function rankRow(p){const own=p.id===career.playerId;return '<div class="daRankRow'+(own?' me':'')+'"><div class="daRankNum">'+p.position+'</div><div class="daRankName">'+safe(p.name)+' '+moveText(p.id)+'</div><div class="daRankMoney">'+careerMoneyFmt(p.money)+'</div></div>'}
+ function renderRanking(){
+  if(!career)return;
+  const container=get('careerRanking');if(!container)return;
+  const ranking=careerRanked();const full=currentView==='ranking';
+  const input=full?'<div class="daRankTools"><input id="daRankSearch" aria-label="Zoek een darter" placeholder="Zoek op speler of positie…" value="'+safe(rankQuery)+'"><button id="daRankClear" type="button">Wissen</button><span class="careerMuted">'+ranking.length+' spelers</span></div>':'';
+  const header='<div class="daRankHeaders"><span>#</span><span>Speler</span><span>Prijzengeld</span></div>';
+  let rows=[];
+  if(full){const term=rankQuery.trim().toLocaleLowerCase('nl');rows=ranking.filter(p=>!term||p.name.toLocaleLowerCase('nl').includes(term)||String(p.position)===term)}
+  else{
+   const top=ranking.slice(0,3),myPos=ranking.findIndex(p=>p.id===career.playerId);
+   rows=top;
+   if(myPos>=3){const around=ranking.slice(Math.max(3,myPos-1),Math.min(ranking.length,myPos+2));rows=[...top,null,...around]}
+  }
+  container.innerHTML=input+header+'<div class="daOrderList">'+(rows.length?rows.map(p=>p?rankRow(p):'<div class="daRankDivider">···</div>').join(''):'<div class="daEmpty">Geen spelers gevonden.</div>')+'</div>';
+  const search=get('daRankSearch');if(search){search.addEventListener('input',e=>{rankQuery=e.target.value;const sel=e.target.selectionStart;renderRanking();const i=get('daRankSearch');i?.focus();i?.setSelectionRange(sel,sel)});get('daRankClear')?.addEventListener('click',()=>{rankQuery='';renderRanking()})}
+ }
+ function renderCalendar(){
+  if(!career)return;
+  const calendar=get('careerCalendar');if(!calendar)return;
+  const full=currentView==='tournaments';
+  if(full){
+   const past=career.irlTournamentResults||[];
+   calendar.classList.add('expanded');
+   calendar.innerHTML='<div class="daSeasonRow daHead"><span>Toernooi</span><span>Status</span><span>Prijzengeld</span></div>'+careerEvents.map((e,i)=>{
+    const status=i<career.eventIndex?'Gespeeld':i===career.eventIndex?'Nu':'Binnenkort';
+    const cls=i===career.eventIndex?' style="background:#214535;color:#dcffe6"':'';
+    const prize=i<career.eventIndex?'—':careerMoneyFmt(e[2]);
+    return '<div class="daSeasonRow"'+cls+'><span>'+safe(e[0])+'</span><span>'+status+'</span><span>'+prize+'</span></div>';
+   }).join('');
+  }else{
+   calendar.classList.remove('expanded');
+   const past=(career.irlTournamentResults||[]).slice(-4).reverse();
+   calendar.innerHTML='<div class="daSeasonRow daHead"><span>Toernooi</span><span>Resultaat</span><span>Ranking</span></div>'+(past.length?past.map(e=>'<div class="daSeasonRow"><span>'+safe(e.event)+'</span><span>'+e.wins+' win</span><span>#'+(e.rank??'—')+'</span></div>').join(''):'<div class="daEmpty">Nog geen toernooiresultaten. Je volgende toernooi staat rechts.</div>');
+  }
+ }
+ function renderNews(){
+  if(!career)return;const host=get('careerNews');if(!host)return;
+  const items=Array.isArray(career.news)?career.news:[];
+  const shown=currentView==='news'?items:items.slice(0,4);
+  host.innerHTML=shown.length?shown.map(n=>'<p class="'+(String(n).includes('▲ RANKING UP')?'rankNewsUp':String(n).includes('▼ RANKING DOWN')?'rankNewsDown':'')+'">'+safe(n)+'</p>').join(''):'<div class="daEmpty">Nog geen nieuws. Speel wedstrijden om nieuws te krijgen.</div>';
+ }
+ function renderRecords(){
+  if(!career)return;let host=get('daCareerRecords');
+  if(!host){host=document.createElement('section');host.className='daPanel daCareerStatsExtra';host.id='daCareerRecords';document.querySelector('#careerDashboard .daPrimary')?.append(host)}
+  const matches=(career.matchPerformance||[]).filter(m=>m.type==='irl');
+  const best=matches.length?Math.max(...matches.map(m=>Number(m.average)||0)):0;
+  host.innerHTML='<h2>Persoonlijke records</h2><div class="daSummaryList">'+[['Gewonnen titels',career.titles||0],['Carrière-overwinningen',career.record?.wins||0],['Carrière-nederlagen',career.record?.losses||0],['Hoogste wedstrijdgemiddelde',best?best.toFixed(2):'—'],['Beste finish',career.bestFinish||'—']].map(([label,value])=>'<div class="daSummaryItem"><span>'+label+'</span><b>'+value+'</b></div>').join('')+'</div>';
+ }
+ function repairProgress(){
+  const panel=document.querySelector('#careerDashboard .careerTournamentPanel');
+  if(panel&&!get('careerTournamentTitle'))return;
+  const bracket=get('careerTournamentBracket');
+  if(bracket && !bracket.querySelector('.careerWorldBracket') && career){
+   bracket.innerHTML='<div class="daEmpty">Het speelschema is nog niet beschikbaar. Open Carrière of speel je eerstvolgende kwalificatiewedstrijd.</div>';
+  }
+ }
+ function init(){
+  const root=document.querySelector('#careerDashboard .daCareerExact');if(!root)return;
+  const nav=root.querySelector('.daCareerSidebar');
+  const labels={daOverview:'dashboard',careerNextEvent:'career',careerCalendar:'tournaments',careerRanking:'ranking',irlAnalytics:'statistics',careerNews:'news',careerSettings:'settings'};
+  root.querySelectorAll('.daNavBtn').forEach(btn=>{btn.dataset.view=labels[btn.dataset.go]||'dashboard';btn.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();setView(btn.dataset.view)},true)});
+  const records=document.createElement('button');records.type='button';records.className='daNavBtn';records.dataset.view='records';records.innerHTML='<span>☆</span>Records';records.addEventListener('click',()=>setView('records'));
+  const newsBtn=Array.from(nav.querySelectorAll('.daNavBtn')).find(b=>b.dataset.view==='news');if(newsBtn)nav.insertBefore(records,newsBtn);
+  // Navigation links elsewhere now switch panels instead of silently scrolling to the same page.
+  root.querySelectorAll('.daTextLink').forEach(btn=>btn.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();setView(labels[btn.dataset.go]||'dashboard')},true));
+  const rating=root.querySelector('.daPanel:has(#careerRanking)');if(rating)rating.classList.add('daRankingPanel');
+  const news=root.querySelector('.daPanel:has(#careerNews)');if(news)news.classList.add('daNewsPanel');
+  const settings=get('careerSettings');if(settings)settings.classList.add('daSettingsPanel');
+  const level=get('irlDashboardLevel');if(level&&settings)settings.append(level);
+  const home=get('careerHomeDash');if(home)home.addEventListener('click',e=>{e.stopImmediatePropagation();get('careerHome')?.click()},true);
+  setView('dashboard');
+  const previousRender=careerRender;
+  careerRender=function(){const result=previousRender.apply(this,arguments);if(career){renderRanking();renderCalendar();renderNews();repairProgress()}return result};
+  // Existing careers and modes keep their current game state when switching views.
+  if(career){renderRanking();renderCalendar();renderNews();repairProgress()}
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script><style id="daPolishFunctionalViews">
+/* Real tournament page: bracket comes first and uses the full page width. */
+#careerDashboard .daCareerExact[data-view="tournaments"] .daCareerGrid{grid-template-columns:minmax(0,1fr)!important}
+#careerDashboard .daCareerExact[data-view="tournaments"] .daSecondary{display:none!important}
+#careerDashboard .daCareerExact[data-view="tournaments"] .daPrimary>.careerTournamentPanel{order:-5!important}
+#careerDashboard .daCareerExact[data-view="tournaments"] .daPrimary>.daBottomRow{order:2!important;grid-template-columns:1fr!important}
+#careerDashboard .daCareerExact[data-view="tournaments"] .daPrimary>.daBottomRow>.daPanel:last-child{display:none!important}
+#careerDashboard .daCareerExact[data-view="career"] .daPrimary>.careerTournamentPanel{order:0!important}
+#careerDashboard .daCareerExact[data-view="career"] .daPrimary>.daProfileHero{order:-1!important}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel #irlAnalytics>h2,
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel #irlAnalytics>.irlAnalyticsTiles,
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel #irlAnalytics>h3,
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel #irlAnalytics>.irlResultsTable{display:none!important}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel .irlAnalyticsCharts section:not(:first-child){display:none!important}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel .irlAnalyticsCharts{margin:0!important}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel .irlAnalyticsCharts section{padding:0!important;border:0!important;background:transparent!important}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daChartPanel .irlAnalyticsCharts section h3{display:none!important}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daSummaryItem b{font-size:19px!important}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daProfileHero{min-height:140px}
+#careerDashboard .daCareerExact[data-view="dashboard"] .daRankRow{white-space:nowrap}
+</style><style id="daDigitalCareerGuard">#careerMode:not(.irlActive) #irlDashboardLevel{display:none!important}</style></body></html>
