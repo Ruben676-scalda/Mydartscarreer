@@ -2840,4 +2840,124 @@ body .app{width:min(1500px,calc(100% - 40px))!important;max-width:1500px!importa
 @media(max-width:650px){.broadcastMasthead{padding:14px 18px;min-height:65px}.broadcastMastheadRight{display:none}body .app{width:calc(100% - 24px)!important;margin-top:12px!important}.broadcastHero{min-height:280px;padding:25px}.broadcastHero h1{letter-spacing:-3px!important}.broadcastHero p{letter-spacing:2px}.heroDartboard{width:300px;height:300px;right:-150px;opacity:.28}#homeMode .modeCards{grid-template-columns:1fr!important}#homeMode .modeCard{min-height:140px!important}.sectionKicker{font-size:10px}.app .careerGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(prefers-reduced-motion:reduce){#homeMode .modeCard{transition:none!important}}
 </style>
+
+<style id="careerScreenshotLayout">
+/* Full structural career dashboard, inspired by the supplied reference. */
+#careerMode{max-width:none!important;margin:0!important}
+#careerMode .careerNav{display:none!important}
+body:has(#careerMode[style*="block"]) .app,body:has(#careerMode:not([style*="none"])) .app{max-width:1700px!important}
+#careerDashboard .careerScreen{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:800px;background:#0c1018;border:1px solid #303846;box-shadow:0 18px 55px #0009;color:#f2f5fa;font-family:Arial,sans-serif}
+#careerDashboard .careerSidebar{background:linear-gradient(165deg,#19202c,#10151e 75%);border-right:1px solid #35404e;padding:22px 0;display:flex;flex-direction:column;gap:7px}
+#careerDashboard .careerSideLogo{padding:9px 19px 25px;font-weight:900;font-size:24px;font-style:italic;color:white;line-height:1.1;border-bottom:1px solid #34404b;margin-bottom:8px}
+#careerDashboard .careerSideLogo em{color:#e5ae6a;font-style:italic}
+#careerDashboard .careerSideLogo small{display:block;font-size:11px;letter-spacing:2px;font-weight:500;font-style:normal;margin-top:8px;color:#a9b6c9}
+#careerDashboard .careerSideNav{width:100%;border:0;background:transparent!important;color:#cbd2dd!important;text-align:left;padding:13px 20px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:none!important;border-left:3px solid transparent!important;border-radius:0!important}
+#careerDashboard .careerSideNav:hover,#careerDashboard .careerSideNav.active{background:linear-gradient(90deg,#76332b,#1a202b)!important;border-left-color:#e2ac6c!important;color:white!important}
+#careerDashboard .careerSideNav span{display:inline-block;width:28px;color:#dfb37e}
+#careerDashboard .careerSidebar .careerBack{margin:auto 15px 0;padding:13px;border:1px solid #63514b;border-radius:4px;background:#1b202a;color:white;cursor:pointer}
+#careerDashboard .careerWorkspace{padding:25px;min-width:0}
+#careerDashboard .careerWorkspaceHeader{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #303b4b;margin:-4px 0 20px;padding-bottom:16px}
+#careerDashboard .careerWorkspaceHeader h1{font-size:clamp(22px,3vw,34px)!important;margin:0!important;font-weight:850!important;letter-spacing:-.6px!important;text-transform:none!important}
+#careerDashboard .careerWorkspaceHeader h1 em{font-style:normal;color:#e5ad6d}
+#careerDashboard .careerWorkspaceHeader .workspaceTag{color:#aeb8c6;font-size:12px;letter-spacing:1.2px}
+#careerDashboard .careerContentGrid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(295px,1fr);gap:16px;align-items:start}
+#careerDashboard .careerPrimaryColumn,#careerDashboard .careerSecondaryColumn{min-width:0;display:flex;flex-direction:column;gap:16px}
+#careerDashboard .careerPanel,#careerDashboard .careerTile{margin:0!important;background:linear-gradient(150deg,#202631,#131923)!important;border:1px solid #3b4555!important;border-radius:9px!important;box-shadow:0 5px 14px #0004!important}
+#careerDashboard .careerPanel h2{font-family:Arial,sans-serif!important;font-size:18px!important;text-transform:none!important;color:#f3f3f6!important;border:0!important;padding:0!important;margin:0 0 16px!important;letter-spacing:-.3px!important}
+#careerDashboard .careerGrid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+#careerDashboard .careerGrid .careerTile{min-width:0;padding:17px!important}
+#careerDashboard .careerGrid .careerTile small{font-size:10px!important;color:#b7c0ce!important;letter-spacing:.7px!important}
+#careerDashboard .careerGrid .careerTile strong{font-size:clamp(17px,2vw,26px)!important;color:#fff!important;overflow-wrap:anywhere}
+#careerDashboard .careerGrid .careerTile p{font-size:12px;margin:7px 0 0}
+#careerDashboard .careerProfileBanner{display:flex;align-items:center;gap:20px;padding:20px;background:linear-gradient(115deg,#242a37,#171d28);border:1px solid #3c4555;border-radius:9px}
+#careerDashboard .careerAvatar{width:75px;height:75px;flex:0 0 75px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(130deg,#5c2527,#272b3c);border:3px solid #cfa26e;color:white;font-size:36px;overflow:hidden}
+#careerDashboard .careerAvatar img{width:100%;height:100%;object-fit:cover}
+#careerDashboard .careerProfileName{font-size:22px;font-weight:800;color:white}
+#careerDashboard .careerProfileSubtitle{font-size:12px;color:#b6c1d0;margin-top:5px}
+#careerDashboard .careerProfileStats{display:flex;gap:28px;margin-left:auto}
+#careerDashboard .careerProfileStats>div{border-left:1px solid #526071;padding-left:20px}
+#careerDashboard .careerProfileStats small{display:block;color:#b5bdc8;font-size:11px;margin-bottom:7px}
+#careerDashboard .careerProfileStats strong{font-size:24px;color:white}
+#careerDashboard .careerPerformance{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+#careerDashboard .careerPerformance .careerTile{padding:16px!important}
+#careerDashboard .careerPerformance strong{color:#f5f6f9!important}
+#careerDashboard .careerPanel:has(#careerRanking){max-height:410px;overflow:hidden}
+#careerDashboard #careerRanking{max-height:320px}
+#careerDashboard .careerTable{font-size:12px}
+#careerDashboard .careerTable th{color:#b9c5d3!important}
+#careerDashboard .careerTable tr[style]{background:#42312d!important}
+#careerDashboard .careerTable td{border-bottom-color:#354151}
+#careerDashboard .careerPanel:has(#careerNextEvent){background:linear-gradient(125deg,#30242a,#171e2b)!important}
+#careerDashboard #careerNextEvent{background:#171e29!important;border-left:3px solid #dfac6c!important}
+#careerDashboard .careerActions button{font-size:12px!important;background:#81312c!important;border:1px solid #b26756!important;color:#fff!important}
+#careerDashboard #careerPlay{background:linear-gradient(#d23e38,#9a2528)!important}
+#careerDashboard .careerPanel:has(#careerCalendar) #careerCalendar{max-height:270px}
+#careerDashboard #irlAnalytics{display:block;min-width:0}
+#careerDashboard #irlAnalytics[hidden]{display:none!important}
+#careerDashboard .irlAnalyticsTiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+#careerDashboard .irlAnalyticsCharts{grid-template-columns:1fr}
+#careerDashboard .irlAnalyticsTiles>div,#careerDashboard .irlAnalyticsCharts section{background:#1b2530!important}
+#careerDashboard .careerFilters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+#careerDashboard .careerFilters button{font-size:11px!important;padding:7px 12px!important}
+#careerDashboard .careerHelp{font-size:11px;line-height:1.5;padding:10px 14px!important;background:#1b222c!important;border:1px solid #364454!important}
+#careerDashboard .careerTournamentPanel{overflow:hidden}
+#careerDashboard .careerPanel:has(#careerNews) #careerNews{max-height:290px}
+#careerDashboard .careerPanel:has(#careerNews) p{font-size:13px;line-height:1.55}
+#careerDashboard .careerSectionAnchor{scroll-margin-top:16px}
+@media(max-width:1150px){#careerDashboard .careerContentGrid{grid-template-columns:minmax(0,1fr) 300px}#careerDashboard .careerProfileStats{gap:12px}#careerDashboard .careerProfileStats>div{padding-left:12px}}
+@media(max-width:920px){#careerDashboard .careerScreen{grid-template-columns:68px minmax(0,1fr)}#careerDashboard .careerSideLogo{font-size:12px;padding:12px 6px;text-align:center}#careerDashboard .careerSideLogo small{display:none}#careerDashboard .careerSideNav{font-size:0!important;text-align:center;padding:15px 0}#careerDashboard .careerSideNav span{font-size:22px;width:auto}#careerDashboard .careerBack{font-size:10px;padding:9px 3px;margin:20px 4px 0}#careerDashboard .careerContentGrid{grid-template-columns:1fr}#careerDashboard .careerSecondaryColumn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){body .app{width:100%!important;margin:0!important}#careerDashboard .careerScreen{display:block}#careerDashboard .careerSidebar{position:sticky;top:0;z-index:20;flex-direction:row;align-items:center;overflow-x:auto;padding:6px;gap:2px}#careerDashboard .careerSideLogo{display:none}#careerDashboard .careerSideNav{flex:0 0 43px;padding:10px 0}#careerDashboard .careerBack{margin:0 4px;white-space:nowrap}#careerDashboard .careerWorkspace{padding:12px}#careerDashboard .careerWorkspaceHeader{display:block}#careerDashboard .careerWorkspaceHeader h1{font-size:22px!important}#careerDashboard .careerProfileBanner{gap:9px;padding:12px;flex-wrap:wrap}#careerDashboard .careerAvatar{width:48px;height:48px;flex-basis:48px}#careerDashboard .careerProfileStats{width:100%;margin:8px 0 0;justify-content:space-between}#careerDashboard .careerProfileStats>div{padding-left:9px}#careerDashboard .careerGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#careerDashboard .careerSecondaryColumn{display:flex}#careerDashboard .careerPerformance{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+</style>
+
+<script id="careerScreenshotLayoutJS">
+(function(){
+ function setup(){
+  const root=document.getElementById('careerDashboard');
+  if(!root||root.querySelector('.careerScreen'))return;
+  const help=root.querySelector('.careerHelp');
+  const filters=root.querySelector('.careerFilters');
+  const tiles=root.querySelector('.careerGrid');
+  const perf=root.querySelector('#careerPerformance');
+  const next=root.querySelector('#careerNextEvent')?.closest('.careerPanel');
+  const tournament=root.querySelector('.careerTournamentPanel');
+  const calendar=root.querySelector('#careerCalendar')?.closest('.careerPanel');
+  const ranking=root.querySelector('#careerRanking')?.closest('.careerPanel');
+  const news=root.querySelector('#careerNews')?.closest('.careerPanel');
+  const analytics=root.querySelector('#irlAnalytics');
+  const management=root.querySelector('#careerExport')?.closest('.careerPanel');
+  const skills=root.querySelector('#careerSkills')?.closest('.careerPanel');
+  const shell=document.createElement('div');shell.className='careerScreen';
+  shell.innerHTML='<aside class="careerSidebar"><div class="careerSideLogo">DARTS <em>ARENA</em><small>CAREER MODE</small></div><button type="button" class="careerSideNav active" data-go="careerProfileBanner"><span>⌂</span> Dashboard</button><button type="button" class="careerSideNav" data-go="careerNextEvent"><span>🏆</span> Career</button><button type="button" class="careerSideNav" data-go="careerCalendar"><span>▦</span> Tournaments</button><button type="button" class="careerSideNav" data-go="careerRanking"><span>▥</span> Ranking</button><button type="button" class="careerSideNav" data-go="irlAnalytics"><span>⌁</span> Statistics</button><button type="button" class="careerSideNav" data-go="careerNews"><span>▤</span> News</button><button type="button" class="careerSideNav" data-go="careerExport"><span>⚙</span> Settings</button><button type="button" class="careerBack">← Home</button></aside><div class="careerWorkspace"><div class="careerWorkspaceHeader"><h1>Darts Arena — <em>Career Mode</em></h1><span class="workspaceTag">PDC CAREER HUB</span></div><div class="careerProfileBanner careerSectionAnchor" id="careerProfileBanner"><div class="careerAvatar" id="careerNewAvatar">🎯</div><div><div class="careerProfileName" id="careerNewName">Your player</div><div class="careerProfileSubtitle" id="careerNewSubtitle">Professional darts career</div></div><div class="careerProfileStats"><div><small>PDC Order of Merit</small><strong id="careerNewRank">—</strong></div><div><small>Career earnings</small><strong id="careerNewMoney">—</strong></div></div></div><div class="careerContentGrid"><div class="careerPrimaryColumn"></div><div class="careerSecondaryColumn"></div></div></div>';
+  const left=shell.querySelector('.careerPrimaryColumn'),right=shell.querySelector('.careerSecondaryColumn');
+  const put=(parent,node)=>{if(node)parent.appendChild(node)};
+  put(left,tiles);put(left,perf);put(left,analytics);put(left,next);put(left,tournament);put(left,filters);put(left,calendar);put(left,help);put(left,management);
+  put(right,ranking);put(right,news);put(right,skills);
+  root.appendChild(shell);
+  const originalHome=document.getElementById('careerHome');
+  shell.querySelector('.careerBack').addEventListener('click',()=>originalHome?.click());
+  shell.querySelectorAll('.careerSideNav').forEach(btn=>btn.addEventListener('click',()=>{
+   shell.querySelectorAll('.careerSideNav').forEach(b=>b.classList.toggle('active',b===btn));
+   const target=document.getElementById(btn.dataset.go);
+   target?.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+  function sync(){
+   const label=document.getElementById('careerPlayerLabel');
+   if(!label)return;
+   document.getElementById('careerNewName').textContent=label.textContent||'Your player';
+   document.getElementById('careerNewSubtitle').textContent=document.getElementById('careerNick')?.textContent||'PDC player';
+   document.getElementById('careerNewRank').textContent=document.getElementById('careerRank')?.textContent||'—';
+   document.getElementById('careerNewMoney').textContent=document.getElementById('careerMoney')?.textContent||'—';
+   const avatar=document.getElementById('careerNewAvatar');
+   const existing=document.querySelector('#careerDashboard .careerPlayerPhoto img, #careerDashboard #careerDashboardPhoto img, #careerDashboard .careerDashboardPhoto img');
+   if(existing&&existing.src){if(!avatar.querySelector('img'))avatar.innerHTML='<img alt="Player portrait">';avatar.querySelector('img').src=existing.src}
+   const title=shell.querySelector('.careerWorkspaceHeader h1 em');
+   if(title)title.textContent=typeof irlMode!=='undefined'&&irlMode?'IRL Career Mode':'Digital Career Mode';
+  }
+  const observer=new MutationObserver(()=>{if(root.style.display!=='none')sync()});
+  [document.getElementById('careerPlayerLabel'),document.getElementById('careerRank'),document.getElementById('careerMoney'),document.getElementById('careerNick')].filter(Boolean).forEach(n=>observer.observe(n,{childList:true,characterData:true,subtree:true}));
+  sync();
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();
+</script>
 </body></html>
