@@ -1943,12 +1943,26 @@ function daTraining(){
 <div hidden="" id="irlMatch">
 <div class="irlWrap irlBroadcast">
 <header class="irlTop"><button id="irlBack" type="button">← BACK TO CAREER</button><div class="irlMatchHeader"><span id="irlEventTitle">Tournament match</span><strong id="irlLegLabel">BEST OF 5 LEGS</strong></div><span class="irlLive">● LIVE SCORING</span></header>
+<div class="irlScores" aria-label="IRL Career live scoreboard">
+ <section class="irlScore active" id="irlPlayerBox" aria-label="Your score">
+   <div class="irlScoreHeading"><span class="irlRole">PLAYER 01 · JIJ</span><span class="irlTurnBadge" id="irlPlayerTurn">● AAN DE BEURT</span></div>
+   <div class="irlName" id="irlPlayerName">YOU</div>
+   <div class="irlScoreNumber"><div class="irlScoreCaption">RESTERENDE SCORE</div><strong id="irlPlayerRemaining">501</strong></div>
+   <div class="irlScoreSummary"><div class="irlLegCounter" id="irlPlayerLegs">0 legs</div><small id="irlPlayerAvg">3-DART GEM. —</small></div>
+   <div class="irlExtraStats" id="irlPlayerExtra"></div>
+   <div class="irlVisitHistory"><span>LAATSTE BEURTEN</span><p id="irlPlayerVisits">—</p></div>
+ </section>
+ <section class="irlScore" id="irlBotBox" aria-label="Opponent score">
+   <div class="irlScoreHeading"><span class="irlRole">PLAYER 02 · TEGENSTANDER</span><span class="irlTurnBadge" id="irlBotTurn">WACHT</span></div>
+   <div class="irlName" id="irlBotName">BOT</div>
+   <div class="irlScoreNumber"><div class="irlScoreCaption">RESTERENDE SCORE</div><strong id="irlBotRemaining">501</strong></div>
+   <div class="irlScoreSummary"><div class="irlLegCounter" id="irlBotLegs">0 legs</div><small id="irlBotAvg">3-DART GEM. —</small></div>
+   <div class="irlExtraStats" id="irlBotExtra"></div>
+   <div class="irlVisitHistory"><span>LAATSTE BEURTEN</span><p id="irlBotVisits">—</p></div>
+ </section>
+</div>
 <div class="irlBroadcastGrid">
 <section class="irlControlPanel">
-<div class="irlScores">
-<div class="irlScore active" id="irlPlayerBox"><div class="irlName" id="irlPlayerName">YOU</div><strong id="irlPlayerRemaining">501</strong><div class="irlLegCounter" id="irlPlayerLegs">0 legs</div><small id="irlPlayerAvg">Average: —</small><div class="irlExtraStats" id="irlPlayerExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlPlayerVisits">—</p></div></div>
-<div class="irlScore" id="irlBotBox"><div class="irlName" id="irlBotName">BOT</div><strong id="irlBotRemaining">501</strong><div class="irlLegCounter" id="irlBotLegs">0 legs</div><small id="irlBotAvg">Average: —</small><div class="irlExtraStats" id="irlBotExtra"></div><div class="irlVisitHistory"><span>LAST VISITS</span><p id="irlBotVisits">—</p></div></div>
-</div>
 <div class="irlEntry"><div class="irlHint">YOUR TURN · ENTER 3-DART SCORE</div><div class="irlInputRow"><input aria-label="Your three-dart score" autocomplete="off" id="irlVisit" inputmode="numeric" maxlength="3" pattern="[0-9]*" placeholder="0–180" type="text"/><button class="irlScoreConfirm" id="irlSubmit" type="button">ENTER ↵</button></div>
 <div aria-label="Score keypad" class="irlKeypad"><button data-irl-key="1" type="button">1</button><button data-irl-key="2" type="button">2</button><button data-irl-key="3" type="button">3</button><button data-irl-key="4" type="button">4</button><button data-irl-key="5" type="button">5</button><button data-irl-key="6" type="button">6</button><button data-irl-key="7" type="button">7</button><button data-irl-key="8" type="button">8</button><button data-irl-key="9" type="button">9</button><button class="irlKeyUtility" data-irl-key="clear" type="button">CLEAR</button><button data-irl-key="0" type="button">0</button><button class="irlKeyUtility" data-irl-key="back" type="button">⌫</button></div>
 <p class="irlCheckoutHelp">Finish your remaining score? Enter the exact score and confirm. We will ask about your double automatically.</p><p aria-live="polite" class="irlNotice" id="irlNotice">Enter your score after throwing three darts.</p>
@@ -2168,7 +2182,7 @@ function startIRLMatch(){
  const ev=careerEvents[career.eventIndex];
  const isWorldSets=/world championship|world darts championship|pdc world championship/i.test(ev[0]);
  const setBest=isWorldSets?(career.current.round>=5?13:career.current.round>=3?11:career.current.round>=1?7:5):0;
- irlMatch={bot,player,best:isWorldSets?5:Math.max(1,Number(ev[3])||5),setBest,sets:[0,0],remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,botCheckoutMisses:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],legDarts:[0,0]};
+ irlMatch={bot,player,best:isWorldSets?5:Math.max(1,Number(ev[3])||5),setBest,sets:[0,0],remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,botCheckoutMisses:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],scoringPoints:[0,0],scoringDarts:[0,0],turn:0,legDarts:[0,0]};
  // One match-day form roll, influenced by consistency; remains stable for the match.
  const profile=aiInit(bot);irlMatch.botDay=(Math.random()+Math.random()+Math.random()-1.5)*(15-profile.consistency*9);
  el('irlEventTitle').textContent=ev[0]+(career.current.qualifier?' · QUALIFIER':'')+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||5);
@@ -2179,14 +2193,15 @@ function startIRLMatch(){
 function drawIRL(){const b=irlMatch;if(!b)return;
  for(let i=0;i<2;i++){
   const prefix=i?'irlBot':'irlPlayer';el(prefix+'Remaining').textContent=b.remaining[i];el(prefix+'Legs').textContent=b.setBest?b.sets[i]+' sets · '+b.legs[i]+' legs':b.legs[i]+' legs';
-  el(prefix+'Avg').textContent='Average: '+(b.darts[i]?((b.total[i]/b.darts[i])*3).toFixed(2):'—');
+  el(prefix+'Avg').textContent='3-DART GEM.  '+(b.darts[i]?((b.total[i]/b.darts[i])*3).toFixed(2).replace('.',','):'—');
+  const isTurn=b.turn===i;el(prefix+'Box').classList.toggle('active',isTurn);el(prefix+'Turn').textContent=isTurn?'● AAN DE BEURT':'WACHT';el(prefix+'Box').setAttribute('aria-current',isTurn?'true':'false');
   el(prefix+'Visits').textContent=b.visits[i].slice(-10).reverse().join(' · ')||'—';
   const scores=b.visits[i].map(v=>parseInt(v,10)).filter(Number.isFinite);const last=scores.length?scores[scores.length-1]:'—';
   const best=scores.length?Math.max(...scores):'—';const high=scores.filter(v=>v>=100).length;const big=scores.filter(v=>v>=140).length;const max=scores.filter(v=>v===180).length;
-  const first9=b.firstNineDarts[i]?(b.firstNinePoints[i]*3/b.firstNineDarts[i]).toFixed(2):'—';
+  const scoringAvg=b.scoringDarts[i]?(b.scoringPoints[i]*3/b.scoringDarts[i]).toFixed(2).replace('.',','):'—';
   const attempts=b.doubleAttemptsByPlayer[i],hits=b.doubleHitsByPlayer[i];
   const doublePct=attempts?(hits*100/attempts).toFixed(1)+'%':'—';
-  el(prefix+'Extra').innerHTML=`<div><span>FIRST 9 AVG</span><b>${first9}</b></div><div><span>DOUBLES %</span><b>${doublePct}</b></div><div><span>DOUBLES HIT / ATT</span><b>${hits} / ${attempts}</b></div><div><span>LAST SCORE</span><b>${last}</b></div><div><span>DARTS THROWN</span><b>${b.darts[i]}</b></div><div><span>HIGHEST VISIT</span><b>${best}</b></div><div><span>100+ / 140+ / 180</span><b>${high} / ${big} / ${max}</b></div>`;
+  el(prefix+'Extra').innerHTML=`<div class="irlScoringAverage" title="3-dartgemiddelde over beurten die begonnen boven 170 punten. Checkoutbeurten tellen niet mee."><span>SCORING AVG</span><b>${scoringAvg}</b></div><div><span>DOUBLES %</span><b>${doublePct}</b></div><div><span>DOUBLES HIT / ATT</span><b>${hits} / ${attempts}</b></div><div><span>LAST SCORE</span><b>${last}</b></div><div><span>DARTS THROWN</span><b>${b.darts[i]}</b></div><div><span>HIGHEST VISIT</span><b>${best}</b></div><div><span>100+ / 140+ / 180</span><b>${high} / ${big} / ${max}</b></div>`;
  }
  el('irlLegLabel').textContent=b.setBest?'Best of '+b.setBest+' sets · Best of 5 legs per set':'Best of '+b.best+' legs · First to '+(Math.floor(b.best/2)+1);
 }
@@ -2223,6 +2238,7 @@ function finishLeg(who){
  const panel=el('irlBotScoreFlash');if(panel)panel.hidden=true;
  drawIRL();
  el('irlNotice').textContent=(who===0?'You':'The bot')+(setFinished?' won the set! ':' won the leg! ')+'Next leg starts at 501–501. '+(b.starter===0?'You throw first.':'Bot throws first.');
+ b.turn=b.starter;drawIRL();
  if(b.starter===1){
   el('irlSubmit').disabled=true;el('irlVisit').disabled=true;
   irlSchedule(()=>{if(irlMatch===b)botTurn()},1250);
@@ -2328,6 +2344,7 @@ function irlBotSimulateVisit(old,avg,profile){
 }
 function botTurn(){
  const b=irlMatch;if(!b||irlBotBusy)return;
+ b.turn=1;drawIRL();
  irlBotBusy=true;
  const old=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
  const result=irlBotSimulateVisit(old,avg,{...profile,finishing:profile.finishing*(.88+irlPlayerStrength(b.bot)*.24)});
@@ -2347,12 +2364,13 @@ function botTurn(){
   if(irlMatch!==b)return;
   b.remaining[1]=finish?0:bust?old:old-score;
   b.total[1]+=bust?0:score;
+  if(old>170){b.scoringPoints[1]+=bust?0:score;b.scoringDarts[1]+=darts.length;}
   const used=darts.length;
   irlRecordFirstNine(1,bust?0:score,used);b.darts[1]+=used;
   b.doubleAttemptsByPlayer[1]+=attempts;
   if(finish){b.doubleHitsByPlayer[1]++;b.botCheckoutMisses=0;}
   else if(attempts)b.botCheckoutMisses++;
-  b.visits[1].push(bust?'BUST':score+(finish?' ✓':''));drawIRL();
+  b.visits[1].push(bust?'BUST':score+(finish?' ✓':''));if(!finish)b.turn=0;drawIRL();
   el('irlNotice').textContent=finish?'CHECKOUT! '+b.bot.name+' finishes '+score+'!':bust?'BOT BUST!':b.bot.name+' SCORES '+score+'!';
   el('irlBotDarts').textContent=(finish?'CHECKOUT · ':bust?'BUST · ':'SCORE · ')+(bust?0:score)+' | '+darts.map(irlDartName).join(' · ');
   const panel=el('irlBotScoreFlash');if(panel){panel.textContent=finish?'CHECKOUT '+score:bust?'BUST':'SCORE '+score;panel.classList.toggle('checkout',finish);panel.hidden=false;}
@@ -2400,9 +2418,11 @@ el('irlSubmit').onclick=()=>{
   const checkout=possibleFinish&&!!info.finished;
   const bust=automaticBust||(score===old&&!checkout);
   b.remaining[0]=checkout?0:bust?old:old-score;b.total[0]+=bust?0:score;
+  if(old>170){b.scoringPoints[0]+=bust?0:score;b.scoringDarts[0]+=info.used;}
   irlRecordFirstNine(0,bust?0:score,info.used);b.darts[0]+=info.used;b.visits[0].push(bust?'BUST':score+(checkout?' ✓':''));
   b.doubleAttemptsByPlayer[0]+=info.attempts;
   b.doubleHitsByPlayer[0]+=(checkout?1:0);
+  if(!checkout)b.turn=1;
   el('irlVisit').value='';drawIRL();
   if(checkout){finishLeg(0);return}
   el('irlNotice').textContent=bust?'Bust! Score restored.':'You scored '+score+'.';
@@ -3225,4 +3245,63 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #careerDashboard .daCareerExact[data-view="dashboard"] .daSummaryItem b{font-size:19px!important}
 #careerDashboard .daCareerExact[data-view="dashboard"] .daProfileHero{min-height:140px}
 #careerDashboard .daCareerExact[data-view="dashboard"] .daRankRow{white-space:nowrap}
-</style><style id="daDigitalCareerGuard">#careerMode:not(.irlActive) #irlDashboardLevel{display:none!important}</style></body></html>
+</style><style id="daDigitalCareerGuard">#careerMode:not(.irlActive) #irlDashboardLevel{display:none!important}</style>
+<style id="irlBroadcastScoreboardV2">
+/* TV-style scoreboard across the full width; both scorecards share a single prominent hierarchy. */
+#irlMatch{background:#0a1018!important;color:#f7fbff!important}
+#irlMatch .irlWrap.irlBroadcast{max-width:1360px!important}
+#irlMatch .irlTop{background:#0e1724!important;border:1px solid #25374b;border-radius:13px 13px 0 0!important}
+#irlMatch .irlScores{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;margin:12px 0!important}
+#irlMatch .irlScore{min-height:0!important;text-align:left!important;padding:16px 20px 14px!important;background:linear-gradient(115deg,#172333,#101927)!important;border:2px solid #30465d!important;border-radius:14px!important;box-shadow:0 10px 30px #0005!important;position:relative}
+#irlMatch .irlScore.active{background:linear-gradient(115deg,#193342,#122432)!important;border-color:#82edac!important;box-shadow:0 0 0 1px #82edac4a,0 12px 32px #0007!important}
+#irlMatch .irlScoreHeading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#irlMatch .irlRole{font-weight:850;color:#a3b7c9;font-size:11px;letter-spacing:.10em}
+#irlMatch .irlTurnBadge{display:inline-flex;align-items:center;gap:5px;min-height:27px;padding:5px 10px;border-radius:100px;background:#222f3e;color:#b0bfcb;font-size:11px;letter-spacing:.03em;font-weight:950;white-space:nowrap}
+#irlMatch .irlScore.active .irlTurnBadge{background:#a1ffba;color:#103524}
+#irlMatch .irlName{font-size:clamp(17px,2.1vw,26px)!important;line-height:1.15;margin:11px 0 6px;font-weight:950;color:#fff;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+#irlMatch .irlScoreNumber{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:1px 0 8px;border-bottom:1px solid #3a4d60}
+#irlMatch .irlScoreCaption{font-size:11px;line-height:1.45;max-width:95px;letter-spacing:.08em;font-weight:900;color:#bfd1e0}
+#irlMatch .irlScoreNumber strong{font-family:Arial,Helvetica,sans-serif!important;text-align:right;font-size:clamp(70px,8vw,120px)!important;font-weight:950!important;line-height:1!important;letter-spacing:-.065em!important;font-variant-numeric:tabular-nums;color:white!important;margin:0!important}
+#irlMatch .irlScore.active .irlScoreNumber strong{color:#b2ffc8!important;text-shadow:0 0 25px #40ff812a}
+#irlMatch .irlScoreSummary{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:10px;flex-wrap:wrap}
+#irlMatch .irlLegCounter{background:#31465f!important;border:1px solid #58718b;color:#fff!important;border-radius:7px!important;padding:6px 10px!important;font-size:13px!important;font-weight:900}
+#irlMatch .irlScore small{color:#d8e4ef!important;margin:0!important;font-size:12px!important;letter-spacing:.01em;font-weight:850!important}
+#irlMatch .irlExtraStats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:11px 0 4px!important}
+#irlMatch .irlExtraStats>div{padding:5px!important;background:#ffffff08!important;border:1px solid #ffffff13;border-radius:6px!important;min-width:0}
+#irlMatch .irlExtraStats span{font-size:9px!important;color:#bdcad8!important;line-height:1.2}
+#irlMatch .irlExtraStats b{font-size:13px!important;color:#fff!important}
+#irlMatch .irlExtraStats .irlScoringAverage{background:#174032!important;border-color:#285f4c!important}
+#irlMatch .irlExtraStats .irlScoringAverage span{color:#9de4bd!important}
+#irlMatch .irlExtraStats .irlScoringAverage b{color:#bdffdc!important}
+#irlMatch .irlVisitHistory{margin-top:8px!important;padding-top:8px;border-top:1px solid #314355;display:flex;gap:12px;align-items:center;font-size:12px!important;color:#c7d4e3!important}
+#irlMatch .irlVisitHistory span{white-space:nowrap;color:#8fb1cc!important;font-size:9px!important}
+#irlMatch .irlVisitHistory p{margin:0!important;font-weight:800!important;color:#f4f7fb!important;overflow-wrap:anywhere}
+#irlMatch .irlBroadcastGrid{min-height:0!important;background:#121c29!important;border:1px solid #2c4054;border-radius:13px!important;overflow:hidden}
+#irlMatch .irlControlPanel{background:#172332!important}
+#irlMatch .irlEntry{background:linear-gradient(160deg,#1c2b3b,#132131)!important;color:white!important;padding:18px!important}
+#irlMatch .irlHint{color:#adf1c3!important;font-size:14px!important}
+#irlMatch #irlVisit{color:#0d1722!important;border:2px solid #9eb4c8!important}
+#irlMatch #irlSubmit{background:#a1f6bc!important;color:#102e21!important}
+#irlMatch .irlKeypad button{background:#f4f7fb!important;color:#14202b!important}
+#irlMatch .irlKeypad button.irlKeyUtility{background:#2c3e50!important;color:white!important}
+#irlMatch .irlNotice{color:#d7e9f4!important}
+#irlMatch .irlBoardPanel{background:radial-gradient(circle at center,#293844,#0f1823 78%)!important}
+#irlMatch .irlBoardFooter{color:#8ceab6!important}
+@media(max-width:780px){#irlMatch .irlScores{gap:7px!important}#irlMatch .irlScore{padding:12px!important}#irlMatch .irlScoreNumber strong{font-size:clamp(52px,11vw,90px)!important}#irlMatch .irlExtraStats{grid-template-columns:repeat(2,minmax(0,1fr))!important}#irlMatch .irlRole{font-size:9px!important}#irlMatch .irlName{font-size:clamp(14px,3.5vw,22px)!important}#irlMatch .irlTurnBadge{font-size:9px;padding:4px 6px}#irlMatch .irlScoreCaption{font-size:9px;max-width:65px}#irlMatch .irlScore small{font-size:10px!important}#irlMatch .irlVisitHistory{display:block}#irlMatch .irlVisitHistory p{margin-top:3px!important}}
+@media(max-width:470px){#irlMatch{padding:8px!important}#irlMatch .irlScore{padding:9px!important}#irlMatch .irlScoreHeading{align-items:flex-start;flex-direction:column;gap:6px}#irlMatch .irlScoreNumber strong{font-size:clamp(50px,13vw,68px)!important}#irlMatch .irlLegCounter{font-size:10px!important}#irlMatch .irlScoreSummary{align-items:flex-start;gap:6px;flex-direction:column}#irlMatch .irlExtraStats>div{padding:4px!important}#irlMatch .irlExtraStats span{font-size:8px!important}#irlMatch .irlExtraStats b{font-size:11px!important}}
+
+/* Mobile broadcast header: keep the event name readable above the scores. */
+@media(max-width:600px){
+ #irlMatch .irlTop{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;grid-template-areas:"back level" "event event";gap:9px!important;padding:10px 12px!important;min-height:0!important}
+ #irlMatch #irlBack{grid-area:back;font-size:11px!important;padding:10px 8px!important;white-space:nowrap;justify-self:start}
+ #irlMatch .irlMatchHeader{grid-area:event;text-align:center!important;max-width:100%;padding:4px 0 2px}
+ #irlMatch #irlEventTitle{display:block;font-size:11px!important;line-height:1.35;white-space:normal!important}
+ #irlMatch #irlLegLabel{display:block;font-size:13px!important;line-height:1.25}
+ #irlMatch #irlMatchLevelControl{grid-area:level;display:flex;flex-direction:row;align-items:center;justify-content:flex-end!important;max-width:100%;min-width:0}
+ #irlMatch #irlMatchLevelControl>span{display:none}
+ #irlMatch #irlMatchBotLevel{min-width:0!important;max-width:100%!important;width:100%;font-size:11px!important;padding:8px 4px!important}
+ #irlMatch .irlLive{display:none!important}
+ #irlMatch .irlExtraStats>div:nth-child(n+5){display:none}
+}
+</style>
+</body></html>
