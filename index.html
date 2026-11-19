@@ -1956,10 +1956,16 @@ function daTraining(){
    <div class="irlScoreHeading"><span class="irlRole">PLAYER 02 · TEGENSTANDER</span><span class="irlTurnBadge" id="irlBotTurn">WACHT</span></div>
    <div class="irlName" id="irlBotName">BOT</div>
    <div class="irlScoreNumber"><div class="irlScoreCaption">RESTERENDE SCORE</div><strong id="irlBotRemaining">501</strong></div>
+   <div class="irlBotLastVisit" id="irlBotLastVisit" hidden aria-live="polite"><span>LAATSTE BEURT</span><strong id="irlBotLastVisitNumber">—</strong></div>
    <div class="irlScoreSummary"><div class="irlLegCounter" id="irlBotLegs">0 legs</div><small id="irlBotAvg">3-DART GEM. —</small></div>
    <div class="irlExtraStats" id="irlBotExtra"></div>
    <div class="irlVisitHistory"><span>LAATSTE BEURTEN</span><p id="irlBotVisits">—</p></div>
  </section>
+</div>
+<div class="irlBotResultBanner" id="irlBotResultBanner" hidden role="status" aria-live="polite" aria-atomic="true">
+  <div class="irlBotResultIcon" aria-hidden="true">🎯</div>
+  <div class="irlBotResultText"><span id="irlBotResultLabel">TEGENSTANDER · LAATSTE BEURT</span><strong id="irlBotResultScore">—</strong></div>
+  <div class="irlBotResultMeta"><span>RESTERENDE SCORE</span><strong id="irlBotResultRemaining">—</strong></div>
 </div>
 <div class="irlBroadcastGrid">
 <section class="irlControlPanel">
@@ -2005,8 +2011,27 @@ function irlEnsureAnalytics(){
  const rank=careerRanked().find(p=>p.id===career.playerId)?.position;
  if(Number.isFinite(rank)&&!career.irlRankHistory.length)career.irlRankHistory.push({rank,season:career.season,eventIndex:career.eventIndex});
 }
+function irlSaveSeasonSummary(){
+ if(!irlMode||!career)return;
+ const currentSeason=career.season;
+ if(!Array.isArray(career.irlSeasonSummaries))career.irlSeasonSummaries=[];
+ if(career.irlSeasonSummaries.some(x=>x.season===currentSeason))return;
+ const matches=(career.matchPerformance||[]).filter(x=>x.type==='irl'&&x.season===currentSeason);
+ const tournaments=(career.irlTournamentResults||[]).filter(x=>x.season===currentSeason);
+ const avg=matches.length?matches.reduce((a,x)=>a+Number(x.average||0),0)/matches.length:0;
+ const best=matches.reduce((a,x)=>Math.max(a,Number(x.average||0)),0);
+ const wins=matches.filter(x=>x.won).length;
+ const prizes=[];
+ if(matches.length){
+  prizes.push({name:'Best match average',detail:best.toFixed(2)});
+  if(wins>=3)prizes.push({name:'Season match wins',detail:wins+' match wins this season'});
+  if(avg>0)prizes.push({name:'Season match average',detail:avg.toFixed(2)});
+ }
+ career.irlSeasonSummaries.push({season:currentSeason,matches:matches.length,wins,average:avg,best,ranking:careerRanked().find(p=>p.id===career.playerId)?.position||null,events:tournaments.length,awards:prizes});
+}
 const irlAdvanceOriginal=careerAdvance;
 careerAdvance=function(){
+ if(career&&irlMode&&career.eventIndex===careerEvents.length-1)irlSaveSeasonSummary();
  const before=career&&irlMode?{event:careerEvents[career.eventIndex]?.[0]||'Tournament',season:career.season,wins:career.current?.wins||0,played:career.current?.played||0}:null;
  irlAdvanceOriginal();
  if(before&&career){
@@ -2140,7 +2165,9 @@ function targetAvg(p){
  const playerBonus=(strength-.5)*Math.min(12,setting.average*.22);
  const form=Math.max(-5,Math.min(5,Number(p.form)||0));
  const recent=aiRecent(p),day=irlMatch?.bot===p?irlMatch.botDay:0;
- const target=setting.average+playerBonus+form*.22+recent*.23+day*.45;
+ const recentGames=(Array.isArray(career?.matchPerformance)?career.matchPerformance:[]).filter(x=>x.type==='irl'&&x.opponentId===p.id).slice(-5);
+ const historyEdge=recentGames.length?recentGames.reduce((n,x)=>n+(x.won?-1:1),0)/recentGames.length:0;
+ const target=setting.average+playerBonus+form*.22+recent*.23+day*.45+historyEdge*1.2;
  // Keep all players in the difficulty's realistic range, including top seeds.
  return Math.max(setting.min,Math.min(setting.max,target));
 }
@@ -2182,13 +2209,39 @@ function startIRLMatch(){
  const ev=careerEvents[career.eventIndex];
  const isWorldSets=/world championship|world darts championship|pdc world championship/i.test(ev[0]);
  const setBest=isWorldSets?(career.current.round>=5?13:career.current.round>=3?11:career.current.round>=1?7:5):0;
- irlMatch={bot,player,best:isWorldSets?5:Math.max(1,Number(ev[3])||5),setBest,sets:[0,0],remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,botCheckoutMisses:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],scoringPoints:[0,0],scoringDarts:[0,0],turn:0,legDarts:[0,0]};
+ irlMatch={opponentId:bot.id,opponentName:bot.name,eventName:ev[0],season:career.season,round:career.current.round+1,best:isWorldSets?5:Math.max(1,Number(ev[3])||5),bot,player,setBest,sets:[0,0],remaining:[501,501],legs:[0,0],visits:[[],[]],total:[0,0],darts:[0,0],starter:0,botDay:0,botCheckoutMisses:0,doubleAttemptsByPlayer:[0,0],doubleHitsByPlayer:[0,0],firstNinePoints:[0,0],firstNineDarts:[0,0],scoringPoints:[0,0],scoringDarts:[0,0],turn:0,legDarts:[0,0]};
  // One match-day form roll, influenced by consistency; remains stable for the match.
  const profile=aiInit(bot);irlMatch.botDay=(Math.random()+Math.random()+Math.random()-1.5)*(15-profile.consistency*9);
  el('irlEventTitle').textContent=ev[0]+(career.current.qualifier?' · QUALIFIER':'')+' · Round '+(career.current.round+1)+' · Bot Level '+(career.botLevel||5);
  el('irlMatchBotLevel').value=String(irlSavedLevel(career.botLevel));
  el('irlPlayerName').textContent=player.name;el('irlBotName').textContent=bot.name;
- el('game501').style.display='none';el('irlMatch').hidden=false;document.documentElement.classList.add('irl-scoring-active');el('irlVisit').value='';el('irlNotice').textContent='Your throw!';irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';drawIRL();el('irlVisit').focus();
+ el('game501').style.display='none';el('irlMatch').hidden=false;document.documentElement.classList.add('irl-scoring-active');el('irlVisit').value='';el('irlNotice').textContent='Your throw!';irlDrawBoard();el('irlBotDarts').textContent='BOT DARTS: —';irlClearBotResult();drawIRL();el('irlVisit').focus();
+}
+// Keep the bot's completed 3-dart score visible while the player enters the next visit.
+// The result is cleared only at the start of a new match, a new leg, or the bot's next turn.
+function irlClearBotResult(){
+ const banner=el('irlBotResultBanner'),last=el('irlBotLastVisit'),flash=el('irlBotScoreFlash');
+ if(banner)banner.hidden=true;
+ if(last)last.hidden=true;
+ if(flash)flash.hidden=true;
+}
+function irlShowBotResult(score,remaining,finish,bust){
+ const banner=el('irlBotResultBanner'),last=el('irlBotLastVisit');
+ if(!banner||!last)return;
+ const label=el('irlBotResultLabel');
+ const actual=bust?0:score;
+ label.textContent=(irlMatch?.bot?.name||'DARTBOT').toUpperCase()+(finish?' · CHECKOUT':bust?' · BUST':' · LAATSTE BEURT');
+ el('irlBotResultScore').textContent=finish?'CHECKOUT '+score:bust?'BUST · 0':String(actual);
+ el('irlBotResultRemaining').textContent=String(remaining);
+ el('irlBotLastVisitNumber').textContent=finish?'FINISH '+score:bust?'BUST':String(actual);
+ banner.classList.toggle('isCheckout',!!finish);
+ banner.classList.toggle('isBust',!!bust);
+ last.classList.toggle('isCheckout',!!finish);
+ last.classList.toggle('isBust',!!bust);
+ banner.hidden=false;last.hidden=false;
+ banner.classList.remove('irlBotResultAnimate');
+ void banner.offsetWidth; // Restart a subtle emphasis animation on each completed bot turn.
+ banner.classList.add('irlBotResultAnimate');
 }
 function drawIRL(){const b=irlMatch;if(!b)return;
  for(let i=0;i<2;i++){
@@ -2228,14 +2281,14 @@ function finishLeg(who){
  }
  if(matchComplete){
   drawIRL();el('irlMatch').hidden=true;const won=who===0;
-  if(b.darts[0]>0){if(!Array.isArray(career.matchPerformance))career.matchPerformance=[];career.matchPerformance.push({points:b.total[0],darts:b.darts[0],average:Number((b.total[0]*3/b.darts[0]).toFixed(2)),won,date:new Date().toISOString(),type:'irl'});}
+  if(b.darts[0]>0){if(!Array.isArray(career.matchPerformance))career.matchPerformance=[];career.matchPerformance.push({points:b.total[0],darts:b.darts[0],average:Number((b.total[0]*3/b.darts[0]).toFixed(2)),scoringAverage:b.scoringDarts[0]?Number((b.scoringPoints[0]*3/b.scoringDarts[0]).toFixed(2)):null,doubleAttempts:b.doubleAttemptsByPlayer[0],doubleHits:b.doubleHitsByPlayer[0],opponentId:b.opponentId,opponent:b.opponentName,event:b.eventName,season:b.season,round:b.round,score:b.setBest?b.sets.join('–'):b.legs.join('–'),format:b.setBest?'sets':'legs',won,date:new Date().toISOString(),type:'irl'});}
   careerAfterMatch(won);careerSave();irlMatch=null;
   el('careerMessage').textContent=won?'Match won! Your career has been updated.':'Match lost. Your career has been updated.';showMode('career');careerRender();updateIRLSetup();return;
  }
  // Reset BOTH scores and switch starting player before drawing the next leg.
  b.remaining=[501,501];b.legDarts=[0,0];b.starter=1-b.starter;
  el('irlVisit').value='';irlDrawBoard([]);el('irlBotDarts').textContent='BOT DARTS: —';
- const panel=el('irlBotScoreFlash');if(panel)panel.hidden=true;
+ irlClearBotResult();
  drawIRL();
  el('irlNotice').textContent=(who===0?'You':'The bot')+(setFinished?' won the set! ':' won the leg! ')+'Next leg starts at 501–501. '+(b.starter===0?'You throw first.':'Bot throws first.');
  b.turn=b.starter;drawIRL();
@@ -2345,6 +2398,7 @@ function irlBotSimulateVisit(old,avg,profile){
 function botTurn(){
  const b=irlMatch;if(!b||irlBotBusy)return;
  b.turn=1;drawIRL();
+ irlClearBotResult();
  irlBotBusy=true;
  const old=b.remaining[1],avg=targetAvg(b.bot),profile=aiInit(b.bot);
  const result=irlBotSimulateVisit(old,avg,{...profile,finishing:profile.finishing*(.88+irlPlayerStrength(b.bot)*.24)});
@@ -2373,10 +2427,10 @@ function botTurn(){
   b.visits[1].push(bust?'BUST':score+(finish?' ✓':''));if(!finish)b.turn=0;drawIRL();
   el('irlNotice').textContent=finish?'CHECKOUT! '+b.bot.name+' finishes '+score+'!':bust?'BOT BUST!':b.bot.name+' SCORES '+score+'!';
   el('irlBotDarts').textContent=(finish?'CHECKOUT · ':bust?'BUST · ':'SCORE · ')+(bust?0:score)+' | '+darts.map(irlDartName).join(' · ');
+  irlShowBotResult(score,b.remaining[1],finish,bust);
   const panel=el('irlBotScoreFlash');if(panel){panel.textContent=finish?'CHECKOUT '+score:bust?'BUST':'SCORE '+score;panel.classList.toggle('checkout',finish);panel.hidden=false;}
   irlSchedule(()=>{
    if(irlMatch!==b)return;
-   if(panel)panel.hidden=true;
    irlBotBusy=false;
    if(finish){finishLeg(1);return;}
    el('irlSubmit').disabled=false;el('irlVisit').disabled=false;
@@ -3304,4 +3358,138 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  #irlMatch .irlExtraStats>div:nth-child(n+5){display:none}
 }
 </style>
+
+<style id="irlBotResultPersistentStyle">
+/* New dedicated, always-readable completed bot score in the live scoreboard. */
+#irlMatch .irlBotResultBanner[hidden],#irlMatch .irlBotLastVisit[hidden]{display:none!important}
+#irlMatch .irlBotResultBanner{
+ display:flex!important;align-items:center;gap:18px;margin:-1px 0 13px;padding:14px 22px;
+ background:linear-gradient(100deg,#174a3c,#112d39 75%,#152838);border:2px solid #86e9b0;
+ border-radius:12px;box-shadow:0 8px 28px #0006;color:#fff;min-height:92px
+}
+#irlMatch .irlBotResultIcon{display:grid;place-items:center;width:55px;height:55px;border-radius:12px;
+ background:#ffffff12;font-size:29px;flex-shrink:0}
+#irlMatch .irlBotResultText{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+#irlMatch .irlBotResultText span{font-size:12px;letter-spacing:1.5px;font-weight:900;color:#b9f7d4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#irlMatch .irlBotResultText strong{font-size:clamp(32px,4.4vw,54px);font-weight:950;line-height:1.05;color:#fff;font-variant-numeric:tabular-nums}
+#irlMatch .irlBotResultMeta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;padding-left:20px;border-left:1px solid #ffffff4b;flex-shrink:0}
+#irlMatch .irlBotResultMeta span{font-size:11px;font-weight:900;letter-spacing:.06em;color:#c4e4d5}
+#irlMatch .irlBotResultMeta strong{font-size:clamp(27px,3.7vw,45px);line-height:1;font-weight:950;font-variant-numeric:tabular-nums;color:#c1ffe0}
+#irlMatch .irlBotLastVisit{display:flex!important;align-items:center;justify-content:space-between;gap:8px;
+ margin:10px 0 0;padding:8px 12px;background:#174836;border:1px solid #6fe1a1;border-radius:9px}
+#irlMatch .irlBotLastVisit span{font-size:11px;letter-spacing:.09em;font-weight:850;color:#c9ffe3}
+#irlMatch .irlBotLastVisit strong{font-size:clamp(21px,2.6vw,29px)!important;line-height:1;color:#fff!important;font-variant-numeric:tabular-nums}
+#irlMatch .irlBotResultBanner.isCheckout,#irlMatch .irlBotLastVisit.isCheckout{border-color:#c7f777;background:linear-gradient(90deg,#286044,#164432)}
+#irlMatch .irlBotResultBanner.isBust,#irlMatch .irlBotLastVisit.isBust{border-color:#ffa3a8;background:linear-gradient(90deg,#5d242d,#2c2533)}
+#irlMatch .irlBotResultAnimate{animation:irlBotResultIn .32s ease-out}
+@keyframes irlBotResultIn{from{opacity:.45;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){#irlMatch .irlBotResultAnimate{animation:none}}
+@media(max-width:620px){
+ #irlMatch .irlBotResultBanner{padding:11px 13px;gap:10px;min-height:75px}
+ #irlMatch .irlBotResultIcon{display:none}
+ #irlMatch .irlBotResultText span{font-size:10px;letter-spacing:.04em}
+ #irlMatch .irlBotResultText strong{font-size:34px}
+ #irlMatch .irlBotResultMeta{padding-left:10px}
+ #irlMatch .irlBotResultMeta span{font-size:9px}
+ #irlMatch .irlBotResultMeta strong{font-size:29px}
+ #irlMatch .irlBotLastVisit{padding:7px;gap:4px;flex-wrap:wrap}
+ #irlMatch .irlBotLastVisit span{font-size:9px}
+ #irlMatch .irlBotLastVisit strong{font-size:21px!important}
+}
+</style>
+
+<style id="irlCareerExtrasStyle">
+#irlCareerExtras{margin:18px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;color:#f1f5f9}
+#irlCareerExtras[hidden]{display:none!important}
+#irlCareerExtras .irlFeaturePanel{background:linear-gradient(130deg,#182333,#0e1723);border:1px solid #34485b;border-radius:14px;padding:17px;min-width:0}
+#irlCareerExtras h3{font-size:18px;color:#fff;margin:0 0 12px}
+#irlCareerExtras .irlFeatureRow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #334155;font-size:13px}
+#irlCareerExtras .irlFeatureRow:last-child{border-bottom:0}
+#irlCareerExtras .irlFeatureRow strong{text-align:right;color:#d6fba4}
+#irlCareerExtras .irlFeatureMuted{color:#b7c4d3;font-size:13px;line-height:1.5}
+#irlCareerExtras .irlFeatureTag{font-size:11px;color:#a4ffcb}
+#irlCareerExtras select{width:100%;padding:9px;background:#101a28;color:white;border:1px solid #52647a;border-radius:8px;margin-bottom:10px}
+#irlCareerExtras .irlFeatureWide{grid-column:1/-1}
+#irlCareerExtras .irlFeatureScroll{max-height:300px;overflow:auto}
+#irlCareerExtras .irlFeatureRow .irlFeatureDetail{display:block;font-size:11px;color:#aebfd2;margin-top:4px}
+#irlCheckoutAdvice{padding:11px 14px;margin:12px 0;border:1px solid #486a55;border-radius:11px;background:#122b28;color:#d8ffe5;font-weight:700;text-align:center}
+#irlCheckoutAdvice[hidden]{display:none!important}
+@media(max-width:800px){#irlCareerExtras{grid-template-columns:1fr}#irlCareerExtras .irlFeatureWide{grid-column:auto}}
+</style>
+<script id="irlCareerExtrasScript">
+(function(){
+ const $id=id=>document.getElementById(id);
+ const safe=x=>String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function data(){return Array.isArray(career?.matchPerformance)?career.matchPerformance.filter(x=>x.type==='irl'):[]}
+ function ensure(){
+  const dash=$id('careerDashboard');
+  if(dash&&!$id('irlCareerExtras')){
+   const host=document.createElement('div');host.id='irlCareerExtras';
+   host.innerHTML='<section class="irlFeaturePanel"><h3>⚔ Rivaliteiten</h3><div id="irlRivals"></div></section><section class="irlFeaturePanel"><h3>📅 Seizoensoverzicht</h3><select id="irlSeasonPick" aria-label="Kies seizoen"></select><div id="irlSeasonStats"></div></section><section class="irlFeaturePanel irlFeatureWide"><h3>📋 Wedstrijdgeschiedenis</h3><div class="irlFeatureScroll" id="irlMatchArchive"></div></section><section class="irlFeaturePanel irlFeatureWide"><h3>🏅 Prijzen en onderscheidingen</h3><div id="irlCareerAwards"></div></section>';
+   dash.appendChild(host);
+   $id('irlSeasonPick').addEventListener('change',renderSeason);
+  }
+  if($id('irlMatch')&&!$id('irlCheckoutAdvice')){
+   const hint=document.createElement('div');hint.id='irlCheckoutAdvice';hint.hidden=true;hint.setAttribute('aria-live','polite');
+   const entry=$id('irlMatch').querySelector('.irlEntry');
+   if(entry)entry.insertBefore(hint,entry.firstChild);
+  }
+ }
+ function renderSeason(){
+  const pick=$id('irlSeasonPick'),host=$id('irlSeasonStats');if(!pick||!host||!career)return;
+  const season=Number(pick.value)||career.season;
+  const saved=(career.irlSeasonSummaries||[]).find(x=>x.season===season);
+  const matches=data().filter(m=>m.season===season);
+  const wins=matches.filter(m=>m.won).length;
+  const avg=matches.length?(matches.reduce((a,m)=>a+Number(m.average||0),0)/matches.length).toFixed(2):'—';
+  const results=(career.irlTournamentResults||[]).filter(e=>e.season===season);
+  const stats=[['Wedstrijden',saved?.matches??matches.length],['Gewonnen',saved?.wins??wins],['Gemiddelde',saved?.average?Number(saved.average).toFixed(2):avg],['Afgeronde toernooien',saved?.events??results.length]];
+  host.innerHTML=stats.map(([a,b])=>'<div class="irlFeatureRow"><span>'+safe(a)+'</span><strong>'+safe(b)+'</strong></div>').join('')+(saved?.ranking?'<p class="irlFeatureMuted">Eindranking: #'+saved.ranking+'</p>':'');
+ }
+ function render(){
+  ensure();const host=$id('irlCareerExtras');if(!host)return;
+  host.hidden=!irlMode||!career;if(host.hidden)return;
+  const matches=data();
+  const rivals=new Map();
+  for(const m of matches){
+   if(!m.opponent)continue;
+   const id=m.opponentId||m.opponent;
+   if(!rivals.has(id))rivals.set(id,{name:m.opponent,w:0,l:0,total:0});
+   const r=rivals.get(id);r.total++;r[m.won?'w':'l']++;
+  }
+  const top=[...rivals.values()].sort((a,b)=>b.total-a.total||b.l-a.l).slice(0,6);
+  $id('irlRivals').innerHTML=top.length?top.map(r=>'<div class="irlFeatureRow"><span>'+safe(r.name)+'<span class="irlFeatureDetail">'+r.total+' ontmoetingen</span></span><strong>'+r.w+' W – '+r.l+' L</strong></div>').join(''):'<p class="irlFeatureMuted">Speel wedstrijden tegen dezelfde tegenstander om een rivaliteit op te bouwen. Eerdere wedstrijden zonder tegenstander worden niet meegeteld.</p>';
+  $id('irlMatchArchive').innerHTML=matches.length?matches.slice(-100).reverse().map(m=>'<div class="irlFeatureRow"><span><b>'+safe(m.opponent||'Onbekende tegenstander')+'</b><span class="irlFeatureDetail">'+safe(m.event||'Toernooi onbekend')+' · '+safe(m.season?'Seizoen '+m.season:'')+' · '+safe(m.date?new Date(m.date).toLocaleDateString('nl-NL'):'')+'</span></span><strong style="color:'+(m.won?'#b9f5b4':'#ffb6b6')+'">'+(m.won?'W':'L')+' '+safe(m.score||'')+'<span class="irlFeatureDetail">3-dart: '+safe(m.average??'—')+' · scorend: '+safe(m.scoringAverage??'—')+' · dubbels: '+(m.doubleAttempts?Math.round(100*(m.doubleHits||0)/m.doubleAttempts)+'%':'—')+'</span></strong></div>').join(''):'<p class="irlFeatureMuted">Je gespeelde IRL-wedstrijden verschijnen hier automatisch.</p>';
+  const seasons=[...new Set([career.season,...matches.map(m=>m.season).filter(Boolean),...(career.irlSeasonSummaries||[]).map(x=>x.season)])].sort((a,b)=>b-a);
+  const pick=$id('irlSeasonPick'),selected=Number(pick.value);
+  pick.innerHTML=seasons.map(n=>'<option value="'+n+'">Seizoen '+n+'</option>').join('');
+  if(seasons.includes(selected))pick.value=String(selected);
+  renderSeason();
+  const awards=(career.irlSeasonSummaries||[]).flatMap(s=>(s.awards||[]).map(a=>({...a,season:s.season})));
+  $id('irlCareerAwards').innerHTML=awards.length?awards.slice().reverse().map(a=>'<div class="irlFeatureRow"><span>🏅 '+safe(a.name)+'<span class="irlFeatureDetail">Seizoen '+a.season+'</span></span><strong>'+safe(a.detail)+'</strong></div>').join(''):'<p class="irlFeatureMuted">Na afloop van je eerste volledige seizoen ontvang je onderscheidingen op basis van je prestaties. Er worden geen prijzen verzonnen.</p>';
+ }
+ const checkoutRoutes={170:'T20 · T20 · Bull',167:'T20 · T19 · Bull',164:'T20 · T18 · Bull',161:'T20 · T17 · Bull',160:'T20 · T20 · D20',158:'T20 · T20 · D19',156:'T20 · T20 · D18',140:'T20 · T20 · D10',121:'T20 · T11 · D14',100:'T20 · D20',80:'T20 · D10',60:'S20 · D20',50:'Bull',40:'D20',32:'D16',24:'D12',20:'D10',16:'D8',10:'D5',8:'D4',4:'D2',2:'D1'};
+ function checkoutHint(n){
+  if(n>170||n<2||[169,168,166,165,163,162,159].includes(n))return 'Geen directe checkout mogelijk — zet een dubbel klaar.';
+  if(checkoutRoutes[n])return checkoutRoutes[n];
+  if(n<=40&&n%2===0)return 'D'+(n/2);
+  if(n<=60&&n>40&&n%2===0)return 'S'+(n-40)+' · D20';
+  if(n<=50&&n%2===1&&n>=33)return 'S'+(n-32)+' · D16';
+  if(n<=98&&n%2===0&&((n-32)%3===0)&&((n-32)/3)<=20)return 'T'+((n-32)/3)+' · D16';
+  return 'Checkout mogelijk — kies je eigen route naar een dubbel.';
+ }
+ function hint(){
+  ensure();const el=$id('irlCheckoutAdvice');if(!el)return;
+  const b=typeof irlMatch!=='undefined'?irlMatch:null;
+  if(!b||!irlMode){el.hidden=true;return}
+  const n=b.remaining[0];el.hidden=false;
+  el.textContent='🎯 '+(n<=170?'Checkoutadvies ('+n+'): ':'Voorbereiding ('+n+'): ')+checkoutHint(n);
+ }
+ const oldRender=careerRender;
+ careerRender=function(){const result=oldRender.apply(this,arguments);try{render()}catch(e){console.warn('IRL career panels',e)}return result};
+ const oldDraw=drawIRL;
+ drawIRL=function(){const result=oldDraw.apply(this,arguments);try{hint()}catch(e){console.warn('Checkout hint',e)}return result};
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ensure);else ensure();
+})();
+</script>
 </body></html>
